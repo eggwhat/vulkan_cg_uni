@@ -1,6 +1,7 @@
 #pragma once
 
 #include "vcu_window.hpp"
+#include "vcu_pipeline.hpp"
 
 namespace vcu {
 	class FirstApp {
@@ -12,6 +13,7 @@ namespace vcu {
 
 	private:
 		VcuWindow window{ WIDTH, HEIGHT, "Vulkan" };
+		VcuPipeline vcuPipeline{ "shaders/simple_shader.vert.spv", "shaders/simple_shader.frag.spv" };
 };
 
 

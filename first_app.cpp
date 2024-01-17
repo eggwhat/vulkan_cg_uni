@@ -4,7 +4,7 @@
 namespace vcu {
 
 	void FirstApp::run() {
-		while (!window.shouldClose()) {
+		while (!vcuWindow.shouldClose()) {
 			glfwPollEvents();
 		}
 	}

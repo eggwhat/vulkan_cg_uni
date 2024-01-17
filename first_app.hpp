@@ -2,6 +2,7 @@
 
 #include "vcu_window.hpp"
 #include "vcu_pipeline.hpp"
+#include "vcu_device.hpp"
 
 namespace vcu {
 	class FirstApp {
@@ -12,9 +13,14 @@ namespace vcu {
 		void run();
 
 	private:
-		VcuWindow window{ WIDTH, HEIGHT, "Vulkan" };
-		VcuPipeline vcuPipeline{ "shaders/simple_shader.vert.spv", "shaders/simple_shader.frag.spv" };
-};
+		VcuWindow vcuWindow{ WIDTH, HEIGHT, "Vulkan" };
+		VcuDevice vcuDevice{ vcuWindow };
+		VcuPipeline vcuPipeline{
+			vcuDevice, 
+			"shaders/simple_shader.vert.spv", 
+			"shaders/simple_shader.frag.spv", 
+			VcuPipeline::defaultPipelineConfigInfo(WIDTH, HEIGHT)};
+}; 
 
 
 }

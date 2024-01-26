@@ -3,6 +3,11 @@
 #include "vcu_window.hpp"
 #include "vcu_pipeline.hpp"
 #include "vcu_device.hpp"
+#include "vcu_swap_chain.hpp"
+
+// std
+#include <memory>
+#include <vector>
 
 namespace vcu {
 	class FirstApp {
@@ -10,18 +15,24 @@ namespace vcu {
 		static constexpr int WIDTH = 800;
 		static constexpr int HEIGHT = 600;
 
+		FirstApp();
+		~FirstApp();
+		FirstApp(const FirstApp&) = delete;
+		FirstApp& operator=(const FirstApp&) = delete;
 		void run();
 
 	private:
+		void createPipelineLayout();
+		void createPipeline();
+		void createCommandBuffers();
+		void drawFrame();
+
 		VcuWindow vcuWindow{ WIDTH, HEIGHT, "Vulkan" };
 		VcuDevice vcuDevice{ vcuWindow };
-		VcuPipeline vcuPipeline{
-			vcuDevice, 
-			"shaders/simple_shader.vert.spv", 
-			"shaders/simple_shader.frag.spv", 
-			VcuPipeline::defaultPipelineConfigInfo(WIDTH, HEIGHT)};
+		VcuSwapChain vcuSwapChain{ vcuDevice, vcuWindow.getExtent() };
+		std::unique_ptr<VcuPipeline> vcuPipeline;
+		VkPipelineLayout pipelineLayout;
+		std::vector<VkCommandBuffer> commandBuffers;
 }; 
-
-
-}
+} // namespace vcu
 

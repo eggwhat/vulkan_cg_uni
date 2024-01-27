@@ -16,7 +16,6 @@ namespace vcu {
 
 	void VcuWindow::initWindow() {
 		glfwInit();
-
 		glfwWindowHint(GLFW_CLIENT_API, GLFW_NO_API);
 		glfwWindowHint(GLFW_RESIZABLE, GLFW_TRUE);
 
@@ -32,12 +31,9 @@ namespace vcu {
 	}
 
 	void VcuWindow::framebufferResizeCallback(GLFWwindow* window, int width, int height) {
-		auto vcuWindow = reinterpret_cast<VcuWindow*>(glfwGetWindowUserPointer(window));
+		auto vcuWindow = reinterpret_cast<VcuWindow *>(glfwGetWindowUserPointer(window));
 		vcuWindow->framebufferResized = true;
 		vcuWindow->width = width;
 		vcuWindow->height = height;
 	}
-
-
-
 }

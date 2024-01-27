@@ -4,6 +4,7 @@
 #include "vcu_pipeline.hpp"
 #include "vcu_device.hpp"
 #include "vcu_swap_chain.hpp"
+#include "vcu_model.hpp"
 
 // std
 #include <memory>
@@ -22,6 +23,7 @@ namespace vcu {
 		void run();
 
 	private:
+		void loadModel();
 		void createPipelineLayout();
 		void createPipeline();
 		void createCommandBuffers();
@@ -33,6 +35,7 @@ namespace vcu {
 		std::unique_ptr<VcuPipeline> vcuPipeline;
 		VkPipelineLayout pipelineLayout;
 		std::vector<VkCommandBuffer> commandBuffers;
+		std::unique_ptr<VcuModel> vcuModel; 
 }; 
 } // namespace vcu
 

@@ -8,6 +8,7 @@
 namespace vcu {
 
 	FirstApp::FirstApp() {
+		loadModel();
 		createPipelineLayout();
 		createPipeline();
 		createCommandBuffers();
@@ -24,6 +25,11 @@ namespace vcu {
 		}
 
 		vkDeviceWaitIdle(vcuDevice.device());
+	}
+
+	void FirstApp::loadModel() {
+		std::vector<VcuModel::Vertex> vertices {{{0.0f, -0.5f}}, {{0.5f, 0.5f}}, {{-0.5f, 0.5f}}};
+		vcuModel = std::make_unique<VcuModel>(vcuDevice, vertices);
 	}
 
 	void FirstApp::createPipelineLayout() {
@@ -92,7 +98,8 @@ namespace vcu {
 			vkCmdBeginRenderPass(commandBuffers[i], &renderPassInfo, VK_SUBPASS_CONTENTS_INLINE);
 
 			vcuPipeline->bind(commandBuffers[i]);
-			vkCmdDraw(commandBuffers[i], 3, 1, 0, 0);
+			vcuModel->bind(commandBuffers[i]);
+			vcuModel->draw(commandBuffers[i]);
 
 			vkCmdEndRenderPass(commandBuffers[i]);
 			if(vkEndCommandBuffer(commandBuffers[i]) != VK_SUCCESS) {

@@ -13,6 +13,18 @@ namespace vcu {
 
     VcuSwapChain::VcuSwapChain(VcuDevice& deviceRef, VkExtent2D extent)
         : device{ deviceRef }, windowExtent{ extent } {
+        init();
+    }
+
+    VcuSwapChain::VcuSwapChain(VcuDevice& deviceRef, VkExtent2D extent, std::shared_ptr<VcuSwapChain> previous)
+        : device{ deviceRef }, windowExtent{ extent }, oldSwapChain{previous} {
+        init();
+
+        // clean up old swap chain
+        oldSwapChain = nullptr;
+    }
+
+    void VcuSwapChain::init() {
         createSwapChain();
         createImageViews();
         createRenderPass();
@@ -163,7 +175,7 @@ namespace vcu {
         createInfo.presentMode = presentMode;
         createInfo.clipped = VK_TRUE;
 
-        createInfo.oldSwapchain = VK_NULL_HANDLE;
+        createInfo.oldSwapchain = oldSwapChain == nullptr ? VK_NULL_HANDLE : oldSwapChain->swapChain;
 
         if (vkCreateSwapchainKHR(device.device(), &createInfo, nullptr, &swapChain) != VK_SUCCESS) {
             throw std::runtime_error("failed to create swap chain!");

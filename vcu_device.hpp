@@ -35,7 +35,7 @@ class VcuDevice {
 
   // Not copyable or movable
   VcuDevice(const VcuDevice &) = delete;
-  void operator=(const VcuDevice &) = delete;
+  VcuDevice& operator=(const VcuDevice &) = delete;
   VcuDevice(VcuDevice &&) = delete;
   VcuDevice &operator=(VcuDevice &&) = delete;
 

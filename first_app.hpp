@@ -27,11 +27,14 @@ namespace vcu {
 		void createPipelineLayout();
 		void createPipeline();
 		void createCommandBuffers();
+		void freeCommandBuffers();
 		void drawFrame();
+		void recreateSwapChain();
+		void recordCommandBuffer(int imageIndex);
 
 		VcuWindow vcuWindow{ WIDTH, HEIGHT, "Vulkan" };
 		VcuDevice vcuDevice{ vcuWindow };
-		VcuSwapChain vcuSwapChain{ vcuDevice, vcuWindow.getExtent() };
+		std::unique_ptr<VcuSwapChain> vcuSwapChain;
 		std::unique_ptr<VcuPipeline> vcuPipeline;
 		VkPipelineLayout pipelineLayout;
 		std::vector<VkCommandBuffer> commandBuffers;

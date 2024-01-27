@@ -28,7 +28,11 @@ namespace vcu {
 	}
 
 	void FirstApp::loadModel() {
-		std::vector<VcuModel::Vertex> vertices {{{0.0f, -0.5f}}, {{0.5f, 0.5f}}, {{-0.5f, 0.5f}}};
+		std::vector<VcuModel::Vertex> vertices {
+			{{0.0f, -0.5f}, {1.0f, 0.0f, 0.0f}},
+			{{0.5f, 0.5f}, {0.0f, 1.0f, 0.0f}},
+			{{-0.5f, 0.5f}, {0.0f, 0.0f, 1.0f}}
+		};
 		vcuModel = std::make_unique<VcuModel>(vcuDevice, vertices);
 	}
 

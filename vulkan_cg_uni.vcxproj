@@ -143,18 +143,22 @@
   <ItemGroup>
     <ClCompile Include="first_app.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="simple_render_system.cpp" />
     <ClCompile Include="vcu_device.cpp" />
     <ClCompile Include="vcu_model.cpp" />
     <ClCompile Include="vcu_pipeline.cpp" />
+    <ClCompile Include="vcu_renderer.cpp" />
     <ClCompile Include="vcu_swap_chain.cpp" />
     <ClCompile Include="vcu_window.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="first_app.hpp" />
+    <ClInclude Include="simple_render_system.hpp" />
     <ClInclude Include="vcu_device.hpp" />
     <ClInclude Include="vcu_game_object.hpp" />
     <ClInclude Include="vcu_model.hpp" />
     <ClInclude Include="vcu_pipeline.hpp" />
+    <ClInclude Include="vcu_renderer.hpp" />
     <ClInclude Include="vcu_swap_chain.hpp" />
     <ClInclude Include="vcu_window.hpp" />
   </ItemGroup>

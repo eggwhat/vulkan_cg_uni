@@ -1,10 +1,9 @@
 #pragma once
 
 #include "vcu_window.hpp"
-#include "vcu_pipeline.hpp"
 #include "vcu_game_object.hpp"
 #include "vcu_device.hpp"
-#include "vcu_swap_chain.hpp"
+#include "vcu_renderer.hpp"
 
 // std
 #include <memory>
@@ -24,21 +23,11 @@ namespace vcu {
 
 	private:
 		void loadGameObjects();
-		void createPipelineLayout();
-		void createPipeline();
-		void createCommandBuffers();
-		void freeCommandBuffers();
-		void drawFrame();
-		void recreateSwapChain();
-		void recordCommandBuffer(int imageIndex);
-		void renderGameObjects(VkCommandBuffer commandBuffer);
 
 		VcuWindow vcuWindow{ WIDTH, HEIGHT, "Vulkan" };
 		VcuDevice vcuDevice{ vcuWindow };
-		std::unique_ptr<VcuSwapChain> vcuSwapChain;
-		std::unique_ptr<VcuPipeline> vcuPipeline;
-		VkPipelineLayout pipelineLayout;
-		std::vector<VkCommandBuffer> commandBuffers;
+		VcuRenderer vcuRenderer{ vcuWindow, vcuDevice };
+
 		std::vector<VcuGameObject> gameObjects; 
 }; 
 } // namespace vcu

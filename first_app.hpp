@@ -2,9 +2,9 @@
 
 #include "vcu_window.hpp"
 #include "vcu_pipeline.hpp"
+#include "vcu_game_object.hpp"
 #include "vcu_device.hpp"
 #include "vcu_swap_chain.hpp"
-#include "vcu_model.hpp"
 
 // std
 #include <memory>
@@ -23,7 +23,7 @@ namespace vcu {
 		void run();
 
 	private:
-		void loadModel();
+		void loadGameObjects();
 		void createPipelineLayout();
 		void createPipeline();
 		void createCommandBuffers();
@@ -31,6 +31,7 @@ namespace vcu {
 		void drawFrame();
 		void recreateSwapChain();
 		void recordCommandBuffer(int imageIndex);
+		void renderGameObjects(VkCommandBuffer commandBuffer);
 
 		VcuWindow vcuWindow{ WIDTH, HEIGHT, "Vulkan" };
 		VcuDevice vcuDevice{ vcuWindow };
@@ -38,7 +39,7 @@ namespace vcu {
 		std::unique_ptr<VcuPipeline> vcuPipeline;
 		VkPipelineLayout pipelineLayout;
 		std::vector<VkCommandBuffer> commandBuffers;
-		std::unique_ptr<VcuModel> vcuModel; 
+		std::vector<VcuGameObject> gameObjects; 
 }; 
 } // namespace vcu
 

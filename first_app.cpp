@@ -1,6 +1,9 @@
 #include "first_app.hpp"
 
+#include "keyboard_movement_controller.hpp"
+#include "vcu_camera.hpp"
 #include "simple_render_system.hpp"
+#define MAX_FRAME_TIME 0.5f
 
 // libs
 #define GLFW_FORCE_RADIANS
@@ -10,6 +13,7 @@
 
 // std
 #include <stdexcept>
+#include <chrono>
 #include <cassert>
 #include <array>
 
@@ -23,13 +27,32 @@ namespace vcu {
 
 	void FirstApp::run() {
 		SimpleRenderSystem simpleRenderSystem{ vcuDevice, vcuRenderer.getSwapChainRenderPass() };
+        VcuCamera camera{};
+        camera.setViewTarget(glm::vec3(-1.f, -2.f, 2.f), glm::vec3(0.f, 0.f, 2.5f));
+
+        auto viewerObject = VcuGameObject::createGameObject();
+        KeyboardMovementController cameraController{};
+
+        auto currentTime = std::chrono::high_resolution_clock::now();
 
 		while (!vcuWindow.shouldClose()) {
 			glfwPollEvents();
 
+            auto newTime = std::chrono::high_resolution_clock::now();
+            float frameTime = std::chrono::duration<float, std::chrono::seconds::period>(newTime - currentTime).count();
+            currentTime = newTime;
+
+            //frameTime = glm::min(frameTime, MAX_FRAME_TIME);
+
+            cameraController.moveInPlaneXZ(vcuWindow.getGLFWwindow(), frameTime, viewerObject);
+            camera.setViewYXZ(viewerObject.transform.translation, viewerObject.transform.rotation);
+
+            float aspect = vcuRenderer.getAspectRatio();
+            camera.setPerspectiveProjection(glm::radians(50.f), aspect, 0.1f, 10.f);
+
 			if (auto commandBuffer = vcuRenderer.beginFrame()) {
 				vcuRenderer.beginSwapChainRenderPass(commandBuffer);
-				simpleRenderSystem.renderGameObjects(commandBuffer, gameObjects);
+				simpleRenderSystem.renderGameObjects(commandBuffer, gameObjects, camera);
 				vcuRenderer.endSwapChainRenderPass(commandBuffer);
 				vcuRenderer.endFrame();
 			}
@@ -100,7 +123,7 @@ namespace vcu {
 
         auto cube = VcuGameObject::createGameObject();
         cube.model = vcuModel;
-        cube.transform.translation = { .0f, .0f, .5f };
+        cube.transform.translation = { .0f, .0f, 2.5f };
         cube.transform.scale = { .5f, .5f, .5f };
         gameObjects.push_back(std::move(cube));
 	}

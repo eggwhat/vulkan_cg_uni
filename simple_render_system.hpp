@@ -1,5 +1,6 @@
 #pragma once
 
+#include "vcu_camera.hpp"
 #include "vcu_pipeline.hpp"
 #include "vcu_game_object.hpp"
 #include "vcu_device.hpp"
@@ -16,7 +17,7 @@ namespace vcu {
 		SimpleRenderSystem(const SimpleRenderSystem&) = delete;
 		SimpleRenderSystem& operator=(const SimpleRenderSystem&) = delete;
 
-		void renderGameObjects(VkCommandBuffer commandBuffer, std::vector<VcuGameObject>& gameObjects);
+		void renderGameObjects(VkCommandBuffer commandBuffer, std::vector<VcuGameObject>& gameObjects, const VcuCamera& camera);
 
 	private:
 		void createPipelineLayout();

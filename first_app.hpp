@@ -1,6 +1,13 @@
 #pragma once
 
 #include "vcu_window.hpp"
+#include "vcu_game_object.hpp"
+#include "vcu_device.hpp"
+#include "vcu_renderer.hpp"
+
+// std
+#include <memory>
+#include <vector>
 
 namespace vcu {
 	class FirstApp {
@@ -8,12 +15,20 @@ namespace vcu {
 		static constexpr int WIDTH = 800;
 		static constexpr int HEIGHT = 600;
 
+		FirstApp();
+		~FirstApp();
+		FirstApp(const FirstApp&) = delete;
+		FirstApp& operator=(const FirstApp&) = delete;
 		void run();
 
 	private:
-		VcuWindow window{ WIDTH, HEIGHT, "Vulkan" };
-};
+		void loadGameObjects();
 
+		VcuWindow vcuWindow{ WIDTH, HEIGHT, "Vulkan" };
+		VcuDevice vcuDevice{ vcuWindow };
+		VcuRenderer vcuRenderer{ vcuWindow, vcuDevice };
 
-}
+		std::vector<VcuGameObject> gameObjects; 
+}; 
+} // namespace vcu
 

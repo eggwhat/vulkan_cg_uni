@@ -113,6 +113,9 @@
       <AdditionalLibraryDirectories>C:\VulkanSDK\1.3.268.0\Lib;C:\Users\piotr\OneDrive\Dokumenty\Visual Studio 2022\Libraries\glfw-3.3.9.bin.WIN64\lib-vc2022;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalDependencies>vulkan-1.lib;glfw3.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
+    <PreBuildEvent>
+      <Command>$(ProjectDir)shaders\compile.bat</Command>
+    </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
@@ -133,14 +136,30 @@
       <AdditionalLibraryDirectories>C:\VulkanSDK\1.3.268.0\Lib;C:\Users\piotr\OneDrive\Dokumenty\Visual Studio 2022\Libraries\glfw-3.3.9.bin.WIN64\lib-vc2022;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalDependencies>vulkan-1.lib;glfw3.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
+    <PreBuildEvent>
+      <Command>$(ProjectDir)shaders\compile.bat</Command>
+    </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="first_app.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="simple_render_system.cpp" />
+    <ClCompile Include="vcu_device.cpp" />
+    <ClCompile Include="vcu_model.cpp" />
+    <ClCompile Include="vcu_pipeline.cpp" />
+    <ClCompile Include="vcu_renderer.cpp" />
+    <ClCompile Include="vcu_swap_chain.cpp" />
     <ClCompile Include="vcu_window.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="first_app.hpp" />
+    <ClInclude Include="simple_render_system.hpp" />
+    <ClInclude Include="vcu_device.hpp" />
+    <ClInclude Include="vcu_game_object.hpp" />
+    <ClInclude Include="vcu_model.hpp" />
+    <ClInclude Include="vcu_pipeline.hpp" />
+    <ClInclude Include="vcu_renderer.hpp" />
+    <ClInclude Include="vcu_swap_chain.hpp" />
     <ClInclude Include="vcu_window.hpp" />
   </ItemGroup>
   <ItemGroup>

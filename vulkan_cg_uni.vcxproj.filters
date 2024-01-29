@@ -57,6 +57,9 @@
     <ClCompile Include="vcu_buffer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="vcu_descriptors.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="vcu_window.hpp">
@@ -101,6 +104,9 @@
     <ClInclude Include="vcu_frame_info.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="vcu_descriptors.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="shaders\simple_shader.frag" />
@@ -125,6 +131,9 @@
       <Filter>Models</Filter>
     </Object>
     <Object Include="models\colored_cube.obj">
+      <Filter>Models</Filter>
+    </Object>
+    <Object Include="models\quad.obj">
       <Filter>Models</Filter>
     </Object>
   </ItemGroup>

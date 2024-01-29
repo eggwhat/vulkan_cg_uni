@@ -18,36 +18,57 @@
 #include <chrono>
 #include <cassert>
 #include <array>
+#include <numeric>
 
 namespace vcu {
 
 	struct GlobalUbo {
 		glm::mat4 projectionView{1.f};
-		glm::vec3 lightDirection = glm::vec3{ glm::vec3{1.f, -3.f, -1.f} };
+		glm::vec4 ambientLightColor{1.f, 1.f, 1.f, 0.02f}; // w is intensity
+		glm::vec3 lightPosition{ -1.f };
+		alignas(16) glm::vec4 lightColor{ 1.f }; // w is light intensity
 	};
 
 	FirstApp::FirstApp() {
+		globalPool = VcuDescriptorPool::Builder(vcuDevice)
+			.setMaxSets(VcuSwapChain::MAX_FRAMES_IN_FLIGHT)
+			.addPoolSize(VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER, VcuSwapChain::MAX_FRAMES_IN_FLIGHT)
+			.build();
 		loadGameObjects();
 	}
 
 	FirstApp::~FirstApp() {}
 
 	void FirstApp::run() {
-		VcuBuffer globalUboBuffer{ 
-			vcuDevice, 
-			sizeof(GlobalUbo), 
-			VcuSwapChain::MAX_FRAMES_IN_FLIGHT,
-			VK_BUFFER_USAGE_UNIFORM_BUFFER_BIT,
-			VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT,
-			vcuDevice.properties.limits.minUniformBufferOffsetAlignment,
-		};
-		globalUboBuffer.map();
+		
+		std::vector<std::unique_ptr<VcuBuffer>> uboBuffers(VcuSwapChain::MAX_FRAMES_IN_FLIGHT);
+		for (int i = 0; i < uboBuffers.size(); i++) {
+			uboBuffers[i] = std::make_unique<VcuBuffer>(
+				vcuDevice, 
+				sizeof(GlobalUbo), 
+				1,
+				VK_BUFFER_USAGE_UNIFORM_BUFFER_BIT,
+				VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT); 
+			uboBuffers[i]->map();
+		}
 
+		auto globalSetLayout = VcuDescriptorSetLayout::Builder(vcuDevice)
+			.addBinding(0, VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER, VK_SHADER_STAGE_VERTEX_BIT)
+			.build();
 
-		SimpleRenderSystem simpleRenderSystem{ vcuDevice, vcuRenderer.getSwapChainRenderPass() };
+		std::vector<VkDescriptorSet> globalDescriptorSets(VcuSwapChain::MAX_FRAMES_IN_FLIGHT);
+		for (int i = 0; i < globalDescriptorSets.size(); i++) {
+			auto bufferInfo = uboBuffers[i]->descriptorInfo();
+			VcuDescriptorWriter(*globalSetLayout, *globalPool)
+				.writeBuffer(0, &bufferInfo)
+				.build(globalDescriptorSets[i]);
+		}
+
+		SimpleRenderSystem simpleRenderSystem{ vcuDevice, vcuRenderer.getSwapChainRenderPass(), globalSetLayout->getDescriptorSetLayout()};
         VcuCamera camera{};
     
         auto viewerObject = VcuGameObject::createGameObject();
+		viewerObject.transform.translation.z = -2.5f;
         KeyboardMovementController cameraController{};
 
         auto currentTime = std::chrono::high_resolution_clock::now();
@@ -65,7 +86,7 @@ namespace vcu {
             camera.setViewYXZ(viewerObject.transform.translation, viewerObject.transform.rotation);
 
             float aspect = vcuRenderer.getAspectRatio();
-            camera.setPerspectiveProjection(glm::radians(50.f), aspect, 0.1f, 10.f);
+            camera.setPerspectiveProjection(glm::radians(50.f), aspect, 0.1f, 100.f);
 
 			if (auto commandBuffer = vcuRenderer.beginFrame()) {
 				int frameIndex = vcuRenderer.getFrameIndex();
@@ -73,14 +94,15 @@ namespace vcu {
 					frameIndex,
 					frameTime,
 					commandBuffer,
-					camera
+					camera,
+					globalDescriptorSets[frameIndex]
 				};
 
 				// update
 				GlobalUbo ubo{};
 				ubo.projectionView = camera.getProjection() * camera.getView();
-				globalUboBuffer.writeToIndex(&ubo, frameIndex);
-				globalUboBuffer.flushIndex(frameIndex);
+				uboBuffers[frameIndex]->writeToBuffer(&ubo);
+				uboBuffers[frameIndex]->flush();
 
 				// render
 				vcuRenderer.beginSwapChainRenderPass(commandBuffer);
@@ -98,17 +120,22 @@ namespace vcu {
 
         auto flatVase = VcuGameObject::createGameObject();
 		flatVase.model = vcuModel;
-		flatVase.transform.translation = { -0.5f, 3.0f, 0.0f };
-		flatVase.transform.rotation = { 1.0f, 0.0f, 0.0f };
+		flatVase.transform.translation = { -.5f, .5f, 0.f };
 		flatVase.transform.scale = glm::vec3{ 3.f, 1.5f, 3.f };
 		gameObjects.push_back(std::move(flatVase));
 
 		vcuModel = VcuModel::createModelFromFile(vcuDevice, "models/smooth_vase.obj");
 		auto smoothVase = VcuGameObject::createGameObject();
 		smoothVase.model = vcuModel;
-		smoothVase.transform.translation = { 0.5f, 3.0f, 0.0f };
-		smoothVase.transform.rotation = { 1.0f, 0.0f, 0.0f };
+		smoothVase.transform.translation = { .5f, .5f, 0.f };
 		smoothVase.transform.scale = glm::vec3{ 3.f, 1.5f, 3.f };
 		gameObjects.push_back(std::move(smoothVase));
+
+		vcuModel = VcuModel::createModelFromFile(vcuDevice, "models/quad.obj");
+		auto floor = VcuGameObject::createGameObject();
+		floor.model = vcuModel;
+		floor.transform.translation = { 0.f, .5f, 0.f };
+		floor.transform.scale = glm::vec3{ 3.f, 1.f, 3.f };
+		gameObjects.push_back(std::move(floor));
 	}
 }

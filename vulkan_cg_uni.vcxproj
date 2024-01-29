@@ -147,6 +147,7 @@
     <ClCompile Include="simple_render_system.cpp" />
     <ClCompile Include="vcu_buffer.cpp" />
     <ClCompile Include="vcu_camera.cpp" />
+    <ClCompile Include="vcu_descriptors.cpp" />
     <ClCompile Include="vcu_device.cpp" />
     <ClCompile Include="vcu_game_object.cpp" />
     <ClCompile Include="vcu_model.cpp" />
@@ -161,6 +162,7 @@
     <ClInclude Include="simple_render_system.hpp" />
     <ClInclude Include="vcu_buffer.hpp" />
     <ClInclude Include="vcu_camera.hpp" />
+    <ClInclude Include="vcu_descriptors.hpp" />
     <ClInclude Include="vcu_device.hpp" />
     <ClInclude Include="vcu_frame_info.hpp" />
     <ClInclude Include="vcu_game_object.hpp" />
@@ -191,6 +193,10 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
     </Object>
     <Object Include="models\flat_vase.obj">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </Object>
+    <Object Include="models\quad.obj">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
     </Object>

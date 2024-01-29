@@ -4,6 +4,7 @@
 #include "vcu_game_object.hpp"
 #include "vcu_device.hpp"
 #include "vcu_renderer.hpp"
+#include "vcu_descriptors.hpp"
 
 // std
 #include <memory>
@@ -28,6 +29,7 @@ namespace vcu {
 		VcuDevice vcuDevice{ vcuWindow };
 		VcuRenderer vcuRenderer{ vcuWindow, vcuDevice };
 
+		std::unique_ptr<VcuDescriptorPool> globalPool{};
 		std::vector<VcuGameObject> gameObjects; 
 }; 
 } // namespace vcu

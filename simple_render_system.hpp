@@ -13,7 +13,7 @@
 namespace vcu {
 	class SimpleRenderSystem {
 	public:
-		SimpleRenderSystem(VcuDevice &device, VkRenderPass renderPass);
+		SimpleRenderSystem(VcuDevice &device, VkRenderPass renderPass, VkDescriptorSetLayout globalSetLayout);
 		~SimpleRenderSystem();
 		SimpleRenderSystem(const SimpleRenderSystem&) = delete;
 		SimpleRenderSystem& operator=(const SimpleRenderSystem&) = delete;
@@ -21,7 +21,7 @@ namespace vcu {
 		void renderGameObjects(FrameInfo &frameInfo, std::vector<VcuGameObject>& gameObjects);
 
 	private:
-		void createPipelineLayout();
+		void createPipelineLayout(VkDescriptorSetLayout globalSetLayout);
 		void createPipeline(VkRenderPass renderPass);
 
 		VcuDevice& vcuDevice;

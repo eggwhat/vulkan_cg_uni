@@ -11,5 +11,6 @@ namespace vcu {
 		float frameTime;
 		VkCommandBuffer commandBuffer;
 		VcuCamera &camera;
+		VkDescriptorSet globalDescriptorSet;
 	};
 }

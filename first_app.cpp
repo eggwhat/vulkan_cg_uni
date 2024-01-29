@@ -61,12 +61,20 @@ namespace vcu {
 	}
 
 	void FirstApp::loadGameObjects() {
-		std::shared_ptr<VcuModel> vcuModel = VcuModel::createModelFromFile(vcuDevice, "models/smooth_vase.obj");	
+		std::shared_ptr<VcuModel> vcuModel = VcuModel::createModelFromFile(vcuDevice, "models/flat_vase.obj");	
 
-        auto gameObject = VcuGameObject::createGameObject();
-        gameObject.model = vcuModel;
-		gameObject.transform.translation = { .0f, 0.0f, 2.5f };
-		gameObject.transform.scale = glm::vec3{ 3.f };
-        gameObjects.push_back(std::move(gameObject));
+        auto flatVase = VcuGameObject::createGameObject();
+		flatVase.model = vcuModel;
+		flatVase.transform.translation = { -0.5f, 3.0f, 0.0f };
+		flatVase.transform.rotation = { 1.0f, 0.0f, 0.0f };
+		flatVase.transform.scale = glm::vec3{ 3.f, 1.5f, 3.f };
+		gameObjects.push_back(std::move(flatVase));
+
+		auto smoothVase = VcuGameObject::createGameObject();
+		smoothVase.model = vcuModel;
+		smoothVase.transform.translation = { 0.5f, 3.0f, 0.0f };
+		smoothVase.transform.rotation = { 1.0f, 0.0f, 0.0f };
+		smoothVase.transform.scale = glm::vec3{ 3.f, 1.5f, 3.f };
+		gameObjects.push_back(std::move(smoothVase));
 	}
 }

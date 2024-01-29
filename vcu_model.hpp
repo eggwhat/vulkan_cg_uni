@@ -22,7 +22,12 @@ namespace vcu {
 			static std::vector<VkVertexInputAttributeDescription> getAttributeDescriptions();
 		};
 
-		VcuModel(VcuDevice& device, const std::vector<Vertex>& vertices);
+		struct Builder {
+			std::vector<Vertex> vertices{};
+			std::vector<uint32_t> indices{};
+		};
+
+		VcuModel(VcuDevice& device, const VcuModel::Builder &builder);
 		~VcuModel();
 
 		VcuModel(const VcuModel&) = delete;
@@ -32,11 +37,18 @@ namespace vcu {
 		void draw(VkCommandBuffer commandBuffer);
 
 	private:
-		void createVertexBuffer(const std::vector<Vertex>& vertices);
+		void createVertexBuffers(const std::vector<Vertex> &vertices);
+		void createIndexBuffer(const std::vector<uint32_t> &indices);
 
 		VcuDevice& vcuDevice;
+
 		VkBuffer vertexBuffer;
 		VkDeviceMemory vertexBufferMemory;
 		uint32_t vertexCount;
+
+		bool hasIndexBuffer = false;
+		VkBuffer indexBuffer;
+		VkDeviceMemory indexBufferMemory;
+		uint32_t indexCount;
 	};
 }

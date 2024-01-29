@@ -104,7 +104,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>C:\VulkanSDK\1.3.268.0\Include;C:\Users\piotr\OneDrive\Dokumenty\Visual Studio 2022\Libraries\glm;C:\Users\piotr\OneDrive\Dokumenty\Visual Studio 2022\Libraries\glfw-3.3.9.bin.WIN64\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\VulkanSDK\1.3.268.0\Include;C:\Users\piotr\OneDrive\Dokumenty\Visual Studio 2022\Libraries\glm;C:\Users\piotr\OneDrive\Dokumenty\Visual Studio 2022\Libraries\glfw-3.3.9.bin.WIN64\include;C:\Users\piotr\OneDrive\Dokumenty\Visual Studio 2022\Libraries\tinyobjloader;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
@@ -125,7 +125,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>C:\VulkanSDK\1.3.268.0\Include;C:\Users\piotr\OneDrive\Dokumenty\Visual Studio 2022\Libraries\glm;C:\Users\piotr\OneDrive\Dokumenty\Visual Studio 2022\Libraries\glfw-3.3.9.bin.WIN64\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\VulkanSDK\1.3.268.0\Include;C:\Users\piotr\OneDrive\Dokumenty\Visual Studio 2022\Libraries\glm;C:\Users\piotr\OneDrive\Dokumenty\Visual Studio 2022\Libraries\glfw-3.3.9.bin.WIN64\include;C:\Users\piotr\OneDrive\Dokumenty\Visual Studio 2022\Libraries\tinyobjloader;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
@@ -164,6 +164,7 @@
     <ClInclude Include="vcu_pipeline.hpp" />
     <ClInclude Include="vcu_renderer.hpp" />
     <ClInclude Include="vcu_swap_chain.hpp" />
+    <ClInclude Include="vcu_utils.hpp" />
     <ClInclude Include="vcu_window.hpp" />
   </ItemGroup>
   <ItemGroup>
@@ -175,6 +176,24 @@
     <None Include="shaders\simple_shader.frag.spv" />
     <None Include="shaders\simple_shader.vert" />
     <None Include="shaders\simple_shader.vert.spv" />
+  </ItemGroup>
+  <ItemGroup>
+    <Object Include="models\colored_cube.obj">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </Object>
+    <Object Include="models\cube.obj">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </Object>
+    <Object Include="models\flat_vase.obj">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </Object>
+    <Object Include="models\smooth_vase.obj">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </Object>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

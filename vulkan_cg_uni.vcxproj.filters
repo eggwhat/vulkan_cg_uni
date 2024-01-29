@@ -13,6 +13,9 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="Models">
+      <UniqueIdentifier>{4c0297f4-38de-4198-bab6-2b1f6cc3a98f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -83,6 +86,9 @@
     <ClInclude Include="keyboard_movement_controller.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="vcu_utils.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="shaders\simple_shader.frag" />
@@ -95,5 +101,19 @@
     <None Include=".gitattributes" />
     <None Include=".gitignore" />
     <None Include="README.md" />
+  </ItemGroup>
+  <ItemGroup>
+    <Object Include="models\cube.obj">
+      <Filter>Models</Filter>
+    </Object>
+    <Object Include="models\flat_vase.obj">
+      <Filter>Models</Filter>
+    </Object>
+    <Object Include="models\smooth_vase.obj">
+      <Filter>Models</Filter>
+    </Object>
+    <Object Include="models\colored_cube.obj">
+      <Filter>Models</Filter>
+    </Object>
   </ItemGroup>
 </Project>

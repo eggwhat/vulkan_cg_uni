@@ -1,7 +1,7 @@
 #pragma once
 
 #include "vcu_device.hpp"
-
+#include "vcu_buffer.hpp"
 
 // libs
 #define GLM_FORCE_RADIANS
@@ -53,13 +53,11 @@ namespace vcu {
 
 		VcuDevice& vcuDevice;
 
-		VkBuffer vertexBuffer;
-		VkDeviceMemory vertexBufferMemory;
+		std::unique_ptr<VcuBuffer> vertexBuffer;
 		uint32_t vertexCount;
 
 		bool hasIndexBuffer = false;
-		VkBuffer indexBuffer;
-		VkDeviceMemory indexBufferMemory;
+		std::unique_ptr<VcuBuffer> indexBuffer;
 		uint32_t indexCount;
 	};
 }

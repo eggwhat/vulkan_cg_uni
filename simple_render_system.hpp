@@ -4,6 +4,7 @@
 #include "vcu_pipeline.hpp"
 #include "vcu_game_object.hpp"
 #include "vcu_device.hpp"
+#include "vcu_frame_info.hpp"
 
 // std
 #include <memory>
@@ -17,7 +18,7 @@ namespace vcu {
 		SimpleRenderSystem(const SimpleRenderSystem&) = delete;
 		SimpleRenderSystem& operator=(const SimpleRenderSystem&) = delete;
 
-		void renderGameObjects(VkCommandBuffer commandBuffer, std::vector<VcuGameObject>& gameObjects, const VcuCamera& camera);
+		void renderGameObjects(FrameInfo &frameInfo, std::vector<VcuGameObject>& gameObjects);
 
 	private:
 		void createPipelineLayout();

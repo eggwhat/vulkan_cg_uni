@@ -162,6 +162,7 @@
     <ClInclude Include="vcu_buffer.hpp" />
     <ClInclude Include="vcu_camera.hpp" />
     <ClInclude Include="vcu_device.hpp" />
+    <ClInclude Include="vcu_frame_info.hpp" />
     <ClInclude Include="vcu_game_object.hpp" />
     <ClInclude Include="vcu_model.hpp" />
     <ClInclude Include="vcu_pipeline.hpp" />

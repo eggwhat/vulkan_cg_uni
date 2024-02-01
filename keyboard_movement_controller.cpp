@@ -15,7 +15,7 @@ namespace vcu {
 			gameObject.transform.rotation += lookSpeed * dt * glm::normalize(rotate);
 		}
 
-		gameObject.transform.rotation.x = glm::clamp(gameObject.transform.rotation.x, -1.5f, -1.5f);
+		gameObject.transform.rotation.x = glm::clamp(gameObject.transform.rotation.x, -1.5f, 1.5f);
 		gameObject.transform.rotation.y = glm::mod(gameObject.transform.rotation.y, glm::two_pi<float>());
 
 		float yaw = gameObject.transform.rotation.y;

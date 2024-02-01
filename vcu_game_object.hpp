@@ -7,6 +7,7 @@
 
 // std
 #include <memory>
+#include <unordered_map>
 
 namespace vcu {
 
@@ -22,6 +23,7 @@ namespace vcu {
     class VcuGameObject {
     public:
         using id_t = unsigned int;
+        using Map = std::unordered_map<id_t, VcuGameObject>;
 
         static VcuGameObject createGameObject() {
             static id_t currentId = 0;

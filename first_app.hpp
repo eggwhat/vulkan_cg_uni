@@ -30,7 +30,7 @@ namespace vcu {
 		VcuRenderer vcuRenderer{ vcuWindow, vcuDevice };
 
 		std::unique_ptr<VcuDescriptorPool> globalPool{};
-		std::vector<VcuGameObject> gameObjects; 
+		VcuGameObject::Map gameObjects; 
 }; 
 } // namespace vcu
 

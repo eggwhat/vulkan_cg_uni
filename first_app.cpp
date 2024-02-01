@@ -53,7 +53,7 @@ namespace vcu {
 		}
 
 		auto globalSetLayout = VcuDescriptorSetLayout::Builder(vcuDevice)
-			.addBinding(0, VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER, VK_SHADER_STAGE_VERTEX_BIT)
+			.addBinding(0, VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER, VK_SHADER_STAGE_ALL_GRAPHICS)
 			.build();
 
 		std::vector<VkDescriptorSet> globalDescriptorSets(VcuSwapChain::MAX_FRAMES_IN_FLIGHT);
@@ -95,7 +95,8 @@ namespace vcu {
 					frameTime,
 					commandBuffer,
 					camera,
-					globalDescriptorSets[frameIndex]
+					globalDescriptorSets[frameIndex],
+					gameObjects
 				};
 
 				// update
@@ -106,7 +107,7 @@ namespace vcu {
 
 				// render
 				vcuRenderer.beginSwapChainRenderPass(commandBuffer);
-				simpleRenderSystem.renderGameObjects(frameInfo, gameObjects);
+				simpleRenderSystem.renderGameObjects(frameInfo);
 				vcuRenderer.endSwapChainRenderPass(commandBuffer);
 				vcuRenderer.endFrame();
 			}
@@ -122,20 +123,20 @@ namespace vcu {
 		flatVase.model = vcuModel;
 		flatVase.transform.translation = { -.5f, .5f, 0.f };
 		flatVase.transform.scale = glm::vec3{ 3.f, 1.5f, 3.f };
-		gameObjects.push_back(std::move(flatVase));
+		gameObjects.emplace(flatVase.getId(), std::move(flatVase));
 
 		vcuModel = VcuModel::createModelFromFile(vcuDevice, "models/smooth_vase.obj");
 		auto smoothVase = VcuGameObject::createGameObject();
 		smoothVase.model = vcuModel;
 		smoothVase.transform.translation = { .5f, .5f, 0.f };
 		smoothVase.transform.scale = glm::vec3{ 3.f, 1.5f, 3.f };
-		gameObjects.push_back(std::move(smoothVase));
+		gameObjects.emplace(smoothVase.getId(), std::move(smoothVase));
 
 		vcuModel = VcuModel::createModelFromFile(vcuDevice, "models/quad.obj");
 		auto floor = VcuGameObject::createGameObject();
 		floor.model = vcuModel;
 		floor.transform.translation = { 0.f, .5f, 0.f };
 		floor.transform.scale = glm::vec3{ 3.f, 1.f, 3.f };
-		gameObjects.push_back(std::move(floor));
+		gameObjects.emplace(floor.getId(), std::move(floor));
 	}
 }

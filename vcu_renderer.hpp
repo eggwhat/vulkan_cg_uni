@@ -19,6 +19,7 @@ namespace vcu {
 		VcuRenderer& operator=(const VcuRenderer&) = delete;
 
 		VkRenderPass getSwapChainRenderPass() const { return vcuSwapChain->getRenderPass(); }
+		float getAspectRatio() const { return vcuSwapChain->extentAspectRatio(); }
 		bool isFrameInProgress() const { return isFrameStarted; }
 
 		VkCommandBuffer getCurrentCommandBuffer() const {

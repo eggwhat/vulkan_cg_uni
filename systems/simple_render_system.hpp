@@ -1,10 +1,10 @@
 #pragma once
 
-#include "vcu_camera.hpp"
-#include "vcu_pipeline.hpp"
-#include "vcu_game_object.hpp"
-#include "vcu_device.hpp"
-#include "vcu_frame_info.hpp"
+#include "../vcu_camera.hpp"
+#include "../vcu_pipeline.hpp"
+#include "../vcu_game_object.hpp"
+#include "../vcu_device.hpp"
+#include "../vcu_frame_info.hpp"
 
 // std
 #include <memory>

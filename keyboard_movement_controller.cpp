@@ -3,7 +3,13 @@
 namespace vcu {
 
 
-	void KeyboardMovementController::moveInPlaneXZ(GLFWwindow* window, float dt, VcuGameObject& gameObject) {
+	void KeyboardMovementController::moveInPlaneXZ(GLFWwindow* window, float dt, VcuGameObject& gameObject, int cameraMode) {
+
+		if (cameraMode == 1) {
+			gameObject.transform.translation = glm::vec3(0.f, -2.f, -10.f);
+			//gameObject.transform.rotation = glm::vec3(0.f, 0.5f, 0.f);
+			return;
+		}
 
 		glm::vec3 rotate{0};
 		if (glfwGetKey(window, keys.lookRight) == GLFW_PRESS) rotate.y += 1.f;

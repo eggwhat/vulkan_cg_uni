@@ -18,9 +18,10 @@ namespace vcu {
 			int lookRight = GLFW_KEY_RIGHT;
 			int lookUp = GLFW_KEY_UP;
 			int lookDown = GLFW_KEY_DOWN;
+			int cameraModeChange = GLFW_KEY_C;
 		};
 
-		void moveInPlaneXZ(GLFWwindow* window, float dt, VcuGameObject &gameObject);
+		void moveInPlaneXZ(GLFWwindow* window, float dt, VcuGameObject &gameObject, int cameraMode);
 
 		KeyMappings keys{};
 		float moveSpeed{ 3.f };

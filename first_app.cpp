@@ -67,6 +67,7 @@ namespace vcu {
         KeyboardMovementController cameraController{};
 
         auto currentTime = std::chrono::high_resolution_clock::now();
+		auto lastCameraModeChangeTime = currentTime;
 
 		while (!vcuWindow.shouldClose()) {
 			glfwPollEvents();
@@ -76,8 +77,15 @@ namespace vcu {
             currentTime = newTime;
 
             //frameTime = glm::min(frameTime, MAX_FRAME_TIME);
+			auto window = vcuWindow.getGLFWwindow();
 
-            cameraController.moveInPlaneXZ(vcuWindow.getGLFWwindow(), frameTime, viewerObject);
+			if (glfwGetKey(window, cameraController.keys.cameraModeChange) == GLFW_PRESS &&
+				std::chrono::duration_cast<std::chrono::seconds>(currentTime - lastCameraModeChangeTime) > std::chrono::seconds(1)) {
+				cameraMode = (cameraMode + 1) % CAMERA_MODES;
+				lastCameraModeChangeTime = currentTime;
+			}
+
+            cameraController.moveInPlaneXZ(window, frameTime, viewerObject, cameraMode);
             camera.setViewYXZ(viewerObject.transform.translation, viewerObject.transform.rotation);
 
             float aspect = vcuRenderer.getAspectRatio();

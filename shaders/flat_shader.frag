@@ -28,6 +28,17 @@ layout(push_constant) uniform Push {
 	mat4 normalMatrix;
 } push;
 
+const float fogIntensity = 0.9;
+const vec3 fogColor = vec3(0.5, 0.5, 0.5);
+
+float CalcFog(float fogInt, vec3 cameraPos, vec3 fragPos){
+	if (fogInt == 0) return 1.0;
+	float gradient = (fogInt * fogInt - 50 * fogInt + 60);
+	float distance = length(cameraPos - fragPos);
+	float fog = exp(-pow((distance / gradient), 4));
+	return clamp(fog, 0.0, 1.0);
+}
+
 void main(){
 	vec3 finalColor = vec3(0.0);
 	vec3 imageColor = texture(image, fragUV).xyz;
@@ -39,6 +50,10 @@ void main(){
         finalColor += intensity * light.color.xyz * light.color.w * fragColor;
     }
 	finalColor *= imageColor;
+
+	vec3 cameraPosWorld = ubo.invView[3].xyz;
+	float fogFactor = CalcFog(fogIntensity, cameraPosWorld, fragPosWorld);
+	finalColor = mix(fogColor, finalColor, fogFactor);
 
     outColor = vec4(finalColor, 1.0);
 	

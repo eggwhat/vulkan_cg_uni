@@ -28,9 +28,16 @@ layout(push_constant) uniform Push {
 	mat4 normalMatrix;
 } push;
 
-const float fogStart = -1.0; 
-const float fogEnd = -1.0;   
-const vec3 fogColor = vec3(0.5, 0.5, 0.5); 
+const float fogIntensity = 0.9;
+const vec3 fogColor = vec3(0.5, 0.5, 0.5);
+
+float CalcFog(float fogInt, vec3 cameraPos, vec3 fragPos){
+	if (fogInt == 0) return 1.0;
+	float gradient = (fogInt * fogInt - 50 * fogInt + 60);
+	float distance = length(cameraPos - fragPos);
+	float fog = exp(-pow((distance / gradient), 4));
+	return clamp(fog, 0.0, 1.0);
+}
 
 
 void main(){
@@ -60,15 +67,10 @@ void main(){
 	}
 
 	vec3 imageColor = texture(image, fragUV).xyz;
-	outColor = vec4((diffuseLight * fragColor + specularLight * fragColor) * imageColor, 1.0);
-	//outColor = vec4(diffuseLight * fragColor + specularLight * fragColor, 1.0);
+	vec4 finalColor = vec4((diffuseLight * fragColor + specularLight * fragColor) * imageColor, 1.0);
 
-//	float cameraDistance = length(fragPosWorld - cameraPosWorld);
-//	float fogRange = fogEnd - fogStart;
-//	float fogDist = fogEnd - cameraDistance;
-//	float fogFactor = fogDist / fogRange;
-//	fogFactor = clamp(fogFactor, 0.0, 1.0);
-//
-//	outColor = mix(vec4(fogColor, 1.0), outColor, fogFactor);
+	float fogFactor = CalcFog(fogIntensity, cameraPosWorld, fragPosWorld);
+
+	outColor = vec4(mix(fogColor, finalColor.xyz, fogFactor), 1.0);
 	
 }

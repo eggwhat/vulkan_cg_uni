@@ -25,7 +25,7 @@ namespace vcu {
 		void moveInPlaneXZ(GLFWwindow* window, float dt, VcuGameObject &gameObject, int cameraMode);
 
 		KeyMappings keys{};
-		float moveSpeed{ 3.f };
+		float moveSpeed{ 5.f };
 		float lookSpeed{ 1.5f };
 	};
 }

@@ -54,7 +54,7 @@ namespace vcu {
 			.addBinding(1, VK_DESCRIPTOR_TYPE_COMBINED_IMAGE_SAMPLER, VK_SHADER_STAGE_FRAGMENT_BIT)
 			.build();
 
-		Texture texture = Texture(vcuDevice, "textures/road.png");
+		Texture texture = Texture(vcuDevice, "textures/wood.png");
 
 		VkDescriptorImageInfo imageInfo = {};
 		imageInfo.sampler = texture.getSampler();
@@ -161,18 +161,19 @@ namespace vcu {
 		smoothVase.transform.scale = glm::vec3{ 3.f, 1.5f, 3.f };
 		gameObjects.emplace(smoothVase.getId(), std::move(smoothVase));
 
-		vcuModel = VcuModel::createModelFromFile(vcuDevice, "models/quad.obj");
+		vcuModel = VcuModel::createModelFromFile(vcuDevice, "models/floor_mat.obj");
 		auto floor = VcuGameObject::createGameObject();
 		floor.model = vcuModel;
 		floor.transform.translation = { 0.f, .5f, 0.f };
-		floor.transform.scale = glm::vec3{ 10.f, 1.f, 10.f };
+		floor.transform.rotation = glm::radians(glm::vec3{ -90.f, 0.f, 0.f });
+		floor.transform.scale = glm::vec3{ .4f, .4f, .4f };
 		gameObjects.emplace(floor.getId(), std::move(floor));
 
-		{
+		/*{
 			auto pointLight = VcuGameObject::makePointLight(0.2f);
 			pointLight.transform.translation = { 0.f, -0.5f, 0.f };
 			gameObjects.emplace(pointLight.getId(), std::move(pointLight));
-		}
+		}*/
 
 		std::vector<glm::vec3> lightColors{
 		 {1.f, .1f, .1f},
@@ -183,7 +184,7 @@ namespace vcu {
 		 {1.f, 1.f, 1.f}  //
 		};
 
-		/*for (int i = 0; i < lightColors.size(); i++) {
+		for (int i = 0; i < lightColors.size(); i++) {
 			auto pointLight = VcuGameObject::makePointLight(0.2f);
 			pointLight.color = lightColors[i];
 			auto rotateLight = glm::rotate(glm::mat4(1.f), (i * glm::two_pi<float>() / lightColors.size()),
@@ -191,6 +192,6 @@ namespace vcu {
 
 			pointLight.transform.translation = glm::vec3(rotateLight * glm::vec4(-1.f, -1.f, -1.f, 1.f));
 			gameObjects.emplace(pointLight.getId(), std::move(pointLight));
-		}*/
+		}
 	}
 }

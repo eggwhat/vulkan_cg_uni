@@ -1,0 +1,76 @@
+#version 450
+
+layout(location = 0) in vec3 position;
+layout(location = 1) in vec3 color;
+layout(location = 2) in vec3 normal;
+layout(location = 3) in vec2 uv;
+	
+layout(location = 0) out vec3 fragColor;
+layout(location = 1) out vec2 fragUV;
+
+struct PointLight{
+	vec4 position; // ignore w 
+	vec4 color; // w - intensity
+};
+
+layout(set = 0, binding = 0) uniform GlobalUbo{
+	mat4 projection;
+	mat4 view;
+	mat4 invView;
+	vec4 ambientLightColor; // w - intensity
+	PointLight pointLights[10];
+	int numLights;
+} ubo;
+
+layout(push_constant) uniform Push{
+	mat4 modelMatrix; 
+	mat4 normalMatrix;
+} push;
+
+const float Ka = 1.f;   // Ambient reflection coefficient
+const float Kd = 1.f;   // Diffuse reflection coefficient
+const float Ks = 1.f;   // Specular reflection coefficient
+const float shininessVal = 80.f; // Shininess
+const vec3 diffuseColor = vec3(1.f, 1.f, 1.f);
+const vec3 specularColor = vec3(1.f, 1.f, 1.f);
+
+
+void main() {
+	vec3 positionWorld = vec3(0.0);
+    vec3 normals = vec3(0.0);
+    vec3 diffuse = vec3(0.0);
+    vec3 specular = vec3(0.0);
+    vec3 ambientColour = vec3(0.0);
+ 
+    positionWorld = vec3(push.modelMatrix * vec4(position, 1.0));  
+    vec3 camPosWorld = ubo.invView[3].xyz;
+    normals = normalize(mat3(push.normalMatrix) * normal);
+    fragUV = uv;
+ 
+    vec3 camDir = normalize(camPosWorld - positionWorld);
+ 
+    for (int i = 0; i < ubo.numLights; i++)
+    {
+        float radius = 50.0;
+        PointLight light = ubo.pointLights[i];
+        vec3 lightDir = normalize(light.position.xyz - positionWorld);
+        vec3 halfAngle = normalize(camDir + lightDir);
+        float NdotL = clamp(dot(normals, lightDir), 0.0, 1.0);
+        float NdotH = clamp(dot(normals, halfAngle), 0.0, 1.0);
+ 
+        float specularHighlight = pow(NdotH, 250);
+        vec3 S = (light.color.xyz * light.color.w * specularHighlight);
+        vec3 D = (light.color.xyz * light.color.w * NdotL);
+        
+        float dist = length(light.position.xyz - positionWorld);
+        float attenuation = 1.0 / (1.0 + ((2.0 / radius) * dist) + ((1.0 / (radius * radius)) * (dist * dist)));
+        
+        diffuse += D * attenuation;
+        specular += S * attenuation;
+        ambientColour += light.color.xyz * light.color.w * attenuation;
+    }
+    vec3 ambience = 0.01 * ambientColour;
+ 
+    fragColor = ambience + diffuse + specular;
+	gl_Position = ubo.projection * ubo.view * push.modelMatrix * vec4(position, 1.0);
+}

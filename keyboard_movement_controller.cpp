@@ -7,7 +7,7 @@ namespace vcu {
 
 		if (cameraMode == 1) {
 			gameObject.transform.translation = glm::vec3(0.f, -2.f, -10.f);
-			//gameObject.transform.rotation = glm::vec3(0.f, 0.5f, 0.f);
+			gameObject.transform.rotation = glm::vec3(0.f, 0.0f, 0.f);
 			return;
 		}
 

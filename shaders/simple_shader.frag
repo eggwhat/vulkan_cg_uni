@@ -3,6 +3,7 @@
 layout(location = 0) in vec3 fragColor;
 layout(location = 1) in vec3 fragPosWorld;
 layout(location = 2) in vec3 fragNormalWorld;
+layout(location = 3) in vec2 fragUV;
 
 layout(location = 0) out vec4 outColor;
 
@@ -20,10 +21,17 @@ layout(set = 0, binding = 0) uniform GlobalUbo{
 	int numLights;
 } ubo;
 
+layout(set = 0, binding = 1) uniform sampler2D image;
+
 layout(push_constant) uniform Push {
 	mat4 modelMatrix; 
 	mat4 normalMatrix;
 } push;
+
+const float fogStart = -1.0; 
+const float fogEnd = -1.0;   
+const vec3 fogColor = vec3(0.5, 0.5, 0.5); 
+
 
 void main(){
 	vec3 diffuseLight = ubo.ambientLightColor.xyz * ubo.ambientLightColor.w;
@@ -50,6 +58,17 @@ void main(){
 		blinnTerm = pow(blinnTerm, 512.0); // higher values -> sharper highlights
 		specularLight += intensity * blinnTerm;
 	}
- 
-	outColor = vec4(diffuseLight * fragColor + specularLight * fragColor, 1.0);
+
+	vec3 imageColor = texture(image, fragUV).xyz;
+	outColor = vec4((diffuseLight * fragColor + specularLight * fragColor) * imageColor, 1.0);
+	//outColor = vec4(diffuseLight * fragColor + specularLight * fragColor, 1.0);
+
+//	float cameraDistance = length(fragPosWorld - cameraPosWorld);
+//	float fogRange = fogEnd - fogStart;
+//	float fogDist = fogEnd - cameraDistance;
+//	float fogFactor = fogDist / fogRange;
+//	fogFactor = clamp(fogFactor, 0.0, 1.0);
+//
+//	outColor = mix(vec4(fogColor, 1.0), outColor, fogFactor);
+	
 }

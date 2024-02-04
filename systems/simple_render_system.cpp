@@ -57,8 +57,8 @@ namespace vcu {
 		pipelineConfig.pipelineLayout = pipelineLayout;
 		vcuPipeline = std::make_unique<VcuPipeline>(
 			vcuDevice,
-			"shaders/simple_shader.vert.spv",
-			"shaders/simple_shader.frag.spv",
+			"shaders/gourard_shader.vert.spv",
+			"shaders/gourard_shader.frag.spv",
 			pipelineConfig
 		);
 	}

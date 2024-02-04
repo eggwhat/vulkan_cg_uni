@@ -182,6 +182,8 @@
     <None Include=".gitignore" />
     <None Include="README.md" />
     <None Include="shaders\compile.bat" />
+    <None Include="shaders\flat_shader.frag" />
+    <None Include="shaders\flat_shader.vert" />
     <None Include="shaders\gourard_shader.frag" />
     <None Include="shaders\gourard_shader.vert" />
     <None Include="shaders\point_light.frag" />

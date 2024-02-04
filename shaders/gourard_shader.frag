@@ -1,6 +1,6 @@
 #version 450
 
-layout(location = 0) in vec4 fragColor;
+layout(location = 0) in vec3 fragColor;
 layout(location = 1) in vec2 fragUV;
 
 layout(location = 0) out vec4 outColor;
@@ -28,7 +28,7 @@ layout(push_constant) uniform Push {
 
 void main(){
 	vec3 albedo = texture(image, fragUV).xyz;
-	vec3 final = albedo * vec3(fragColor);
+	vec3 final = albedo * fragColor;
     final = pow(final, vec3(1.0 / 2.2));
     outColor = vec4(final, 1.0);
 }

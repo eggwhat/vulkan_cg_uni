@@ -13,7 +13,8 @@
 namespace vcu {
 	class SimpleRenderSystem {
 	public:
-		SimpleRenderSystem(VcuDevice &device, VkRenderPass renderPass, VkDescriptorSetLayout globalSetLayout);
+		SimpleRenderSystem(VcuDevice &device, VkRenderPass renderPass, VkDescriptorSetLayout globalSetLayout, 
+			const std::string& vertexShaderFile, const std::string& fragmentShaderFile);
 		~SimpleRenderSystem();
 		SimpleRenderSystem(const SimpleRenderSystem&) = delete;
 		SimpleRenderSystem& operator=(const SimpleRenderSystem&) = delete;
@@ -22,7 +23,7 @@ namespace vcu {
 
 	private:
 		void createPipelineLayout(VkDescriptorSetLayout globalSetLayout);
-		void createPipeline(VkRenderPass renderPass);
+		void createPipeline(VkRenderPass renderPass, const std::string& vertexShaderFile, const std::string& fragmentShaderFile);
 
 		VcuDevice& vcuDevice;
 

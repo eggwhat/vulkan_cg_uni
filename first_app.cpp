@@ -21,6 +21,7 @@
 #include <cassert>
 #include <array>
 #include <numeric>
+#include <vector>
 
 namespace vcu {
 
@@ -69,7 +70,10 @@ namespace vcu {
 				.build(globalDescriptorSets[i]);
 		}
 
-		SimpleRenderSystem simpleRenderSystem{ vcuDevice, vcuRenderer.getSwapChainRenderPass(), globalSetLayout->getDescriptorSetLayout()};
+		auto renderSystems = std::vector<std::unique_ptr<SimpleRenderSystem>>();
+		renderSystems.push_back(std::move(std::make_unique<SimpleRenderSystem>(vcuDevice, vcuRenderer.getSwapChainRenderPass(), globalSetLayout->getDescriptorSetLayout(),"simple_shader.vert.spv","simple_shader.frag.spv")));
+		renderSystems.push_back(std::move(std::make_unique<SimpleRenderSystem>(vcuDevice, vcuRenderer.getSwapChainRenderPass(), globalSetLayout->getDescriptorSetLayout(),"flat_shader.vert.spv","flat_shader.frag.spv")));
+		renderSystems.push_back(std::move(std::make_unique<SimpleRenderSystem>(vcuDevice, vcuRenderer.getSwapChainRenderPass(), globalSetLayout->getDescriptorSetLayout(),"gourard_shader.vert.spv","gourard_shader.frag.spv")));
 		PointLightSystem pointLightSystem{ vcuDevice, vcuRenderer.getSwapChainRenderPass(), globalSetLayout->getDescriptorSetLayout() };
         VcuCamera camera{};
     
@@ -79,6 +83,7 @@ namespace vcu {
 
         auto currentTime = std::chrono::high_resolution_clock::now();
 		auto lastCameraModeChangeTime = currentTime;
+		auto lastShaderModeChangeTime = currentTime;
 
 		while (!vcuWindow.shouldClose()) {
 			glfwPollEvents();
@@ -94,6 +99,12 @@ namespace vcu {
 				std::chrono::duration_cast<std::chrono::seconds>(currentTime - lastCameraModeChangeTime) > std::chrono::seconds(1)) {
 				cameraMode = (cameraMode + 1) % CAMERA_MODES;
 				lastCameraModeChangeTime = currentTime;
+			}
+
+			if (glfwGetKey(window, cameraController.keys.shaderModeChange) == GLFW_PRESS &&
+				std::chrono::duration_cast<std::chrono::seconds>(currentTime - lastShaderModeChangeTime) > std::chrono::seconds(1)) {
+				shaderMode = (shaderMode + 1) % SHADERS;
+				lastShaderModeChangeTime = currentTime;
 			}
 
             cameraController.moveInPlaneXZ(window, frameTime, viewerObject, cameraMode);
@@ -124,7 +135,7 @@ namespace vcu {
 
 				// render
 				vcuRenderer.beginSwapChainRenderPass(commandBuffer);
-				simpleRenderSystem.renderGameObjects(frameInfo);
+				renderSystems[shaderMode]->renderGameObjects(frameInfo);
 				pointLightSystem.render(frameInfo);
 				vcuRenderer.endSwapChainRenderPass(commandBuffer);
 				vcuRenderer.endFrame();
@@ -154,12 +165,12 @@ namespace vcu {
 		auto floor = VcuGameObject::createGameObject();
 		floor.model = vcuModel;
 		floor.transform.translation = { 0.f, .5f, 0.f };
-		floor.transform.scale = glm::vec3{ 3.f, 1.f, 3.f };
+		floor.transform.scale = glm::vec3{ 10.f, 1.f, 10.f };
 		gameObjects.emplace(floor.getId(), std::move(floor));
 
 		{
 			auto pointLight = VcuGameObject::makePointLight(0.2f);
-			pointLight.transform.translation = { 0.f, -1.3f, 0.f };
+			pointLight.transform.translation = { 0.f, -0.5f, 0.f };
 			gameObjects.emplace(pointLight.getId(), std::move(pointLight));
 		}
 
@@ -172,7 +183,7 @@ namespace vcu {
 		 {1.f, 1.f, 1.f}  //
 		};
 
-		for (int i = 0; i < lightColors.size(); i++) {
+		/*for (int i = 0; i < lightColors.size(); i++) {
 			auto pointLight = VcuGameObject::makePointLight(0.2f);
 			pointLight.color = lightColors[i];
 			auto rotateLight = glm::rotate(glm::mat4(1.f), (i * glm::two_pi<float>() / lightColors.size()),
@@ -180,6 +191,6 @@ namespace vcu {
 
 			pointLight.transform.translation = glm::vec3(rotateLight * glm::vec4(-1.f, -1.f, -1.f, 1.f));
 			gameObjects.emplace(pointLight.getId(), std::move(pointLight));
-		}
+		}*/
 	}
 }

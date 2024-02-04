@@ -27,13 +27,6 @@ layout(push_constant) uniform Push{
 	mat4 normalMatrix;
 } push;
 
-const float Ka = 1.f;   // Ambient reflection coefficient
-const float Kd = 1.f;   // Diffuse reflection coefficient
-const float Ks = 1.f;   // Specular reflection coefficient
-const float shininessVal = 80.f; // Shininess
-const vec3 diffuseColor = vec3(1.f, 1.f, 1.f);
-const vec3 specularColor = vec3(1.f, 1.f, 1.f);
-
 
 void main() {
 	vec3 positionWorld = vec3(0.0);
@@ -67,9 +60,8 @@ void main() {
         
         diffuse += D * attenuation;
         specular += S * attenuation;
-        ambientColour += light.color.xyz * light.color.w * attenuation;
     }
-    vec3 ambience = 0.01 * ambientColour;
+    vec3 ambience = ubo.ambientLightColor.xyz * ubo.ambientLightColor.w;
  
     fragColor = ambience + diffuse + specular;
 	gl_Position = ubo.projection * ubo.view * push.modelMatrix * vec4(position, 1.0);

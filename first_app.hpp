@@ -11,6 +11,7 @@
 #include <vector>
 
 #define CAMERA_MODES 3
+#define SHADERS 3
 
 namespace vcu {
 	class FirstApp {
@@ -18,6 +19,7 @@ namespace vcu {
 		static constexpr int WIDTH = 800;
 		static constexpr int HEIGHT = 600;
 		int cameraMode{ 0 };
+		int shaderMode{ 0 };
 
 		FirstApp();
 		~FirstApp();

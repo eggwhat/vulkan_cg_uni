@@ -21,6 +21,7 @@ namespace vcu {
 		int cameraMode{ 0 };
 		int shaderMode{ 0 };
 		bool fogEnabled{ false };
+		bool nightMode{ true };
 
 		FirstApp();
 		~FirstApp();

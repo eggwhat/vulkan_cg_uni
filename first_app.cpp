@@ -85,6 +85,8 @@ namespace vcu {
 		auto lastCameraModeChangeTime = currentTime;
 		auto lastShaderModeChangeTime = currentTime;
 		auto lastFogChangeTime = currentTime;
+		auto lastNightModeChangeTime = currentTime;
+		std::vector<glm::vec4> ambientLight{{ 0.988f, 0.933f, 0.655, 0.14f }, { 1.f, 1.f, 1.f, 0.02f } };
 
 		while (!vcuWindow.shouldClose()) {
 			glfwPollEvents();
@@ -114,6 +116,12 @@ namespace vcu {
 				lastFogChangeTime = currentTime;
 			}
 
+			if (glfwGetKey(window, cameraController.keys.nightModeChange) == GLFW_PRESS &&
+				std::chrono::duration_cast<std::chrono::milliseconds>(currentTime - lastNightModeChangeTime) > std::chrono::milliseconds(500)) {
+				nightMode = !nightMode;
+				lastNightModeChangeTime = currentTime;
+			}
+
             cameraController.moveInPlaneXZ(window, frameTime, viewerObject, cameraMode);
             camera.setViewYXZ(viewerObject.transform.translation, viewerObject.transform.rotation);
 
@@ -137,6 +145,7 @@ namespace vcu {
 				ubo.view = camera.getView();
 				ubo.inverseView = camera.getInverseView();
 				ubo.fogEnabled = fogEnabled;
+				ubo.ambientLightColor = nightMode ? ambientLight[1] : ambientLight[0];
 				pointLightSystem.update(frameInfo, ubo);
 				uboBuffers[frameIndex]->writeToBuffer(&ubo);
 				uboBuffers[frameIndex]->flush();
@@ -177,11 +186,11 @@ namespace vcu {
 		floor.transform.scale = glm::vec3{ .4f, .4f, .4f };
 		gameObjects.emplace(floor.getId(), std::move(floor));
 
-		/*{
+		{
 			auto pointLight = VcuGameObject::makePointLight(0.2f);
 			pointLight.transform.translation = { 0.f, -0.5f, 0.f };
 			gameObjects.emplace(pointLight.getId(), std::move(pointLight));
-		}*/
+		}
 
 		std::vector<glm::vec3> lightColors{
 		 {1.f, .1f, .1f},
@@ -192,7 +201,7 @@ namespace vcu {
 		 {1.f, 1.f, 1.f}  //
 		};
 
-		for (int i = 0; i < lightColors.size(); i++) {
+		/*for (int i = 0; i < lightColors.size(); i++) {
 			auto pointLight = VcuGameObject::makePointLight(0.2f);
 			pointLight.color = lightColors[i];
 			auto rotateLight = glm::rotate(glm::mat4(1.f), (i * glm::two_pi<float>() / lightColors.size()),
@@ -200,6 +209,6 @@ namespace vcu {
 
 			pointLight.transform.translation = glm::vec3(rotateLight * glm::vec4(-1.f, -1.f, -1.f, 1.f));
 			gameObjects.emplace(pointLight.getId(), std::move(pointLight));
-		}
+		}*/
 	}
 }

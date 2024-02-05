@@ -43,6 +43,7 @@ float CalcFog(float fogInt, vec3 cameraPos, vec3 fragPos){
 void main(){
 	vec3 finalColor = vec3(0.0);
 	vec3 imageColor = texture(image, fragUV).xyz;
+	finalColor += fragColor * ubo.ambientLightColor.xyz * ubo.ambientLightColor.w;
 
     for (int i = 0; i < ubo.numLights; ++i) {
 		PointLight light = ubo.pointLights[i];

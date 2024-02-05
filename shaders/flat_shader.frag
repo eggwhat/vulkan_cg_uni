@@ -19,6 +19,7 @@ layout(set = 0, binding = 0) uniform GlobalUbo{
 	vec4 ambientLightColor; // w - intensity
 	PointLight pointLights[10];
 	int numLights;
+	bool fogEnabled;
 } ubo;
 
 layout(set = 0, binding = 1) uniform sampler2D image;
@@ -51,9 +52,11 @@ void main(){
     }
 	finalColor *= imageColor;
 
-	vec3 cameraPosWorld = ubo.invView[3].xyz;
-	float fogFactor = CalcFog(fogIntensity, cameraPosWorld, fragPosWorld);
-	finalColor = mix(fogColor, finalColor, fogFactor);
+	if(ubo.fogEnabled) {
+		vec3 cameraPosWorld = ubo.invView[3].xyz;
+		float fogFactor = CalcFog(fogIntensity, cameraPosWorld, fragPosWorld);
+		finalColor = mix(fogColor, finalColor, fogFactor);
+	}
 
     outColor = vec4(finalColor, 1.0);
 	

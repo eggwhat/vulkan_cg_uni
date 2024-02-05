@@ -84,6 +84,7 @@ namespace vcu {
         auto currentTime = std::chrono::high_resolution_clock::now();
 		auto lastCameraModeChangeTime = currentTime;
 		auto lastShaderModeChangeTime = currentTime;
+		auto lastFogChangeTime = currentTime;
 
 		while (!vcuWindow.shouldClose()) {
 			glfwPollEvents();
@@ -96,15 +97,21 @@ namespace vcu {
 			auto window = vcuWindow.getGLFWwindow();
 
 			if (glfwGetKey(window, cameraController.keys.cameraModeChange) == GLFW_PRESS &&
-				std::chrono::duration_cast<std::chrono::seconds>(currentTime - lastCameraModeChangeTime) > std::chrono::seconds(1)) {
+				std::chrono::duration_cast<std::chrono::microseconds>(currentTime - lastCameraModeChangeTime) > std::chrono::milliseconds(500)) {
 				cameraMode = (cameraMode + 1) % CAMERA_MODES;
 				lastCameraModeChangeTime = currentTime;
 			}
 
 			if (glfwGetKey(window, cameraController.keys.shaderModeChange) == GLFW_PRESS &&
-				std::chrono::duration_cast<std::chrono::seconds>(currentTime - lastShaderModeChangeTime) > std::chrono::seconds(1)) {
+				std::chrono::duration_cast<std::chrono::microseconds>(currentTime - lastShaderModeChangeTime) > std::chrono::milliseconds(500)) {
 				shaderMode = (shaderMode + 1) % SHADERS;
 				lastShaderModeChangeTime = currentTime;
+			}
+
+			if (glfwGetKey(window, cameraController.keys.fogChange) == GLFW_PRESS &&
+				std::chrono::duration_cast<std::chrono::milliseconds>(currentTime - lastFogChangeTime) > std::chrono::milliseconds(500)) {
+				fogEnabled = !fogEnabled;
+				lastFogChangeTime = currentTime;
 			}
 
             cameraController.moveInPlaneXZ(window, frameTime, viewerObject, cameraMode);
@@ -129,6 +136,7 @@ namespace vcu {
 				ubo.projection = camera.getProjection();
 				ubo.view = camera.getView();
 				ubo.inverseView = camera.getInverseView();
+				ubo.fogEnabled = fogEnabled;
 				pointLightSystem.update(frameInfo, ubo);
 				uboBuffers[frameIndex]->writeToBuffer(&ubo);
 				uboBuffers[frameIndex]->flush();

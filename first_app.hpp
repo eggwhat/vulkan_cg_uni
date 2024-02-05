@@ -20,6 +20,7 @@ namespace vcu {
 		static constexpr int HEIGHT = 600;
 		int cameraMode{ 0 };
 		int shaderMode{ 0 };
+		bool fogEnabled{ false };
 
 		FirstApp();
 		~FirstApp();

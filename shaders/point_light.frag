@@ -15,6 +15,7 @@ layout(set = 0, binding = 0) uniform GlobalUbo{
 	vec4 ambientLightColor; // w - intensity
 	PointLight pointLights[10];
 	int numLights;
+	bool fogEnabled;
 } ubo;
 
 layout(push_constant) uniform Push {

@@ -20,6 +20,7 @@ namespace vcu {
 			int lookDown = GLFW_KEY_DOWN;
 			int cameraModeChange = GLFW_KEY_C;
 			int shaderModeChange = GLFW_KEY_SPACE;
+			int fogChange = GLFW_KEY_F;
 		};
 
 		void moveInPlaneXZ(GLFWwindow* window, float dt, VcuGameObject &gameObject, int cameraMode);

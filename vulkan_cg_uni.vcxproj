@@ -187,13 +187,9 @@
     <None Include="shaders\gourard_shader.frag" />
     <None Include="shaders\gourard_shader.vert" />
     <None Include="shaders\point_light.frag" />
-    <None Include="shaders\point_light.frag.spv" />
     <None Include="shaders\point_light.vert" />
-    <None Include="shaders\point_light.vert.spv" />
     <None Include="shaders\simple_shader.frag" />
-    <None Include="shaders\simple_shader.frag.spv" />
     <None Include="shaders\simple_shader.vert" />
-    <None Include="shaders\simple_shader.vert.spv" />
   </ItemGroup>
   <ItemGroup>
     <Object Include="models\chess_board.obj">

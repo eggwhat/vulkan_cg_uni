@@ -10,6 +10,7 @@
 #include <stdexcept>
 #include <cassert>
 #include <array>
+#include <map>
 
 namespace vcu {
 
@@ -54,6 +55,7 @@ namespace vcu {
 
 		PipelineConfigInfo pipelineConfig{};
 		VcuPipeline::defaultPipelineConfigInfo(pipelineConfig);
+		VcuPipeline::enableAlphaBlending(pipelineConfig);
 		pipelineConfig.bindingDescriptions.clear();
 		pipelineConfig.attributeDescriptions.clear();
 		pipelineConfig.renderPass = renderPass;
@@ -87,6 +89,18 @@ namespace vcu {
 	}
 
 	void PointLightSystem::render(FrameInfo &frameInfo) {
+		// sort lights
+		std::map<float, VcuGameObject::id_t> sorted;
+		for (auto& kv : frameInfo.gameObjects) {
+			auto& obj = kv.second;
+			if (obj.pointLight == nullptr) continue;
+
+			// calculate distance from camera
+			auto offset = frameInfo.camera.getPosition() - obj.transform.translation;
+			float disSqured = glm::dot(offset, offset);
+			sorted[disSqured] = obj.getId();
+		}
+
 		vcuPipeline->bind(frameInfo.commandBuffer);
 
 		vkCmdBindDescriptorSets(
@@ -99,9 +113,9 @@ namespace vcu {
 			0,
 			nullptr);	
 
-		for (auto& kv : frameInfo.gameObjects) {
-			auto& obj = kv.second;
-			if (obj.pointLight == nullptr) continue;
+		// iterate through sorted lights in reverse order
+		for (auto it = sorted.rbegin(); it != sorted.rend(); ++it) {
+			auto& obj = frameInfo.gameObjects.at(it->second);
 		
 			PointLightPushConstants push{};
 			push.position = glm::vec4(obj.transform.translation, 1.f);

@@ -10,7 +10,7 @@
 #include <memory>
 #include <vector>
 
-#define CAMERA_MODES 3
+#define CAMERA_MODES 4
 #define SHADERS 3
 
 namespace vcu {

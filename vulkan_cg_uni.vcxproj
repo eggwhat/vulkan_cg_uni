@@ -104,7 +104,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>C:\VulkanSDK\1.3.268.0\Include;C:\Users\piotr\OneDrive\Dokumenty\Visual Studio 2022\Libraries\glm;C:\Users\piotr\OneDrive\Dokumenty\Visual Studio 2022\Libraries\glfw-3.3.9.bin.WIN64\include;C:\Users\piotr\OneDrive\Dokumenty\Visual Studio 2022\Libraries\tinyobjloader;C:\Users\piotr\OneDrive\Dokumenty\Visual Studio 2022\Libraries\stb;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\VulkanSDK\1.3.268.0\Include;C:\Users\piotr\OneDrive\Dokumenty\Visual Studio 2022\Libraries\glm;C:\Users\piotr\OneDrive\Dokumenty\Visual Studio 2022\Libraries\glfw-3.3.9.bin.WIN64\include;C:\Users\piotr\OneDrive\Dokumenty\Visual Studio 2022\Libraries\tinyobjloader;C:\Users\piotr\OneDrive\Dokumenty\Visual Studio 2022\Libraries\stb;C:\Users\piotr\OneDrive\Dokumenty\Visual Studio 2022\Libraries\tinygltf;C:\Users\piotr\OneDrive\Dokumenty\Visual Studio 2022\Libraries\json;C:\Users\piotr\OneDrive\Dokumenty\Visual Studio 2022\Libraries\gltf;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
@@ -125,7 +125,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>C:\VulkanSDK\1.3.268.0\Include;C:\Users\piotr\OneDrive\Dokumenty\Visual Studio 2022\Libraries\glm;C:\Users\piotr\OneDrive\Dokumenty\Visual Studio 2022\Libraries\glfw-3.3.9.bin.WIN64\include;C:\Users\piotr\OneDrive\Dokumenty\Visual Studio 2022\Libraries\tinyobjloader;C:\Users\piotr\OneDrive\Dokumenty\Visual Studio 2022\Libraries\stb;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\VulkanSDK\1.3.268.0\Include;C:\Users\piotr\OneDrive\Dokumenty\Visual Studio 2022\Libraries\glm;C:\Users\piotr\OneDrive\Dokumenty\Visual Studio 2022\Libraries\glfw-3.3.9.bin.WIN64\include;C:\Users\piotr\OneDrive\Dokumenty\Visual Studio 2022\Libraries\tinyobjloader;C:\Users\piotr\OneDrive\Dokumenty\Visual Studio 2022\Libraries\stb;C:\Users\piotr\OneDrive\Dokumenty\Visual Studio 2022\Libraries\tinygltf;C:\Users\piotr\OneDrive\Dokumenty\Visual Studio 2022\Libraries\json;C:\Users\piotr\OneDrive\Dokumenty\Visual Studio 2022\Libraries\gltf;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>

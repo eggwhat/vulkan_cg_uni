@@ -54,6 +54,12 @@ namespace vcu {
 			.addBinding(1, VK_DESCRIPTOR_TYPE_COMBINED_IMAGE_SAMPLER, VK_SHADER_STAGE_FRAGMENT_BIT)
 			.build();
 
+		auto materialSetLayout = VcuDescriptorSetLayout::Builder(vcuDevice)
+			.addBinding(0, VK_DESCRIPTOR_TYPE_COMBINED_IMAGE_SAMPLER, VK_SHADER_STAGE_FRAGMENT_BIT)
+			.addBinding(1, VK_DESCRIPTOR_TYPE_COMBINED_IMAGE_SAMPLER, VK_SHADER_STAGE_FRAGMENT_BIT)
+			.addBinding(2, VK_DESCRIPTOR_TYPE_COMBINED_IMAGE_SAMPLER, VK_SHADER_STAGE_FRAGMENT_BIT)
+			.build();
+
 		Texture texture = Texture(vcuDevice, "textures/wood.png");
 
 		VkDescriptorImageInfo imageInfo = {};
@@ -71,10 +77,23 @@ namespace vcu {
 		}
 
 		auto renderSystems = std::vector<std::unique_ptr<SimpleRenderSystem>>();
-		renderSystems.push_back(std::move(std::make_unique<SimpleRenderSystem>(vcuDevice, vcuRenderer.getSwapChainRenderPass(), globalSetLayout->getDescriptorSetLayout(),"simple_shader.vert.spv","simple_shader.frag.spv")));
-		renderSystems.push_back(std::move(std::make_unique<SimpleRenderSystem>(vcuDevice, vcuRenderer.getSwapChainRenderPass(), globalSetLayout->getDescriptorSetLayout(),"flat_shader.vert.spv","flat_shader.frag.spv")));
-		renderSystems.push_back(std::move(std::make_unique<SimpleRenderSystem>(vcuDevice, vcuRenderer.getSwapChainRenderPass(), globalSetLayout->getDescriptorSetLayout(),"gourard_shader.vert.spv","gourard_shader.frag.spv")));
+		auto descriptorSetLayouts = std::vector<VkDescriptorSetLayout>{ globalSetLayout->getDescriptorSetLayout(), materialSetLayout->getDescriptorSetLayout() };
+		renderSystems.push_back(std::move(std::make_unique<SimpleRenderSystem>(vcuDevice, vcuRenderer.getSwapChainRenderPass(), 
+			descriptorSetLayouts, "simple_shader.vert.spv","simple_shader.frag.spv")));
+		/*renderSystems.push_back(std::move(std::make_unique<SimpleRenderSystem>(vcuDevice, vcuRenderer.getSwapChainRenderPass(), 
+			descriptorSetLayouts, "flat_shader.vert.spv","flat_shader.frag.spv")));
+		renderSystems.push_back(std::move(std::make_unique<SimpleRenderSystem>(vcuDevice, vcuRenderer.getSwapChainRenderPass(), 
+			descriptorSetLayouts, "gourard_shader.vert.spv","gourard_shader.frag.spv")));*/
 		PointLightSystem pointLightSystem{ vcuDevice, vcuRenderer.getSwapChainRenderPass(), globalSetLayout->getDescriptorSetLayout() };
+
+		std::shared_ptr<VcuModel> lveModel = std::make_shared<VcuModel>(vcuDevice, "models/sponza/Sponza.gltf", *materialSetLayout, *globalPool);
+		auto floor = VcuGameObject::createGameObject();
+		floor.model = lveModel;
+		floor.transform.translation = { 0.f, .5f, 0.f };
+		floor.transform.scale = { .01f, .01f, .01f };
+		floor.transform.rotation = { 0.0f, 0.0f, 3.14159265f };
+		gameObjects.emplace(floor.getId(), std::move(floor));
+
         VcuCamera camera{};
     
         auto viewerObject = VcuGameObject::createGameObject();
@@ -163,7 +182,7 @@ namespace vcu {
 	}
 
 	void FirstApp::loadGameObjects() {
-		std::shared_ptr<VcuModel> vcuModel = VcuModel::createModelFromFile(vcuDevice, "models/flat_vase.obj");
+		/*std::shared_ptr<VcuModel> vcuModel = VcuModel::createModelFromFile(vcuDevice, "models/flat_vase.obj");
 
 		auto flatVase = VcuGameObject::createGameObject();
 		flatVase.model = vcuModel;
@@ -184,7 +203,7 @@ namespace vcu {
 		floor.transform.translation = { 0.f, .5f, 0.f };
 		floor.transform.rotation = glm::radians(glm::vec3{ -90.f, 0.f, 0.f });
 		floor.transform.scale = glm::vec3{ .4f, .4f, .4f };
-		gameObjects.emplace(floor.getId(), std::move(floor));
+		gameObjects.emplace(floor.getId(), std::move(floor));*/
 
 		{
 			auto pointLight = VcuGameObject::makePointLight(0.2f);

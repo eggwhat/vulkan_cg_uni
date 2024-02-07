@@ -39,9 +39,6 @@
     <ClCompile Include="vcu_model.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="simple_render_system.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="vcu_renderer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -58,6 +55,15 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="vcu_descriptors.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="systems\point_light_system.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="systems\simple_render_system.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="vcu_texture.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -78,9 +84,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="vcu_model.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="simple_render_system.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="vcu_game_object.hpp">
@@ -107,6 +110,15 @@
     <ClInclude Include="vcu_descriptors.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="systems\point_light_system.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="systems\simple_render_system.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="vcu_texture.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="shaders\simple_shader.frag" />
@@ -114,11 +126,15 @@
     <None Include="shaders\compile.bat">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="shaders\simple_shader.frag.spv" />
-    <None Include="shaders\simple_shader.vert.spv" />
     <None Include=".gitattributes" />
     <None Include=".gitignore" />
     <None Include="README.md" />
+    <None Include="shaders\flat_shader.frag" />
+    <None Include="shaders\flat_shader.vert" />
+    <None Include="shaders\gourard_shader.frag" />
+    <None Include="shaders\gourard_shader.vert" />
+    <None Include="shaders\point_light.frag" />
+    <None Include="shaders\point_light.vert" />
   </ItemGroup>
   <ItemGroup>
     <Object Include="models\cube.obj">
@@ -134,6 +150,9 @@
       <Filter>Models</Filter>
     </Object>
     <Object Include="models\quad.obj">
+      <Filter>Models</Filter>
+    </Object>
+    <Object Include="models\chess_board.obj">
       <Filter>Models</Filter>
     </Object>
   </ItemGroup>

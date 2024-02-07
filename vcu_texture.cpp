@@ -2,7 +2,7 @@
 #include <vulkan/vulkan_core.h>
 #include <stdexcept>
 #include "vcu_device.hpp"
-#define STB_IMAGE_IMPLEMENTATION
+//#define STB_IMAGE_IMPLEMENTATION
 #include "stb_image.h"
 #include "vcu_buffer.hpp"
 #include <cmath>

@@ -14,7 +14,7 @@ namespace vcu {
 
     class VcuSwapChain {
     public:
-        static constexpr int MAX_FRAMES_IN_FLIGHT = 2;
+        static constexpr int MAX_FRAMES_IN_FLIGHT = 3;
 
         VcuSwapChain(VcuDevice& deviceRef, VkExtent2D windowExtent);
             VcuSwapChain(VcuDevice& deviceRef, VkExtent2D windowExtent, std::shared_ptr<VcuSwapChain> previous);

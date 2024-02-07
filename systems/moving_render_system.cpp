@@ -96,16 +96,16 @@ namespace vcu {
 		}
 	}
 
-	glm::vec3 MovingRenderSystem::update(FrameInfo& frameInfo, GlobalUbo& ubo) {
+	void MovingRenderSystem::update(FrameInfo& frameInfo, GlobalUbo& ubo, glm::vec3& translation, glm::vec3& rotation) {
 		auto rotateObject = glm::rotate(glm::mat4(1.f), frameInfo.frameTime, { 0.5f, -1.f, 0.5f });
 		int lightIndex = ubo.numLights;
-		glm::vec3 translation;
 		for (auto& kv : frameInfo.gameObjects) {
 			auto& obj = kv.second;
 			if (obj.type != 1 || obj.pointLight != nullptr) continue;
 
 			// update light position
 			obj.transform.translation = glm::vec3(rotateObject * glm::vec4(obj.transform.translation, 1.f));
+			//obj.transform.rotation = glm::vec3(rotateObject * glm::vec4(obj.transform.rotation, 1.f)) * 0.01f;
 			translation = obj.transform.translation;
 			// copy light to ubo
 			/*ubo.pointLights[lightIndex].position = glm::vec4(obj.transform.translation, 1.f);
@@ -113,6 +113,5 @@ namespace vcu {
 			//lightIndex += 1;
 		}
 		//ubo.numLights = lightIndex;
-		return translation;
 	}
 }

@@ -20,7 +20,7 @@ namespace vcu {
 		MovingRenderSystem& operator=(const MovingRenderSystem&) = delete;
 
 		void render(FrameInfo &frameInfo);
-		glm::vec3 update(FrameInfo& frameInfo, GlobalUbo& ubo);
+		void update(FrameInfo& frameInfo, GlobalUbo& ubo, glm::vec3& translation, glm::vec3& rotation);
 
 	private:
 		void createPipelineLayout(VkDescriptorSetLayout globalSetLayout);

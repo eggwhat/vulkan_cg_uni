@@ -2,7 +2,8 @@
 
 namespace vcu {
 
-    void KeyboardMovementController::moveInPlaneXZ(GLFWwindow* window, float dt, VcuGameObject& gameObject, int cameraMode, glm::vec3 movingObjectTranslation) {
+    void KeyboardMovementController::moveInPlaneXZ(GLFWwindow* window, float dt, VcuGameObject& gameObject, int cameraMode, glm::vec3 movingObjectTranslation,
+        glm::vec3 movingObjectRotation) {
 
         if (cameraMode == 1) {
             gameObject.transform.translation = glm::vec3(0.f, -2.f, -10.f);
@@ -16,7 +17,14 @@ namespace vcu {
             direction = glm::normalize(direction);
             float angle = glm::atan(direction.x, direction.z);
             gameObject.transform.rotation = glm::vec3(-glm::atan(direction.y, glm::sqrt(direction.x * direction.x + direction.z * direction.z)), angle, 0.f);
+            return;
         }
+
+        if (cameraMode == 3) {
+            gameObject.transform.translation = movingObjectTranslation + glm::vec3{.0f, -4.0f, .0f};
+            gameObject.transform.rotation = movingObjectRotation + glm::vec3{-1.5f, 0.f, .0f};
+            return;
+		}
 
         glm::vec3 rotate{0};
         if (glfwGetKey(window, keys.lookRight) == GLFW_PRESS) rotate.y += 1.f;

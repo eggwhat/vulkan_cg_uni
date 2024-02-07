@@ -102,6 +102,7 @@ namespace vcu {
 		auto lastFogChangeTime = currentTime;
 		auto lastNightModeChangeTime = currentTime;
 		auto movingObjectTranslation = glm::vec3{ 0.f, 0.f, 0.f };
+		auto movingObjectRotation = glm::vec3{ 0.f, 0.f, 0.f };
 		std::vector<glm::vec4> ambientLight{{ 1.0f, 1.0f, 1.0, 0.2f }, { 1.f, 1.f, 1.f, 0.02f } };
 
 		while (!vcuWindow.shouldClose()) {
@@ -138,7 +139,7 @@ namespace vcu {
 				lastNightModeChangeTime = currentTime;
 			}
 
-            cameraController.moveInPlaneXZ(window, frameTime, viewerObject, cameraMode, movingObjectTranslation);
+            cameraController.moveInPlaneXZ(window, frameTime, viewerObject, cameraMode, movingObjectTranslation, movingObjectRotation);
             camera.setViewYXZ(viewerObject.transform.translation, viewerObject.transform.rotation);
 
             float aspect = vcuRenderer.getAspectRatio();
@@ -163,7 +164,7 @@ namespace vcu {
 				ubo.fogEnabled = fogEnabled;
 				ubo.ambientLightColor = nightMode ? ambientLight[1] : ambientLight[0];
 				ubo.movingLightIndices = glm::vec2{0,1};
-				movingObjectTranslation = movingRenderSystems[shaderMode]->update(frameInfo, ubo);
+				movingRenderSystems[shaderMode]->update(frameInfo, ubo, movingObjectTranslation, movingObjectRotation);
 				pointLightSystem.update(frameInfo, ubo, movingObjectTranslation);
 				uboBuffers[frameIndex]->writeToBuffer(&ubo);
 				uboBuffers[frameIndex]->flush();

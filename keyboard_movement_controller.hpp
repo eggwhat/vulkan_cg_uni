@@ -18,12 +18,16 @@ namespace vcu {
 			int lookRight = GLFW_KEY_RIGHT;
 			int lookUp = GLFW_KEY_UP;
 			int lookDown = GLFW_KEY_DOWN;
+			int cameraModeChange = GLFW_KEY_C;
+			int shaderModeChange = GLFW_KEY_SPACE;
+			int fogChange = GLFW_KEY_F;
+			int nightModeChange = GLFW_KEY_N;
 		};
 
-		void moveInPlaneXZ(GLFWwindow* window, float dt, VcuGameObject &gameObject);
+		void moveInPlaneXZ(GLFWwindow* window, float dt, VcuGameObject &gameObject, int cameraMode);
 
 		KeyMappings keys{};
-		float moveSpeed{ 3.f };
+		float moveSpeed{ 5.f };
 		float lookSpeed{ 1.5f };
 	};
 }

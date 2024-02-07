@@ -3,7 +3,9 @@
 #include "keyboard_movement_controller.hpp"
 #include "vcu_buffer.hpp"
 #include "vcu_camera.hpp"
-#include "simple_render_system.hpp"
+#include "vcu_texture.hpp"
+#include "systems/simple_render_system.hpp"
+#include "systems/point_light_system.hpp"
 
 //#define MAX_FRAME_TIME 0.5f
 
@@ -19,20 +21,15 @@
 #include <cassert>
 #include <array>
 #include <numeric>
+#include <vector>
 
 namespace vcu {
-
-	struct GlobalUbo {
-		glm::mat4 projectionView{1.f};
-		glm::vec4 ambientLightColor{1.f, 1.f, 1.f, .02f}; // w is intensity
-		glm::vec3 lightPosition{ -1.f };
-		alignas(16) glm::vec4 lightColor{ 1.f }; // w is light intensity
-	};
 
 	FirstApp::FirstApp() {
 		globalPool = VcuDescriptorPool::Builder(vcuDevice)
 			.setMaxSets(VcuSwapChain::MAX_FRAMES_IN_FLIGHT)
 			.addPoolSize(VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER, VcuSwapChain::MAX_FRAMES_IN_FLIGHT)
+			.addPoolSize(VK_DESCRIPTOR_TYPE_COMBINED_IMAGE_SAMPLER, VcuSwapChain::MAX_FRAMES_IN_FLIGHT)
 			.build();
 		loadGameObjects();
 	}
@@ -54,17 +51,30 @@ namespace vcu {
 
 		auto globalSetLayout = VcuDescriptorSetLayout::Builder(vcuDevice)
 			.addBinding(0, VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER, VK_SHADER_STAGE_ALL_GRAPHICS)
+			.addBinding(1, VK_DESCRIPTOR_TYPE_COMBINED_IMAGE_SAMPLER, VK_SHADER_STAGE_FRAGMENT_BIT)
 			.build();
+
+		Texture texture = Texture(vcuDevice, "textures/wood.png");
+
+		VkDescriptorImageInfo imageInfo = {};
+		imageInfo.sampler = texture.getSampler();
+		imageInfo.imageView = texture.getImageView();
+		imageInfo.imageLayout = texture.getImageLayout();
 
 		std::vector<VkDescriptorSet> globalDescriptorSets(VcuSwapChain::MAX_FRAMES_IN_FLIGHT);
 		for (int i = 0; i < globalDescriptorSets.size(); i++) {
 			auto bufferInfo = uboBuffers[i]->descriptorInfo();
 			VcuDescriptorWriter(*globalSetLayout, *globalPool)
 				.writeBuffer(0, &bufferInfo)
+				.writeImage(1, &imageInfo)
 				.build(globalDescriptorSets[i]);
 		}
 
-		SimpleRenderSystem simpleRenderSystem{ vcuDevice, vcuRenderer.getSwapChainRenderPass(), globalSetLayout->getDescriptorSetLayout()};
+		auto renderSystems = std::vector<std::unique_ptr<SimpleRenderSystem>>();
+		renderSystems.push_back(std::move(std::make_unique<SimpleRenderSystem>(vcuDevice, vcuRenderer.getSwapChainRenderPass(), globalSetLayout->getDescriptorSetLayout(),"simple_shader.vert.spv","simple_shader.frag.spv")));
+		renderSystems.push_back(std::move(std::make_unique<SimpleRenderSystem>(vcuDevice, vcuRenderer.getSwapChainRenderPass(), globalSetLayout->getDescriptorSetLayout(),"flat_shader.vert.spv","flat_shader.frag.spv")));
+		renderSystems.push_back(std::move(std::make_unique<SimpleRenderSystem>(vcuDevice, vcuRenderer.getSwapChainRenderPass(), globalSetLayout->getDescriptorSetLayout(),"gourard_shader.vert.spv","gourard_shader.frag.spv")));
+		PointLightSystem pointLightSystem{ vcuDevice, vcuRenderer.getSwapChainRenderPass(), globalSetLayout->getDescriptorSetLayout() };
         VcuCamera camera{};
     
         auto viewerObject = VcuGameObject::createGameObject();
@@ -72,6 +82,11 @@ namespace vcu {
         KeyboardMovementController cameraController{};
 
         auto currentTime = std::chrono::high_resolution_clock::now();
+		auto lastCameraModeChangeTime = currentTime;
+		auto lastShaderModeChangeTime = currentTime;
+		auto lastFogChangeTime = currentTime;
+		auto lastNightModeChangeTime = currentTime;
+		std::vector<glm::vec4> ambientLight{{ 0.988f, 0.933f, 0.655, 0.14f }, { 1.f, 1.f, 1.f, 0.02f } };
 
 		while (!vcuWindow.shouldClose()) {
 			glfwPollEvents();
@@ -81,8 +96,33 @@ namespace vcu {
             currentTime = newTime;
 
             //frameTime = glm::min(frameTime, MAX_FRAME_TIME);
+			auto window = vcuWindow.getGLFWwindow();
 
-            cameraController.moveInPlaneXZ(vcuWindow.getGLFWwindow(), frameTime, viewerObject);
+			if (glfwGetKey(window, cameraController.keys.cameraModeChange) == GLFW_PRESS &&
+				std::chrono::duration_cast<std::chrono::microseconds>(currentTime - lastCameraModeChangeTime) > std::chrono::milliseconds(500)) {
+				cameraMode = (cameraMode + 1) % CAMERA_MODES;
+				lastCameraModeChangeTime = currentTime;
+			}
+
+			if (glfwGetKey(window, cameraController.keys.shaderModeChange) == GLFW_PRESS &&
+				std::chrono::duration_cast<std::chrono::microseconds>(currentTime - lastShaderModeChangeTime) > std::chrono::milliseconds(500)) {
+				shaderMode = (shaderMode + 1) % SHADERS;
+				lastShaderModeChangeTime = currentTime;
+			}
+
+			if (glfwGetKey(window, cameraController.keys.fogChange) == GLFW_PRESS &&
+				std::chrono::duration_cast<std::chrono::milliseconds>(currentTime - lastFogChangeTime) > std::chrono::milliseconds(500)) {
+				fogEnabled = !fogEnabled;
+				lastFogChangeTime = currentTime;
+			}
+
+			if (glfwGetKey(window, cameraController.keys.nightModeChange) == GLFW_PRESS &&
+				std::chrono::duration_cast<std::chrono::milliseconds>(currentTime - lastNightModeChangeTime) > std::chrono::milliseconds(500)) {
+				nightMode = !nightMode;
+				lastNightModeChangeTime = currentTime;
+			}
+
+            cameraController.moveInPlaneXZ(window, frameTime, viewerObject, cameraMode);
             camera.setViewYXZ(viewerObject.transform.translation, viewerObject.transform.rotation);
 
             float aspect = vcuRenderer.getAspectRatio();
@@ -101,13 +141,19 @@ namespace vcu {
 
 				// update
 				GlobalUbo ubo{};
-				ubo.projectionView = camera.getProjection() * camera.getView();
+				ubo.projection = camera.getProjection();
+				ubo.view = camera.getView();
+				ubo.inverseView = camera.getInverseView();
+				ubo.fogEnabled = fogEnabled;
+				ubo.ambientLightColor = nightMode ? ambientLight[1] : ambientLight[0];
+				pointLightSystem.update(frameInfo, ubo);
 				uboBuffers[frameIndex]->writeToBuffer(&ubo);
 				uboBuffers[frameIndex]->flush();
 
 				// render
 				vcuRenderer.beginSwapChainRenderPass(commandBuffer);
-				simpleRenderSystem.renderGameObjects(frameInfo);
+				renderSystems[shaderMode]->renderGameObjects(frameInfo);
+				pointLightSystem.render(frameInfo);
 				vcuRenderer.endSwapChainRenderPass(commandBuffer);
 				vcuRenderer.endFrame();
 			}
@@ -117,9 +163,9 @@ namespace vcu {
 	}
 
 	void FirstApp::loadGameObjects() {
-		std::shared_ptr<VcuModel> vcuModel = VcuModel::createModelFromFile(vcuDevice, "models/flat_vase.obj");	
+		std::shared_ptr<VcuModel> vcuModel = VcuModel::createModelFromFile(vcuDevice, "models/flat_vase.obj");
 
-        auto flatVase = VcuGameObject::createGameObject();
+		auto flatVase = VcuGameObject::createGameObject();
 		flatVase.model = vcuModel;
 		flatVase.transform.translation = { -.5f, .5f, 0.f };
 		flatVase.transform.scale = glm::vec3{ 3.f, 1.5f, 3.f };
@@ -132,11 +178,37 @@ namespace vcu {
 		smoothVase.transform.scale = glm::vec3{ 3.f, 1.5f, 3.f };
 		gameObjects.emplace(smoothVase.getId(), std::move(smoothVase));
 
-		vcuModel = VcuModel::createModelFromFile(vcuDevice, "models/quad.obj");
+		vcuModel = VcuModel::createModelFromFile(vcuDevice, "models/floor_mat.obj");
 		auto floor = VcuGameObject::createGameObject();
 		floor.model = vcuModel;
 		floor.transform.translation = { 0.f, .5f, 0.f };
-		floor.transform.scale = glm::vec3{ 3.f, 1.f, 3.f };
+		floor.transform.rotation = glm::radians(glm::vec3{ -90.f, 0.f, 0.f });
+		floor.transform.scale = glm::vec3{ .4f, .4f, .4f };
 		gameObjects.emplace(floor.getId(), std::move(floor));
+
+		{
+			auto pointLight = VcuGameObject::makePointLight(0.2f);
+			pointLight.transform.translation = { 0.f, -0.5f, 0.f };
+			gameObjects.emplace(pointLight.getId(), std::move(pointLight));
+		}
+
+		std::vector<glm::vec3> lightColors{
+		 {1.f, .1f, .1f},
+		 {.1f, .1f, 1.f},
+		 {.1f, 1.f, .1f},
+		 {1.f, 1.f, .1f},
+		 {.1f, 1.f, 1.f},
+		 {1.f, 1.f, 1.f}  //
+		};
+
+		for (int i = 0; i < lightColors.size(); i++) {
+			auto pointLight = VcuGameObject::makePointLight(0.2f);
+			pointLight.color = lightColors[i];
+			auto rotateLight = glm::rotate(glm::mat4(1.f), (i * glm::two_pi<float>() / lightColors.size()),
+				{0.f, -1.f, 0.f});
+
+			pointLight.transform.translation = glm::vec3(rotateLight * glm::vec4(-1.f, -1.f, -1.f, 1.f));
+			gameObjects.emplace(pointLight.getId(), std::move(pointLight));
+		}
 	}
 }

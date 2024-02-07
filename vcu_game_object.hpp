@@ -20,6 +20,10 @@ namespace vcu {
         glm::mat3 normalMatrix();
     };
 
+    struct PointLightComponent {
+        float lightIntensity = 1.0f;
+	};
+
     class VcuGameObject {
     public:
         using id_t = unsigned int;
@@ -30,6 +34,8 @@ namespace vcu {
             return VcuGameObject{ currentId++ };
         }
 
+        static VcuGameObject makePointLight(float intensity = 10.f, float radius = 0.1f, glm::vec3 color = glm::vec3{ 1.f });
+
         VcuGameObject(const VcuGameObject&) = delete;
         VcuGameObject& operator=(const VcuGameObject&) = delete;
         VcuGameObject(VcuGameObject&&) = default;
@@ -37,9 +43,12 @@ namespace vcu {
 
         id_t getId() { return id; }
 
-        std::shared_ptr<VcuModel> model{};
         glm::vec3 color{};
         TransformComponent transform{};
+
+        // Optional pointer components
+        std::shared_ptr<VcuModel> model{};
+        std::unique_ptr<PointLightComponent> pointLight = nullptr;
 
     private:
         VcuGameObject(id_t objId) : id{ objId } {}

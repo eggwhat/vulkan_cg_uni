@@ -18,10 +18,11 @@ namespace vcu {
 		glm::mat4 normalMatrix{ 1.f };		
 	};
 
-	SimpleRenderSystem::SimpleRenderSystem(VcuDevice& device, VkRenderPass renderPass, VkDescriptorSetLayout globalSetLayout) 
+	SimpleRenderSystem::SimpleRenderSystem(VcuDevice& device, VkRenderPass renderPass, VkDescriptorSetLayout globalSetLayout,
+		const std::string& vertexShaderFile, const std::string& fragmentShaderFile)
 		: vcuDevice{device} {
 		createPipelineLayout(globalSetLayout);
-		createPipeline(renderPass);
+		createPipeline(renderPass, vertexShaderFile, fragmentShaderFile);
 	}
 
 	SimpleRenderSystem::~SimpleRenderSystem() {
@@ -48,7 +49,7 @@ namespace vcu {
 		}
 	}
 
-	void SimpleRenderSystem::createPipeline(VkRenderPass renderPass) {
+	void SimpleRenderSystem::createPipeline(VkRenderPass renderPass, const std::string& vertexShaderFile, const std::string& fragmentShaderFile) {
 		assert(pipelineLayout != nullptr && "Cannot create pipeline before pipeline layout");
 
 		PipelineConfigInfo pipelineConfig{};
@@ -57,8 +58,8 @@ namespace vcu {
 		pipelineConfig.pipelineLayout = pipelineLayout;
 		vcuPipeline = std::make_unique<VcuPipeline>(
 			vcuDevice,
-			"shaders/simple_shader.vert.spv",
-			"shaders/simple_shader.frag.spv",
+			"shaders/" + vertexShaderFile,
+			"shaders/" + fragmentShaderFile,
 			pipelineConfig
 		);
 	}

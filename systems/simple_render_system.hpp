@@ -1,10 +1,10 @@
 #pragma once
 
-#include "vcu_camera.hpp"
-#include "vcu_pipeline.hpp"
-#include "vcu_game_object.hpp"
-#include "vcu_device.hpp"
-#include "vcu_frame_info.hpp"
+#include "../vcu_camera.hpp"
+#include "../vcu_pipeline.hpp"
+#include "../vcu_game_object.hpp"
+#include "../vcu_device.hpp"
+#include "../vcu_frame_info.hpp"
 
 // std
 #include <memory>
@@ -13,7 +13,8 @@
 namespace vcu {
 	class SimpleRenderSystem {
 	public:
-		SimpleRenderSystem(VcuDevice &device, VkRenderPass renderPass, VkDescriptorSetLayout globalSetLayout);
+		SimpleRenderSystem(VcuDevice &device, VkRenderPass renderPass, VkDescriptorSetLayout globalSetLayout, 
+			const std::string& vertexShaderFile, const std::string& fragmentShaderFile);
 		~SimpleRenderSystem();
 		SimpleRenderSystem(const SimpleRenderSystem&) = delete;
 		SimpleRenderSystem& operator=(const SimpleRenderSystem&) = delete;
@@ -22,7 +23,7 @@ namespace vcu {
 
 	private:
 		void createPipelineLayout(VkDescriptorSetLayout globalSetLayout);
-		void createPipeline(VkRenderPass renderPass);
+		void createPipeline(VkRenderPass renderPass, const std::string& vertexShaderFile, const std::string& fragmentShaderFile);
 
 		VcuDevice& vcuDevice;
 

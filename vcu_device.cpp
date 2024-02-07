@@ -129,7 +129,7 @@ void VcuDevice::pickPhysicalDevice() {
     throw std::runtime_error("failed to find a suitable GPU!");
   }
 
-  auto memoryProperties = VkPhysicalDeviceMemoryProperties{};
+  auto memoryProperties = VkPhysicalDeviceMemoryPropert
   vkGetPhysicalDeviceMemoryProperties(physicalDevice, &memoryProperties);
 
   vkGetPhysicalDeviceProperties(physicalDevice, &properties);

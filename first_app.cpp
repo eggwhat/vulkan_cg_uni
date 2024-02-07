@@ -6,6 +6,7 @@
 #include "vcu_texture.hpp"
 #include "systems/simple_render_system.hpp"
 #include "systems/point_light_system.hpp"
+#include "systems/moving_render_system.hpp"
 
 //#define MAX_FRAME_TIME 0.5f
 
@@ -30,6 +31,7 @@ namespace vcu {
 			.setMaxSets(VcuSwapChain::MAX_FRAMES_IN_FLIGHT)
 			.addPoolSize(VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER, VcuSwapChain::MAX_FRAMES_IN_FLIGHT)
 			.addPoolSize(VK_DESCRIPTOR_TYPE_COMBINED_IMAGE_SAMPLER, VcuSwapChain::MAX_FRAMES_IN_FLIGHT)
+			.addPoolSize(VK_DESCRIPTOR_TYPE_COMBINED_IMAGE_SAMPLER, VcuSwapChain::MAX_FRAMES_IN_FLIGHT)
 			.build();
 		loadGameObjects();
 	}
@@ -52,14 +54,22 @@ namespace vcu {
 		auto globalSetLayout = VcuDescriptorSetLayout::Builder(vcuDevice)
 			.addBinding(0, VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER, VK_SHADER_STAGE_ALL_GRAPHICS)
 			.addBinding(1, VK_DESCRIPTOR_TYPE_COMBINED_IMAGE_SAMPLER, VK_SHADER_STAGE_FRAGMENT_BIT)
+			.addBinding(2, VK_DESCRIPTOR_TYPE_COMBINED_IMAGE_SAMPLER, VK_SHADER_STAGE_FRAGMENT_BIT)
 			.build();
 
-		Texture texture = Texture(vcuDevice, "textures/wood.png");
+		Texture texture = Texture(vcuDevice, "textures/road.png");
 
 		VkDescriptorImageInfo imageInfo = {};
 		imageInfo.sampler = texture.getSampler();
 		imageInfo.imageView = texture.getImageView();
 		imageInfo.imageLayout = texture.getImageLayout();
+
+		Texture road = Texture(vcuDevice, "textures/metal_plate.jpg");
+
+		VkDescriptorImageInfo roadImageInfo = {};
+		roadImageInfo.sampler = road.getSampler();
+		roadImageInfo.imageView = road.getImageView();
+		roadImageInfo.imageLayout = road.getImageLayout();
 
 		std::vector<VkDescriptorSet> globalDescriptorSets(VcuSwapChain::MAX_FRAMES_IN_FLIGHT);
 		for (int i = 0; i < globalDescriptorSets.size(); i++) {
@@ -67,6 +77,7 @@ namespace vcu {
 			VcuDescriptorWriter(*globalSetLayout, *globalPool)
 				.writeBuffer(0, &bufferInfo)
 				.writeImage(1, &imageInfo)
+				.writeImage(2, &roadImageInfo)
 				.build(globalDescriptorSets[i]);
 		}
 
@@ -75,6 +86,10 @@ namespace vcu {
 		renderSystems.push_back(std::move(std::make_unique<SimpleRenderSystem>(vcuDevice, vcuRenderer.getSwapChainRenderPass(), globalSetLayout->getDescriptorSetLayout(),"flat_shader.vert.spv","flat_shader.frag.spv")));
 		renderSystems.push_back(std::move(std::make_unique<SimpleRenderSystem>(vcuDevice, vcuRenderer.getSwapChainRenderPass(), globalSetLayout->getDescriptorSetLayout(),"gourard_shader.vert.spv","gourard_shader.frag.spv")));
 		PointLightSystem pointLightSystem{ vcuDevice, vcuRenderer.getSwapChainRenderPass(), globalSetLayout->getDescriptorSetLayout() };
+		auto movingRenderSystems = std::vector<std::unique_ptr<MovingRenderSystem>>();
+		movingRenderSystems.push_back(std::move(std::make_unique<MovingRenderSystem>(vcuDevice, vcuRenderer.getSwapChainRenderPass(), globalSetLayout->getDescriptorSetLayout(), "mv_simple_shader.vert.spv", "mv_simple_shader.frag.spv")));
+		movingRenderSystems.push_back(std::move(std::make_unique<MovingRenderSystem>(vcuDevice, vcuRenderer.getSwapChainRenderPass(), globalSetLayout->getDescriptorSetLayout(), "mv_flat_shader.vert.spv", "mv_flat_shader.frag.spv")));
+		movingRenderSystems.push_back(std::move(std::make_unique<MovingRenderSystem>(vcuDevice, vcuRenderer.getSwapChainRenderPass(), globalSetLayout->getDescriptorSetLayout(), "mv_gourard_shader.vert.spv", "mv_gourard_shader.frag.spv")));
         VcuCamera camera{};
     
         auto viewerObject = VcuGameObject::createGameObject();
@@ -86,7 +101,7 @@ namespace vcu {
 		auto lastShaderModeChangeTime = currentTime;
 		auto lastFogChangeTime = currentTime;
 		auto lastNightModeChangeTime = currentTime;
-		std::vector<glm::vec4> ambientLight{{ 0.988f, 0.933f, 0.655, 0.14f }, { 1.f, 1.f, 1.f, 0.02f } };
+		std::vector<glm::vec4> ambientLight{{ 1.0f, 1.0f, 1.0, 0.2f }, { 1.f, 1.f, 1.f, 0.02f } };
 
 		while (!vcuWindow.shouldClose()) {
 			glfwPollEvents();
@@ -146,7 +161,9 @@ namespace vcu {
 				ubo.inverseView = camera.getInverseView();
 				ubo.fogEnabled = fogEnabled;
 				ubo.ambientLightColor = nightMode ? ambientLight[1] : ambientLight[0];
-				pointLightSystem.update(frameInfo, ubo);
+				ubo.movingLightIndices = glm::vec2{0,1};
+				auto transMatrix = movingRenderSystems[shaderMode]->update(frameInfo, ubo);
+				pointLightSystem.update(frameInfo, ubo, transMatrix);
 				uboBuffers[frameIndex]->writeToBuffer(&ubo);
 				uboBuffers[frameIndex]->flush();
 
@@ -154,6 +171,7 @@ namespace vcu {
 				vcuRenderer.beginSwapChainRenderPass(commandBuffer);
 				renderSystems[shaderMode]->renderGameObjects(frameInfo);
 				pointLightSystem.render(frameInfo);
+				movingRenderSystems[shaderMode]->render(frameInfo);
 				vcuRenderer.endSwapChainRenderPass(commandBuffer);
 				vcuRenderer.endFrame();
 			}
@@ -163,7 +181,7 @@ namespace vcu {
 	}
 
 	void FirstApp::loadGameObjects() {
-		std::shared_ptr<VcuModel> vcuModel = VcuModel::createModelFromFile(vcuDevice, "models/flat_vase.obj");
+		/*std::shared_ptr<VcuModel> vcuModel = VcuModel::createModelFromFile(vcuDevice, "models/flat_vase.obj");
 
 		auto flatVase = VcuGameObject::createGameObject();
 		flatVase.model = vcuModel;
@@ -176,21 +194,37 @@ namespace vcu {
 		smoothVase.model = vcuModel;
 		smoothVase.transform.translation = { .5f, .5f, 0.f };
 		smoothVase.transform.scale = glm::vec3{ 3.f, 1.5f, 3.f };
-		gameObjects.emplace(smoothVase.getId(), std::move(smoothVase));
+		gameObjects.emplace(smoothVase.getId(), std::move(smoothVase));*/
 
-		vcuModel = VcuModel::createModelFromFile(vcuDevice, "models/floor_mat.obj");
+		std::shared_ptr<VcuModel> vcuModel = VcuModel::createModelFromFile(vcuDevice, "models/Chess.obj");
 		auto floor = VcuGameObject::createGameObject();
 		floor.model = vcuModel;
 		floor.transform.translation = { 0.f, .5f, 0.f };
-		floor.transform.rotation = glm::radians(glm::vec3{ -90.f, 0.f, 0.f });
-		floor.transform.scale = glm::vec3{ .4f, .4f, .4f };
+		floor.transform.rotation = glm::vec3{ glm::radians(-180.f), 0.f, 0.f };
+		floor.transform.scale = glm::vec3{ 3.0f, 3.0f, 3.0f };
 		gameObjects.emplace(floor.getId(), std::move(floor));
 
-		{
+		vcuModel = VcuModel::createModelFromFile(vcuDevice, "models/uh60.obj");
+		auto helicopter = VcuGameObject::makeMovingObject();
+		helicopter.model = vcuModel;
+		helicopter.transform.translation = { 0.f, -10.5f, 0.f };
+		helicopter.transform.rotation = glm::vec3{ glm::radians(-180.f), 0.f, 0.f };
+		helicopter.transform.scale = glm::vec3{ 0.04f, 0.04f, 0.04f };
+		gameObjects.emplace(helicopter.getId(), std::move(helicopter));
+
+		auto pointLightLeft = VcuGameObject::makePointLight(20.0f, 0.05f, { 0.5f, 1.f, 1.f }, 1);
+		pointLightLeft.transform.translation = { -0.4f, -11.0f, -2.8f };
+		gameObjects.emplace(pointLightLeft.getId(), std::move(pointLightLeft));
+
+		auto pointLightRight = VcuGameObject::makePointLight(20.2f, 0.05f, { 0.5f, 1.f, 1.f }, 1);
+		pointLightRight.transform.translation = { 0.4f, -11.0f, -2.8f };
+		gameObjects.emplace(pointLightRight.getId(), std::move(pointLightRight));
+
+		/*{
 			auto pointLight = VcuGameObject::makePointLight(0.2f);
 			pointLight.transform.translation = { 0.f, -0.5f, 0.f };
 			gameObjects.emplace(pointLight.getId(), std::move(pointLight));
-		}
+		}*/
 
 		std::vector<glm::vec3> lightColors{
 		 {1.f, .1f, .1f},
@@ -201,7 +235,7 @@ namespace vcu {
 		 {1.f, 1.f, 1.f}  //
 		};
 
-		for (int i = 0; i < lightColors.size(); i++) {
+		/*for (int i = 0; i < lightColors.size(); i++) {
 			auto pointLight = VcuGameObject::makePointLight(0.2f);
 			pointLight.color = lightColors[i];
 			auto rotateLight = glm::rotate(glm::mat4(1.f), (i * glm::two_pi<float>() / lightColors.size()),
@@ -209,6 +243,6 @@ namespace vcu {
 
 			pointLight.transform.translation = glm::vec3(rotateLight * glm::vec4(-1.f, -1.f, -1.f, 1.f));
 			gameObjects.emplace(pointLight.getId(), std::move(pointLight));
-		}
+		}*/
 	}
 }

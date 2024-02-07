@@ -23,7 +23,7 @@ layout(set = 0, binding = 0) uniform GlobalUbo{
 	vec2 movingLightIndices;
 } ubo;
 
-layout(set = 0, binding = 1) uniform sampler2D image;
+layout(set = 0, binding = 2) uniform sampler2D image;
 
 layout(push_constant) uniform Push {
 	mat4 modelMatrix; 

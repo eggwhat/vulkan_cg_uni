@@ -23,6 +23,7 @@ namespace vcu {
 		PointLight pointLights[MAX_LIGHTS];
 		int numLights;
 		bool fogEnabled;
+		glm::vec2 movingLightIndices;
 	};
 
 	struct FrameInfo {

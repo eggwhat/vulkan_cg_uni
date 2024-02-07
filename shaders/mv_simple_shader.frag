@@ -23,8 +23,7 @@ layout(set = 0, binding = 0) uniform GlobalUbo{
 	vec2 movingLightIndices;
 } ubo;
 
-layout(set = 0, binding = 1) uniform sampler2D image;
-layout(set = 0, binding = 2) uniform sampler2D normalMap;
+layout(set = 0, binding = 2) uniform sampler2D image;
 
 layout(push_constant) uniform Push {
 	mat4 modelMatrix; 
@@ -68,7 +67,7 @@ void main(){
 		vec3 halfAngle = normalize(directionToLight + viewDirection);
 		float blinnTerm = dot(surfaceNormal, halfAngle);
 		blinnTerm = clamp(blinnTerm, 0, 1);
-		blinnTerm = pow(blinnTerm, 1024.0); // higher values -> sharper highlights
+		blinnTerm = pow(blinnTerm, 512.0); // higher values -> sharper highlights
 		specularLight += intensity * blinnTerm;
 	}
 

@@ -1,4 +1,4 @@
-#include "simple_render_system.hpp"
+#include "moving_render_system.hpp"
 
 // libs
 #define GLFW_FORCE_RADIANS
@@ -18,18 +18,18 @@ namespace vcu {
 		glm::mat4 normalMatrix{ 1.f };		
 	};
 
-	SimpleRenderSystem::SimpleRenderSystem(VcuDevice& device, VkRenderPass renderPass, VkDescriptorSetLayout globalSetLayout,
+	MovingRenderSystem::MovingRenderSystem(VcuDevice& device, VkRenderPass renderPass, VkDescriptorSetLayout globalSetLayout,
 		const std::string& vertexShaderFile, const std::string& fragmentShaderFile)
 		: vcuDevice{device} {
 		createPipelineLayout(globalSetLayout);
 		createPipeline(renderPass, vertexShaderFile, fragmentShaderFile);
 	}
 
-	SimpleRenderSystem::~SimpleRenderSystem() {
+	MovingRenderSystem::~MovingRenderSystem() {
 		vkDestroyPipelineLayout(vcuDevice.device(), pipelineLayout, nullptr);
 	}
 
-	void SimpleRenderSystem::createPipelineLayout(VkDescriptorSetLayout globalSetLayout) {
+	void MovingRenderSystem::createPipelineLayout(VkDescriptorSetLayout globalSetLayout) {
 		VkPushConstantRange pushConstantRange{};
 		pushConstantRange.stageFlags = VK_SHADER_STAGE_VERTEX_BIT | VK_SHADER_STAGE_FRAGMENT_BIT;
 		pushConstantRange.offset = 0;
@@ -49,7 +49,7 @@ namespace vcu {
 		}
 	}
 
-	void SimpleRenderSystem::createPipeline(VkRenderPass renderPass, const std::string& vertexShaderFile, const std::string& fragmentShaderFile) {
+	void MovingRenderSystem::createPipeline(VkRenderPass renderPass, const std::string& vertexShaderFile, const std::string& fragmentShaderFile) {
 		assert(pipelineLayout != nullptr && "Cannot create pipeline before pipeline layout");
 
 		PipelineConfigInfo pipelineConfig{};
@@ -64,7 +64,7 @@ namespace vcu {
 		);
 	}
 
-	void SimpleRenderSystem::renderGameObjects(FrameInfo &frameInfo) {
+	void MovingRenderSystem::render(FrameInfo &frameInfo) {
 		vcuPipeline->bind(frameInfo.commandBuffer);
 
 		vkCmdBindDescriptorSets(
@@ -79,7 +79,7 @@ namespace vcu {
 
 		for (auto& kv : frameInfo.gameObjects) {
 			auto& obj = kv.second;
-			if (obj.model == nullptr || obj.type != 0) continue;
+			if (obj.type != 1 || obj.pointLight != nullptr) continue;
 			SimplePushConstantData push{};
 			push.modelMatrix = obj.transform.mat4();
 			push.normalMatrix = obj.transform.normalMatrix();
@@ -94,5 +94,25 @@ namespace vcu {
 			obj.model->bind(frameInfo.commandBuffer);
 			obj.model->draw(frameInfo.commandBuffer);
 		}
+	}
+
+	glm::vec3 MovingRenderSystem::update(FrameInfo& frameInfo, GlobalUbo& ubo) {
+		auto rotateObject = glm::rotate(glm::mat4(1.f), frameInfo.frameTime, { 0.5f, -1.f, 0.5f });
+		int lightIndex = ubo.numLights;
+		glm::vec3 translation;
+		for (auto& kv : frameInfo.gameObjects) {
+			auto& obj = kv.second;
+			if (obj.type != 1 || obj.pointLight != nullptr) continue;
+
+			// update light position
+			obj.transform.translation = glm::vec3(rotateObject * glm::vec4(obj.transform.translation, 1.f));
+			translation = obj.transform.translation;
+			// copy light to ubo
+			/*ubo.pointLights[lightIndex].position = glm::vec4(obj.transform.translation, 1.f);
+			ubo.pointLights[lightIndex].color = glm::vec4(obj.color, obj.pointLight->lightIntensity);*/
+			//lightIndex += 1;
+		}
+		//ubo.numLights = lightIndex;
+		return translation;
 	}
 }

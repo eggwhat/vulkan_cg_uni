@@ -60,13 +60,21 @@ namespace vcu {
         };
     }
 
-    VcuGameObject VcuGameObject::makePointLight(float intensity, float radius, glm::vec3 color) {
+    VcuGameObject VcuGameObject::makePointLight(float intensity, float radius, glm::vec3 color, int type) {
         VcuGameObject obj = VcuGameObject::createGameObject();
         obj.color = color;
         obj.transform.scale.x = radius;
         obj.pointLight = std::make_unique<PointLightComponent>();
         obj.pointLight->lightIntensity = intensity;
+        obj.type = type;
         return obj;
+    }
+
+    VcuGameObject VcuGameObject::makeMovingObject(glm::vec3 color) {
+		VcuGameObject obj = VcuGameObject::createGameObject();
+        obj.color = color;
+        obj.type = 1;
+		return obj;
     }
 
 }

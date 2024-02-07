@@ -31,10 +31,11 @@ namespace vcu {
 
         static VcuGameObject createGameObject() {
             static id_t currentId = 0;
-            return VcuGameObject{ currentId++ };
+            return VcuGameObject{ currentId++, 0};
         }
 
-        static VcuGameObject makePointLight(float intensity = 10.f, float radius = 0.1f, glm::vec3 color = glm::vec3{ 1.f });
+        static VcuGameObject makePointLight(float intensity = 10.f, float radius = 0.1f, glm::vec3 color = glm::vec3{ 1.f }, int type = 0);
+        static VcuGameObject makeMovingObject(glm::vec3 color = glm::vec3{ 0.5f, 0.2f, 0.7f });
 
         VcuGameObject(const VcuGameObject&) = delete;
         VcuGameObject& operator=(const VcuGameObject&) = delete;
@@ -42,6 +43,7 @@ namespace vcu {
         VcuGameObject& operator=(VcuGameObject&&) = default;
 
         id_t getId() { return id; }
+        int type;
 
         glm::vec3 color{};
         TransformComponent transform{};
@@ -51,7 +53,7 @@ namespace vcu {
         std::unique_ptr<PointLightComponent> pointLight = nullptr;
 
     private:
-        VcuGameObject(id_t objId) : id{ objId } {}
+        VcuGameObject(id_t objId, int type) : id{ objId }, type{type} {}
 
         id_t id;
     };

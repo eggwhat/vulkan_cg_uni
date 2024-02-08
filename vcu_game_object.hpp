@@ -36,6 +36,7 @@ namespace vcu {
 
         static VcuGameObject makePointLight(float intensity = 10.f, float radius = 0.1f, glm::vec3 color = glm::vec3{ 1.f }, int type = 0);
         static VcuGameObject makeMovingObject(glm::vec3 color = glm::vec3{ 0.5f, 0.2f, 0.7f });
+        static VcuGameObject makeWoodObject();
 
         VcuGameObject(const VcuGameObject&) = delete;
         VcuGameObject& operator=(const VcuGameObject&) = delete;

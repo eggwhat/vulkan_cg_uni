@@ -72,9 +72,15 @@ namespace vcu {
 
     VcuGameObject VcuGameObject::makeMovingObject(glm::vec3 color) {
 		VcuGameObject obj = VcuGameObject::createGameObject();
-        obj.color = color;
+        //obj.color = color;
         obj.type = 1;
 		return obj;
     }
+
+    VcuGameObject VcuGameObject::makeWoodObject() {
+		VcuGameObject obj = VcuGameObject::createGameObject();
+		obj.type = 2;
+		return obj;
+	}
 
 }

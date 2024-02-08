@@ -205,7 +205,7 @@ namespace vcu {
 	}
 
 	void FirstApp::loadGameObjects() {
-		/*std::shared_ptr<VcuModel> vcuModel = VcuModel::createModelFromFile(vcuDevice, "models/flat_vase.obj");
+		std::shared_ptr<VcuModel> vcuModel = VcuModel::createModelFromFile(vcuDevice, "models/flat_vase.obj");
 
 		auto flatVase = VcuGameObject::createGameObject();
 		flatVase.model = vcuModel;
@@ -218,9 +218,9 @@ namespace vcu {
 		smoothVase.model = vcuModel;
 		smoothVase.transform.translation = { .5f, .5f, 0.f };
 		smoothVase.transform.scale = glm::vec3{ 3.f, 1.5f, 3.f };
-		gameObjects.emplace(smoothVase.getId(), std::move(smoothVase));*/
+		gameObjects.emplace(smoothVase.getId(), std::move(smoothVase));
 
-		std::shared_ptr<VcuModel> vcuModel = VcuModel::createModelFromFile(vcuDevice, "models/Chess.obj");
+		/*std::shared_ptr<VcuModel> vcuModel = VcuModel::createModelFromFile(vcuDevice, "models/Chess.obj");
 		auto floor = VcuGameObject::createGameObject();
 		floor.model = vcuModel;
 		floor.transform.translation = { 0.f, .5f, 0.f };
@@ -250,13 +250,18 @@ namespace vcu {
 
 		auto pointLightRight = VcuGameObject::makePointLight(0.2f, 0.05f, { 0.5f, 1.f, 1.f }, 1);
 		pointLightRight.transform.translation = { 0.4f, -11.0f, -2.8f };
-		gameObjects.emplace(pointLightRight.getId(), std::move(pointLightRight));
+		gameObjects.emplace(pointLightRight.getId(), std::move(pointLightRight));*/
 
 		/*{
 			auto pointLight = VcuGameObject::makePointLight(0.2f);
 			pointLight.transform.translation = { 0.f, -0.5f, 0.f };
 			gameObjects.emplace(pointLight.getId(), std::move(pointLight));
 		}*/
+
+		vcuModel = VcuModel::createModelBezier(vcuDevice);
+		auto bezierModel = VcuGameObject::createGameObject();
+		bezierModel.model = vcuModel;
+		gameObjects.emplace(bezierModel.getId(), std::move(bezierModel));
 
 		std::vector<glm::vec3> lightColors{
 		 {1.f, .1f, .1f},

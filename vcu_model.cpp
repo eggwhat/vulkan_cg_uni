@@ -1,5 +1,5 @@
 #include "vcu_model.hpp"
-
+#include "bezier.hpp"
 #include "vcu_utils.hpp"
 
 // libs
@@ -184,6 +184,15 @@ namespace vcu {
 	void VcuModel::Builder::loadBezier() {
 		vertices.clear();
 		indices.clear();
+		Bezier bezier{};
+
+		bezier.parseInputFile("bezier/input1.txt");
+
+		bezier.createControlPoints();
+		bezier.initBezierSampleVertices();
+		bezier.generateBezierFaces();
+		
+		bezier.initVertices(vertices, indices);
 		
 	}
 }

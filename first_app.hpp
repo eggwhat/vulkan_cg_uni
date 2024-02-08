@@ -22,6 +22,10 @@ namespace vcu {
 		int shaderMode{ 0 };
 		bool fogEnabled{ false };
 		bool nightMode{ true };
+		const std::vector<const char*> cameraModeNames{ "Free", "Static", "Following", "3rd person" };
+		const std::vector<const char*> shadingModeNames{ "Blinn-Phong", "Flat", "Gouraud" };
+		const std::vector<const char*> fogModeNames{ "Fog off", "Fog on" };
+		const std::vector<const char*> nightModeNames{ "Day", "Night" };
 
 		FirstApp();
 		~FirstApp();
@@ -32,7 +36,7 @@ namespace vcu {
 	private:
 		void loadGameObjects();
 
-		VcuWindow vcuWindow{ WIDTH, HEIGHT, "Vulkan" };
+		VcuWindow vcuWindow{ WIDTH, HEIGHT, "Little engine" };
 		VcuDevice vcuDevice{ vcuWindow };
 		VcuRenderer vcuRenderer{ vcuWindow, vcuDevice };
 

@@ -97,7 +97,7 @@ namespace vcu {
 	}
 
 	void MovingRenderSystem::update(FrameInfo& frameInfo, GlobalUbo& ubo, glm::vec3& translation, glm::vec3& rotation) {
-		auto rotateObject = glm::rotate(glm::mat4(1.f), frameInfo.frameTime, { 0.5f, -1.f, 0.5f });
+		auto rotateObject = glm::rotate(glm::mat4(1.f), frameInfo.frameTime * 0.7f, { 0.5f, -1.f, 0.5f });
 		int lightIndex = ubo.numLights;
 		for (auto& kv : frameInfo.gameObjects) {
 			auto& obj = kv.second;

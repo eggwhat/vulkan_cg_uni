@@ -157,6 +157,12 @@ namespace vcu {
             cameraController.moveInPlaneXZ(window, frameTime, viewerObject, cameraMode, movingObjectTranslation, movingObjectRotation);
             camera.setViewYXZ(viewerObject.transform.translation, viewerObject.transform.rotation);
 
+			std::vector<std::string> fr = { " -- Camera mode: ", cameraModeNames[cameraMode], " -- Shading mode: ", shadingModeNames[shaderMode],
+				" -- ", fogModeNames[fogEnabled ? 1 : 0], " -- Lighting mode: ", nightModeNames[nightMode ? 1 : 0]};
+			char rendererInfo[512] = { 0 };
+			std::accumulate(fr.begin(), fr.end(), std::string()).copy(rendererInfo, 512);
+			glfwSetWindowTitle(window, rendererInfo);
+
             float aspect = vcuRenderer.getAspectRatio();
             camera.setPerspectiveProjection(glm::radians(50.f), aspect, 0.1f, 100.f);
 
@@ -238,11 +244,11 @@ namespace vcu {
 		helicopter.transform.scale = glm::vec3{ 0.04f, 0.04f, 0.04f };
 		gameObjects.emplace(helicopter.getId(), std::move(helicopter));
 
-		auto pointLightLeft = VcuGameObject::makePointLight(2.0f, 0.05f, { 0.5f, 1.f, 1.f }, 1);
+		auto pointLightLeft = VcuGameObject::makePointLight(0.2f, 0.05f, { 0.5f, 1.f, 1.f }, 1);
 		pointLightLeft.transform.translation = { -0.4f, -11.0f, -2.8f };
 		gameObjects.emplace(pointLightLeft.getId(), std::move(pointLightLeft));
 
-		auto pointLightRight = VcuGameObject::makePointLight(2.0f, 0.05f, { 0.5f, 1.f, 1.f }, 1);
+		auto pointLightRight = VcuGameObject::makePointLight(0.2f, 0.05f, { 0.5f, 1.f, 1.f }, 1);
 		pointLightRight.transform.translation = { 0.4f, -11.0f, -2.8f };
 		gameObjects.emplace(pointLightRight.getId(), std::move(pointLightRight));
 
@@ -262,12 +268,12 @@ namespace vcu {
 		};
 
 		for (int i = 0; i < lightColors.size(); i++) {
-			auto pointLight = VcuGameObject::makePointLight(0.2f);
+			auto pointLight = VcuGameObject::makePointLight(0.2f, 0.2f);
 			pointLight.color = lightColors[i];
 			auto rotateLight = glm::rotate(glm::mat4(1.f), (i * glm::two_pi<float>() / lightColors.size()),
 				{0.f, -1.f, 0.f});
 
-			pointLight.transform.translation = glm::vec3(rotateLight * glm::vec4(-1.f, -1.f, -1.f, 1.f));
+			pointLight.transform.translation = glm::vec3(rotateLight * glm::vec4(-2.0f, -2.5f, -2.0f, 1.f));
 			gameObjects.emplace(pointLight.getId(), std::move(pointLight));
 		}
 	}

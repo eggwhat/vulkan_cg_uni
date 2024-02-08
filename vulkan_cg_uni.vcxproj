@@ -141,6 +141,7 @@
     </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="bezier.cpp" />
     <ClCompile Include="first_app.cpp" />
     <ClCompile Include="keyboard_movement_controller.cpp" />
     <ClCompile Include="main.cpp" />

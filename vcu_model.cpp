@@ -40,6 +40,12 @@ namespace vcu {
 		return std::make_unique<VcuModel>(device, builder);
 	}
 
+	std::unique_ptr<VcuModel> VcuModel::createModelBezier(VcuDevice& device) {
+		Builder builder{};
+		builder.loadBezier();
+		return std::make_unique<VcuModel>(device, builder);
+	}
+
 
 	void VcuModel::createVertexBuffers(const std::vector<Vertex>& vertices) {
 		vertexCount = static_cast<uint32_t>(vertices.size());
@@ -173,5 +179,11 @@ namespace vcu {
 				indices.push_back(uniqueVertices[vertex]);
 			}
 		}
+	}
+
+	void VcuModel::Builder::loadBezier() {
+		vertices.clear();
+		indices.clear();
+		
 	}
 }

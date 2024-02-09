@@ -146,6 +146,7 @@
     <ClCompile Include="keyboard_movement_controller.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="systems\moving_render_system.cpp" />
+    <ClCompile Include="systems\no_txt_render_system.cpp" />
     <ClCompile Include="systems\point_light_system.cpp" />
     <ClCompile Include="systems\simple_render_system.cpp" />
     <ClCompile Include="systems\wood_render_system.cpp" />
@@ -165,6 +166,7 @@
     <ClInclude Include="first_app.hpp" />
     <ClInclude Include="keyboard_movement_controller.hpp" />
     <ClInclude Include="systems\moving_render_system.hpp" />
+    <ClInclude Include="systems\no_txt_render_system.hpp" />
     <ClInclude Include="systems\point_light_system.hpp" />
     <ClInclude Include="systems\simple_render_system.hpp" />
     <ClInclude Include="systems\wood_render_system.hpp" />
@@ -197,6 +199,12 @@
     <None Include="shaders\mv_gourard_shader.vert" />
     <None Include="shaders\mv_simple_shader.frag" />
     <None Include="shaders\mv_simple_shader.vert" />
+    <None Include="shaders\no_txt_flat_shader.frag" />
+    <None Include="shaders\no_txt_flat_shader.vert" />
+    <None Include="shaders\no_txt_gourard_shader.frag" />
+    <None Include="shaders\no_txt_gourard_shader.vert" />
+    <None Include="shaders\no_txt_phong_shader.frag" />
+    <None Include="shaders\no_txt_phong_shader.vert" />
     <None Include="shaders\point_light.frag" />
     <None Include="shaders\point_light.vert" />
     <None Include="shaders\simple_shader.frag" />

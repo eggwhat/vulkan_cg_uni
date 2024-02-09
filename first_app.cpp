@@ -8,6 +8,7 @@
 #include "systems/point_light_system.hpp"
 #include "systems/moving_render_system.hpp"
 #include "systems/wood_render_system.hpp"
+#include "systems/no_txt_render_system.hpp"
 
 //#define MAX_FRAME_TIME 0.5f
 
@@ -105,6 +106,10 @@ namespace vcu {
 		woodRenderSystems.push_back(std::move(std::make_unique<WoodRenderSystem>(vcuDevice, vcuRenderer.getSwapChainRenderPass(), globalSetLayout->getDescriptorSetLayout(), "wd_simple_shader.vert.spv", "wd_simple_shader.frag.spv")));
 		woodRenderSystems.push_back(std::move(std::make_unique<WoodRenderSystem>(vcuDevice, vcuRenderer.getSwapChainRenderPass(), globalSetLayout->getDescriptorSetLayout(), "wd_flat_shader.vert.spv", "wd_flat_shader.frag.spv")));
 		woodRenderSystems.push_back(std::move(std::make_unique<WoodRenderSystem>(vcuDevice, vcuRenderer.getSwapChainRenderPass(), globalSetLayout->getDescriptorSetLayout(), "wd_gourard_shader.vert.spv", "wd_gourard_shader.frag.spv")));
+		auto noTxtRenderSystem = std::vector<std::unique_ptr<NoTxtRenderSystem>>();
+		noTxtRenderSystem.push_back(std::move(std::make_unique<NoTxtRenderSystem>(vcuDevice, vcuRenderer.getSwapChainRenderPass(), globalSetLayout->getDescriptorSetLayout(), "no_txt_phong_shader.vert.spv", "no_txt_phong_shader.frag.spv")));
+		noTxtRenderSystem.push_back(std::move(std::make_unique<NoTxtRenderSystem>(vcuDevice, vcuRenderer.getSwapChainRenderPass(), globalSetLayout->getDescriptorSetLayout(), "no_txt_flat_shader.vert.spv", "no_txt_flat_shader.frag.spv")));
+		noTxtRenderSystem.push_back(std::move(std::make_unique<NoTxtRenderSystem>(vcuDevice, vcuRenderer.getSwapChainRenderPass(), globalSetLayout->getDescriptorSetLayout(), "no_txt_gourard_shader.vert.spv", "no_txt_gourard_shader.frag.spv")));
         VcuCamera camera{};
     
         auto viewerObject = VcuGameObject::createGameObject();
@@ -194,6 +199,7 @@ namespace vcu {
 				vcuRenderer.beginSwapChainRenderPass(commandBuffer);
 				renderSystems[shaderMode]->renderGameObjects(frameInfo);
 				woodRenderSystems[shaderMode]->renderGameObjects(frameInfo);
+				noTxtRenderSystem[shaderMode]->renderGameObjects(frameInfo);
 				pointLightSystem.render(frameInfo);
 				movingRenderSystems[shaderMode]->render(frameInfo);
 				vcuRenderer.endSwapChainRenderPass(commandBuffer);
@@ -264,6 +270,7 @@ namespace vcu {
 		bezierModel.transform.translation = { 10.5f, 0.5f, 0.f };
 		bezierModel.transform.scale = glm::vec3{ 6.f, 5.f, 4.f };
 		bezierModel.transform.rotation = glm::vec3{ 1.5f, 0.f, 0.f };
+		bezierModel.type = 3;
 		gameObjects.emplace(bezierModel.getId(), std::move(bezierModel));
 
 		std::vector<glm::vec3> lightColors{

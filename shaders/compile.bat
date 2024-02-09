@@ -24,4 +24,10 @@ C:\VulkanSDK\1.3.268.0\Bin\glslc.exe shaders\no_txt_gourard_shader.vert -o shade
 C:\VulkanSDK\1.3.268.0\Bin\glslc.exe shaders\no_txt_gourard_shader.frag -o shaders\no_txt_gourard_shader.frag.spv
 C:\VulkanSDK\1.3.268.0\Bin\glslc.exe shaders\no_txt_flat_shader.vert -o shaders\no_txt_flat_shader.vert.spv
 C:\VulkanSDK\1.3.268.0\Bin\glslc.exe shaders\no_txt_flat_shader.frag -o shaders\no_txt_flat_shader.frag.spv
+C:\VulkanSDK\1.3.268.0\Bin\glslc.exe shaders\mrb_phong_shader.vert -o shaders\mrb_phong_shader.vert.spv
+C:\VulkanSDK\1.3.268.0\Bin\glslc.exe shaders\mrb_phong_shader.frag -o shaders\mrb_phong_shader.frag.spv
+C:\VulkanSDK\1.3.268.0\Bin\glslc.exe shaders\mrb_gourard_shader.vert -o shaders\mrb_gourard_shader.vert.spv
+C:\VulkanSDK\1.3.268.0\Bin\glslc.exe shaders\mrb_gourard_shader.frag -o shaders\mrb_gourard_shader.frag.spv
+C:\VulkanSDK\1.3.268.0\Bin\glslc.exe shaders\mrb_flat_shader.vert -o shaders\mrb_flat_shader.vert.spv
+C:\VulkanSDK\1.3.268.0\Bin\glslc.exe shaders\mrb_flat_shader.frag -o shaders\mrb_flat_shader.frag.spv
 pause

@@ -9,6 +9,7 @@
 #include "systems/moving_render_system.hpp"
 #include "systems/wood_render_system.hpp"
 #include "systems/no_txt_render_system.hpp"
+#include "systems/marble_render_system.hpp"
 
 //#define MAX_FRAME_TIME 0.5f
 
@@ -32,6 +33,7 @@ namespace vcu {
 		globalPool = VcuDescriptorPool::Builder(vcuDevice)
 			.setMaxSets(VcuSwapChain::MAX_FRAMES_IN_FLIGHT)
 			.addPoolSize(VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER, VcuSwapChain::MAX_FRAMES_IN_FLIGHT)
+			.addPoolSize(VK_DESCRIPTOR_TYPE_COMBINED_IMAGE_SAMPLER, VcuSwapChain::MAX_FRAMES_IN_FLIGHT)
 			.addPoolSize(VK_DESCRIPTOR_TYPE_COMBINED_IMAGE_SAMPLER, VcuSwapChain::MAX_FRAMES_IN_FLIGHT)
 			.addPoolSize(VK_DESCRIPTOR_TYPE_COMBINED_IMAGE_SAMPLER, VcuSwapChain::MAX_FRAMES_IN_FLIGHT)
 			.addPoolSize(VK_DESCRIPTOR_TYPE_COMBINED_IMAGE_SAMPLER, VcuSwapChain::MAX_FRAMES_IN_FLIGHT)
@@ -59,6 +61,7 @@ namespace vcu {
 			.addBinding(1, VK_DESCRIPTOR_TYPE_COMBINED_IMAGE_SAMPLER, VK_SHADER_STAGE_FRAGMENT_BIT)
 			.addBinding(2, VK_DESCRIPTOR_TYPE_COMBINED_IMAGE_SAMPLER, VK_SHADER_STAGE_FRAGMENT_BIT)
 			.addBinding(3, VK_DESCRIPTOR_TYPE_COMBINED_IMAGE_SAMPLER, VK_SHADER_STAGE_FRAGMENT_BIT)
+			.addBinding(4, VK_DESCRIPTOR_TYPE_COMBINED_IMAGE_SAMPLER, VK_SHADER_STAGE_FRAGMENT_BIT)
 			.build();
 
 		Texture texture = Texture(vcuDevice, "textures/road.png");
@@ -81,6 +84,13 @@ namespace vcu {
 		tableImageInfo.sampler = table.getSampler();
 		tableImageInfo.imageView = table.getImageView();
 		tableImageInfo.imageLayout = table.getImageLayout();
+		
+		Texture marble = Texture(vcuDevice, "textures/marble2.jpg");
+
+		VkDescriptorImageInfo marbleImageInfo = {};
+		marbleImageInfo.sampler = marble.getSampler();
+		marbleImageInfo.imageView = marble.getImageView();
+		marbleImageInfo.imageLayout = marble.getImageLayout();
 
 		std::vector<VkDescriptorSet> globalDescriptorSets(VcuSwapChain::MAX_FRAMES_IN_FLIGHT);
 		for (int i = 0; i < globalDescriptorSets.size(); i++) {
@@ -90,6 +100,7 @@ namespace vcu {
 				.writeImage(1, &imageInfo)
 				.writeImage(2, &roadImageInfo)
 				.writeImage(3, &tableImageInfo)
+				.writeImage(4, &marbleImageInfo)
 				.build(globalDescriptorSets[i]);
 		}
 
@@ -110,6 +121,10 @@ namespace vcu {
 		noTxtRenderSystem.push_back(std::move(std::make_unique<NoTxtRenderSystem>(vcuDevice, vcuRenderer.getSwapChainRenderPass(), globalSetLayout->getDescriptorSetLayout(), "no_txt_phong_shader.vert.spv", "no_txt_phong_shader.frag.spv")));
 		noTxtRenderSystem.push_back(std::move(std::make_unique<NoTxtRenderSystem>(vcuDevice, vcuRenderer.getSwapChainRenderPass(), globalSetLayout->getDescriptorSetLayout(), "no_txt_flat_shader.vert.spv", "no_txt_flat_shader.frag.spv")));
 		noTxtRenderSystem.push_back(std::move(std::make_unique<NoTxtRenderSystem>(vcuDevice, vcuRenderer.getSwapChainRenderPass(), globalSetLayout->getDescriptorSetLayout(), "no_txt_gourard_shader.vert.spv", "no_txt_gourard_shader.frag.spv")));
+		auto marbleRenderSystem = std::vector<std::unique_ptr<MarbleRenderSystem>>();
+		marbleRenderSystem.push_back(std::move(std::make_unique<MarbleRenderSystem>(vcuDevice, vcuRenderer.getSwapChainRenderPass(), globalSetLayout->getDescriptorSetLayout(), "mrb_phong_shader.vert.spv", "mrb_phong_shader.frag.spv")));
+		marbleRenderSystem.push_back(std::move(std::make_unique<MarbleRenderSystem>(vcuDevice, vcuRenderer.getSwapChainRenderPass(), globalSetLayout->getDescriptorSetLayout(), "mrb_flat_shader.vert.spv", "mrb_flat_shader.frag.spv")));
+		marbleRenderSystem.push_back(std::move(std::make_unique<MarbleRenderSystem>(vcuDevice, vcuRenderer.getSwapChainRenderPass(), globalSetLayout->getDescriptorSetLayout(), "mrb_gourard_shader.vert.spv", "mrb_gourard_shader.frag.spv")));
         VcuCamera camera{};
     
         auto viewerObject = VcuGameObject::createGameObject();
@@ -200,6 +215,7 @@ namespace vcu {
 				renderSystems[shaderMode]->renderGameObjects(frameInfo);
 				woodRenderSystems[shaderMode]->renderGameObjects(frameInfo);
 				noTxtRenderSystem[shaderMode]->renderGameObjects(frameInfo);
+				marbleRenderSystem[shaderMode]->renderGameObjects(frameInfo);
 				pointLightSystem.render(frameInfo);
 				movingRenderSystems[shaderMode]->render(frameInfo);
 				vcuRenderer.endSwapChainRenderPass(commandBuffer);
@@ -211,28 +227,23 @@ namespace vcu {
 	}
 
 	void FirstApp::loadGameObjects() {
-		/*std::shared_ptr<VcuModel> vcuModel = VcuModel::createModelFromFile(vcuDevice, "models/flat_vase.obj");
+		std::shared_ptr<VcuModel> vcuModel = VcuModel::createModelFromFile(vcuDevice, "models/smooth_vase.obj");
 
 		auto flatVase = VcuGameObject::createGameObject();
 		flatVase.model = vcuModel;
-		flatVase.transform.translation = { -.5f, .5f, 0.f };
-		flatVase.transform.scale = glm::vec3{ 3.f, 1.5f, 3.f };
+		flatVase.transform.translation = { -7.5f, .5f, 0.f };
+		flatVase.transform.scale = glm::vec3{ 20.f, 15.5f, 20.f };
+		flatVase.type = 5;
 		gameObjects.emplace(flatVase.getId(), std::move(flatVase));
 
-		vcuModel = VcuModel::createModelFromFile(vcuDevice, "models/smooth_vase.obj");
-		auto smoothVase = VcuGameObject::createGameObject();
-		smoothVase.model = vcuModel;
-		smoothVase.transform.translation = { .5f, .5f, 0.f };
-		smoothVase.transform.scale = glm::vec3{ 3.f, 1.5f, 3.f };
-		gameObjects.emplace(smoothVase.getId(), std::move(smoothVase));*/
 
-		std::shared_ptr<VcuModel> vcuModel = VcuModel::createModelFromFile(vcuDevice, "models/Chess.obj");
+		/*std::shared_ptr<VcuModel> vcuModel = VcuModel::createModelFromFile(vcuDevice, "models/Chess.obj");
 		auto floor = VcuGameObject::createGameObject();
 		floor.model = vcuModel;
 		floor.transform.translation = { 0.f, .5f, 0.f };
 		floor.transform.rotation = glm::vec3{ glm::radians(-180.f), 0.f, 0.f };
 		floor.transform.scale = glm::vec3{ 3.0f, 3.0f, 3.0f };
-		gameObjects.emplace(floor.getId(), std::move(floor));
+		gameObjects.emplace(floor.getId(), std::move(floor));*/
 
 		vcuModel = VcuModel::createModelFromFile(vcuDevice, "models/table.obj");
 		auto table = VcuGameObject::makeWoodObject();

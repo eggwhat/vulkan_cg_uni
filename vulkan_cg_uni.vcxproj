@@ -145,6 +145,7 @@
     <ClCompile Include="first_app.cpp" />
     <ClCompile Include="keyboard_movement_controller.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="systems\marble_render_system.cpp" />
     <ClCompile Include="systems\moving_render_system.cpp" />
     <ClCompile Include="systems\no_txt_render_system.cpp" />
     <ClCompile Include="systems\point_light_system.cpp" />
@@ -165,6 +166,7 @@
   <ItemGroup>
     <ClInclude Include="first_app.hpp" />
     <ClInclude Include="keyboard_movement_controller.hpp" />
+    <ClInclude Include="systems\marble_render_system.hpp" />
     <ClInclude Include="systems\moving_render_system.hpp" />
     <ClInclude Include="systems\no_txt_render_system.hpp" />
     <ClInclude Include="systems\point_light_system.hpp" />
@@ -193,6 +195,12 @@
     <None Include="shaders\flat_shader.vert" />
     <None Include="shaders\gourard_shader.frag" />
     <None Include="shaders\gourard_shader.vert" />
+    <None Include="shaders\mrb_flat_shader.frag" />
+    <None Include="shaders\mrb_flat_shader.vert" />
+    <None Include="shaders\mrb_gourard_shader.frag" />
+    <None Include="shaders\mrb_gourard_shader.vert" />
+    <None Include="shaders\mrb_phong_shader.frag" />
+    <None Include="shaders\mrb_phong_shader.vert" />
     <None Include="shaders\mv_flat_shader.frag" />
     <None Include="shaders\mv_flat_shader.vert" />
     <None Include="shaders\mv_gourard_shader.frag" />

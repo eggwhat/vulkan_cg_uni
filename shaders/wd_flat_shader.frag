@@ -53,7 +53,7 @@ void main(){
 			continue;
 		}
         float intensity = max(dot(normalize(fragNormalWorld), lightDirection), 0.0);
-        finalColor += intensity * light.color.xyz * light.color.w * fragColor;
+        finalColor += intensity * light.color.xyz * light.color.w;
     }
 	finalColor *= imageColor;
 

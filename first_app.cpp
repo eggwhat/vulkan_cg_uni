@@ -136,6 +136,7 @@ namespace vcu {
 		auto lastShaderModeChangeTime = currentTime;
 		auto lastFogChangeTime = currentTime;
 		auto lastNightModeChangeTime = currentTime;
+		auto lastSpotlightChange = currentTime;
 		auto movingObjectTranslation = glm::vec3{ 0.f, 0.f, 0.f };
 		auto movingObjectRotation = glm::vec3{ 0.f, 0.f, 0.f };
 		std::vector<glm::vec4> ambientLight{{ 1.0f, 1.0f, 1.0, 0.2f }, { 1.f, 1.f, 1.f, 0.02f } };
@@ -174,6 +175,24 @@ namespace vcu {
 				lastNightModeChangeTime = currentTime;
 			}
 
+			if (glfwGetKey(window, cameraController.keys.spotLightMoveOut) == GLFW_PRESS &&
+				std::chrono::duration_cast<std::chrono::milliseconds>(currentTime - lastSpotlightChange) > std::chrono::milliseconds(500)) {
+				auto coefficient = spotlightDirection.x;
+				coefficient = glm::clamp(coefficient + 0.1, -0.9, 0.9);
+				spotlightDirection.x = coefficient;
+				spotlightDirection.z = coefficient;
+				lastSpotlightChange = currentTime;
+			}
+
+			if (glfwGetKey(window, cameraController.keys.spotLightMoveIn) == GLFW_PRESS &&
+				std::chrono::duration_cast<std::chrono::milliseconds>(currentTime - lastSpotlightChange) > std::chrono::milliseconds(500)) {
+				auto coefficient = spotlightDirection.x;
+				coefficient = glm::clamp(coefficient - 0.1, -0.9, 0.9);
+				spotlightDirection.x = coefficient;
+				spotlightDirection.z = coefficient;
+				lastSpotlightChange = currentTime;
+			}
+
             cameraController.moveInPlaneXZ(window, frameTime, viewerObject, cameraMode, movingObjectTranslation, movingObjectRotation);
             camera.setViewYXZ(viewerObject.transform.translation, viewerObject.transform.rotation);
 
@@ -205,7 +224,7 @@ namespace vcu {
 				ubo.fogEnabled = fogEnabled;
 				ubo.ambientLightColor = nightMode ? ambientLight[1] : ambientLight[0];
 				ubo.movingLightIndices = glm::vec2{0,1};
-				ubo.movingLightDirection = glm::vec3{0.5, 1.0, 0.0};
+				ubo.movingLightDirection = spotlightDirection;
 				movingRenderSystems[shaderMode]->update(frameInfo, ubo, movingObjectTranslation, movingObjectRotation);
 				pointLightSystem.update(frameInfo, ubo, movingObjectTranslation);
 				uboBuffers[frameIndex]->writeToBuffer(&ubo);

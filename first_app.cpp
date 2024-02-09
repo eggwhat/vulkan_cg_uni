@@ -71,7 +71,7 @@ namespace vcu {
 		imageInfo.imageView = texture.getImageView();
 		imageInfo.imageLayout = texture.getImageLayout();
 
-		Texture road = Texture(vcuDevice, "textures/metal_plate3.jpg");
+		Texture road = Texture(vcuDevice, "textures/metal_plate4.jpg");
 
 		VkDescriptorImageInfo roadImageInfo = {};
 		roadImageInfo.sampler = road.getSampler();
@@ -257,13 +257,13 @@ namespace vcu {
 		gameObjects.emplace(flatVase.getId(), std::move(flatVase));
 
 
-		/*vcuModel = VcuModel::createModelFromFile(vcuDevice, "models/Chess.obj");
+		vcuModel = VcuModel::createModelFromFile(vcuDevice, "models/Chess.obj");
 		auto floor = VcuGameObject::createGameObject();
 		floor.model = vcuModel;
 		floor.transform.translation = { 0.f, .5f, 0.f };
 		floor.transform.rotation = glm::vec3{ glm::radians(-180.f), 0.f, 0.f };
 		floor.transform.scale = glm::vec3{ 3.0f, 3.0f, 3.0f };
-		gameObjects.emplace(floor.getId(), std::move(floor));*/
+		gameObjects.emplace(floor.getId(), std::move(floor));
 
 		vcuModel = VcuModel::createModelFromFile(vcuDevice, "models/table.obj");
 		auto table = VcuGameObject::makeWoodObject();
@@ -289,11 +289,11 @@ namespace vcu {
 		pointLightRight.transform.translation = { 0.4f, -11.0f, -2.8f };
 		gameObjects.emplace(pointLightRight.getId(), std::move(pointLightRight));
 
-		/*{
+		{
 			auto pointLight = VcuGameObject::makePointLight(2.9f, 0.5f, glm::vec3{0.2f, 0.2f ,1.f}, 2);
 			pointLight.transform.translation = { 10.5f, -1.5f, 0.f };
 			gameObjects.emplace(pointLight.getId(), std::move(pointLight));
-		}*/
+		}
 
 		vcuModel = VcuModel::createModelBezier(vcuDevice);
 		auto bezierModel = VcuGameObject::createGameObject();
@@ -313,7 +313,7 @@ namespace vcu {
 		 {1.f, 1.f, 1.f}  //
 		};
 
-		/*for (int i = 0; i < lightColors.size(); i++) {
+		for (int i = 0; i < lightColors.size(); i++) {
 			auto pointLight = VcuGameObject::makePointLight(0.4f, 0.2f);
 			pointLight.color = lightColors[i];
 			auto rotateLight = glm::rotate(glm::mat4(1.f), (i * glm::two_pi<float>() / lightColors.size()),
@@ -321,6 +321,6 @@ namespace vcu {
 
 			pointLight.transform.translation = glm::vec3(rotateLight * glm::vec4(-2.0f, -3.5f, -2.0f, 1.f));
 			gameObjects.emplace(pointLight.getId(), std::move(pointLight));
-		}*/
+		}
 	}
 }

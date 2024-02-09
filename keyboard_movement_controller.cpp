@@ -21,8 +21,8 @@ namespace vcu {
         }
 
         if (cameraMode == 3) {
-            gameObject.transform.translation = movingObjectTranslation + glm::vec3{.0f, -4.0f, .0f};
-            gameObject.transform.rotation = movingObjectRotation + glm::vec3{-1.5f, 0.f, .0f};
+            gameObject.transform.translation = movingObjectTranslation + glm::vec3{.0f, -8.0f, 5.0f};
+            gameObject.transform.rotation = movingObjectRotation + glm::vec3{ -2.2f, 0.f, -glm::pi<float>()};
             return;
 		}
 

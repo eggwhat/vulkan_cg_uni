@@ -186,7 +186,7 @@ namespace vcu {
 		indices.clear();
 		Bezier bezier{};
 
-		bezier.parseInputFile("bezier/input1.txt");
+		bezier.parseInputFile("bezier/input3.txt");
 
 		bezier.createControlPoints();
 		bezier.initBezierSampleVertices();

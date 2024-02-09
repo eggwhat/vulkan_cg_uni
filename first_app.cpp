@@ -234,7 +234,7 @@ namespace vcu {
 		table.transform.translation = { 0.f, 16.0f, 0.f };
 		table.transform.rotation = glm::vec3{ glm::radians(-180.f), 0.f, 0.f };
 		table.transform.scale = glm::vec3{ 18.0f, 18.0f, 18.0f };
-		gameObjects.emplace(table.getId(), std::move(table));
+		gameObjects.emplace(table.getId(), std::move(table)); */
 
 		vcuModel = VcuModel::createModelFromFile(vcuDevice, "models/uh60.obj");
 		auto helicopter = VcuGameObject::makeMovingObject();
@@ -250,7 +250,7 @@ namespace vcu {
 
 		auto pointLightRight = VcuGameObject::makePointLight(0.2f, 0.05f, { 0.5f, 1.f, 1.f }, 1);
 		pointLightRight.transform.translation = { 0.4f, -11.0f, -2.8f };
-		gameObjects.emplace(pointLightRight.getId(), std::move(pointLightRight));*/
+		gameObjects.emplace(pointLightRight.getId(), std::move(pointLightRight));
 
 		/*{
 			auto pointLight = VcuGameObject::makePointLight(0.2f);
@@ -261,6 +261,9 @@ namespace vcu {
 		vcuModel = VcuModel::createModelBezier(vcuDevice);
 		auto bezierModel = VcuGameObject::createGameObject();
 		bezierModel.model = vcuModel;
+		bezierModel.transform.translation = { 5.5f, 0.5f, 0.f };
+		bezierModel.transform.scale = glm::vec3{ 4.f, 4.f, 2.f };
+		bezierModel.transform.rotation = glm::vec3{ 1.5f, 0.f, 0.f };
 		gameObjects.emplace(bezierModel.getId(), std::move(bezierModel));
 
 		std::vector<glm::vec3> lightColors{
@@ -278,7 +281,7 @@ namespace vcu {
 			auto rotateLight = glm::rotate(glm::mat4(1.f), (i * glm::two_pi<float>() / lightColors.size()),
 				{0.f, -1.f, 0.f});
 
-			pointLight.transform.translation = glm::vec3(rotateLight * glm::vec4(-2.0f, -2.5f, -2.0f, 1.f));
+			pointLight.transform.translation = glm::vec3(rotateLight * glm::vec4(-2.0f, -3.5f, -2.0f, 1.f));
 			gameObjects.emplace(pointLight.getId(), std::move(pointLight));
 		}
 	}

@@ -130,16 +130,11 @@ namespace vcu {
 				return false;
 			}
 
-			std::cerr << fileName + " file is read" << std::endl;
-
 			inputFile >> verticalCPCount;
 			inputFile >> horizontalCPCount;
 
-			std::cerr << "vertical CP Count " + verticalCPCount << std::endl;
-			std::cerr << "horizontal CP Count " + horizontalCPCount << std::endl;
 
 			int numberOfPatch = ((verticalCPCount / 4) * (horizontalCPCount / 4));
-			std::cerr << "Number of Patch " + numberOfPatch << std::endl;
 
 			bezierPatches.resize(numberOfPatch);
 
@@ -313,6 +308,7 @@ namespace vcu {
 				auto vertex = bezierSampleVertices[i];
 				v.position = { vertex.x, vertex.y, vertex.z };
 				v.normal = gNormals[i].normalToGlmVec3();
+				v.normal = glm::normalize(v.normal);
 				v.color = { 1.0f, .0f, .0f };
 				v.uv = { 0.0f, 0.0f };
 				vertices.push_back(v);

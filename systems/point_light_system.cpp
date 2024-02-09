@@ -82,10 +82,10 @@ namespace vcu {
 			if (obj.type == 0) {
 				obj.transform.translation = glm::vec3(rotateLight * glm::vec4(obj.transform.translation, 1.f));
 			}
-			else
+			else if (obj.type == 1)
 			{
 				auto exp = glm::pow(-1, lightIndex);
-				obj.transform.translation = translation + glm::vec3{ exp * .4f, -0.5f, -2.8f };
+				obj.transform.translation = translation + glm::vec3{ exp * .4f, -0.5f, -2.8f };	
 			}
 
 			// copy light to ubo

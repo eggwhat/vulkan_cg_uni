@@ -35,7 +35,6 @@ void main() {
     vec3 normals = vec3(0.0);
     vec3 diffuse = vec3(0.0);
     vec3 specular = vec3(0.0);
-    vec3 ambientColour = vec3(0.0);
  
     vec4 positionWorld = push.modelMatrix * vec4(position, 1.0);  
     vec3 camPosWorld = ubo.invView[3].xyz;
@@ -45,9 +44,12 @@ void main() {
  
     for (int i = 0; i < ubo.numLights; i++)
     {
-        float radius = 50.0;
+        float radius = 5.0;
         PointLight light = ubo.pointLights[i];
         vec3 lightDir = normalize(light.position.xyz - positionWorld.xyz);
+        if((i == ubo.movingLightIndices [1] || i == ubo.movingLightIndices[0]) && lightDir.y > 0.0) {
+			continue;
+		}
         vec3 halfAngle = normalize(camDir + lightDir);
         float NdotL = clamp(dot(normals, lightDir), 0.0, 1.0);
         float NdotH = clamp(dot(normals, halfAngle), 0.0, 1.0);

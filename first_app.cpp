@@ -67,7 +67,7 @@ namespace vcu {
 		imageInfo.imageView = texture.getImageView();
 		imageInfo.imageLayout = texture.getImageLayout();
 
-		Texture road = Texture(vcuDevice, "textures/metal_plate.jpg");
+		Texture road = Texture(vcuDevice, "textures/metal_plate3.jpg");
 
 		VkDescriptorImageInfo roadImageInfo = {};
 		roadImageInfo.sampler = road.getSampler();
@@ -205,7 +205,7 @@ namespace vcu {
 	}
 
 	void FirstApp::loadGameObjects() {
-		std::shared_ptr<VcuModel> vcuModel = VcuModel::createModelFromFile(vcuDevice, "models/flat_vase.obj");
+		/*std::shared_ptr<VcuModel> vcuModel = VcuModel::createModelFromFile(vcuDevice, "models/flat_vase.obj");
 
 		auto flatVase = VcuGameObject::createGameObject();
 		flatVase.model = vcuModel;
@@ -218,9 +218,9 @@ namespace vcu {
 		smoothVase.model = vcuModel;
 		smoothVase.transform.translation = { .5f, .5f, 0.f };
 		smoothVase.transform.scale = glm::vec3{ 3.f, 1.5f, 3.f };
-		gameObjects.emplace(smoothVase.getId(), std::move(smoothVase));
+		gameObjects.emplace(smoothVase.getId(), std::move(smoothVase));*/
 
-		/*std::shared_ptr<VcuModel> vcuModel = VcuModel::createModelFromFile(vcuDevice, "models/Chess.obj");
+		std::shared_ptr<VcuModel> vcuModel = VcuModel::createModelFromFile(vcuDevice, "models/Chess.obj");
 		auto floor = VcuGameObject::createGameObject();
 		floor.model = vcuModel;
 		floor.transform.translation = { 0.f, .5f, 0.f };
@@ -234,7 +234,7 @@ namespace vcu {
 		table.transform.translation = { 0.f, 16.0f, 0.f };
 		table.transform.rotation = glm::vec3{ glm::radians(-180.f), 0.f, 0.f };
 		table.transform.scale = glm::vec3{ 18.0f, 18.0f, 18.0f };
-		gameObjects.emplace(table.getId(), std::move(table)); */
+		gameObjects.emplace(table.getId(), std::move(table)); 
 
 		vcuModel = VcuModel::createModelFromFile(vcuDevice, "models/uh60.obj");
 		auto helicopter = VcuGameObject::makeMovingObject();
@@ -244,25 +244,25 @@ namespace vcu {
 		helicopter.transform.scale = glm::vec3{ 0.04f, 0.04f, 0.04f };
 		gameObjects.emplace(helicopter.getId(), std::move(helicopter));
 
-		auto pointLightLeft = VcuGameObject::makePointLight(0.2f, 0.05f, { 0.5f, 1.f, 1.f }, 1);
+		auto pointLightLeft = VcuGameObject::makePointLight(2.2f, 0.05f, { 0.5f, 1.f, 1.f }, 1);
 		pointLightLeft.transform.translation = { -0.4f, -11.0f, -2.8f };
 		gameObjects.emplace(pointLightLeft.getId(), std::move(pointLightLeft));
 
-		auto pointLightRight = VcuGameObject::makePointLight(0.2f, 0.05f, { 0.5f, 1.f, 1.f }, 1);
+		auto pointLightRight = VcuGameObject::makePointLight(2.2f, 0.05f, { 0.5f, 1.f, 1.f }, 1);
 		pointLightRight.transform.translation = { 0.4f, -11.0f, -2.8f };
 		gameObjects.emplace(pointLightRight.getId(), std::move(pointLightRight));
 
-		/*{
-			auto pointLight = VcuGameObject::makePointLight(0.2f);
-			pointLight.transform.translation = { 0.f, -0.5f, 0.f };
+		{
+			auto pointLight = VcuGameObject::makePointLight(2.9f, 0.5f, glm::vec3{0.2f, 0.2f ,1.f}, 2);
+			pointLight.transform.translation = { 10.5f, -1.5f, 0.f };
 			gameObjects.emplace(pointLight.getId(), std::move(pointLight));
-		}*/
+		}
 
 		vcuModel = VcuModel::createModelBezier(vcuDevice);
 		auto bezierModel = VcuGameObject::createGameObject();
 		bezierModel.model = vcuModel;
-		bezierModel.transform.translation = { 5.5f, 0.5f, 0.f };
-		bezierModel.transform.scale = glm::vec3{ 4.f, 4.f, 2.f };
+		bezierModel.transform.translation = { 10.5f, 0.5f, 0.f };
+		bezierModel.transform.scale = glm::vec3{ 6.f, 5.f, 4.f };
 		bezierModel.transform.rotation = glm::vec3{ 1.5f, 0.f, 0.f };
 		gameObjects.emplace(bezierModel.getId(), std::move(bezierModel));
 
@@ -276,7 +276,7 @@ namespace vcu {
 		};
 
 		for (int i = 0; i < lightColors.size(); i++) {
-			auto pointLight = VcuGameObject::makePointLight(0.2f, 0.2f);
+			auto pointLight = VcuGameObject::makePointLight(0.4f, 0.2f);
 			pointLight.color = lightColors[i];
 			auto rotateLight = glm::rotate(glm::mat4(1.f), (i * glm::two_pi<float>() / lightColors.size()),
 				{0.f, -1.f, 0.f});

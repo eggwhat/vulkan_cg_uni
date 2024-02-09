@@ -45,7 +45,7 @@ void main() {
  
     for (int i = 0; i < ubo.numLights; i++)
     {
-        float radius = 50.0;
+        float radius = 5.0;
         PointLight light = ubo.pointLights[i];
         vec3 lightDir = normalize(light.position.xyz - positionWorld.xyz);
         vec3 halfAngle = normalize(camDir + lightDir);

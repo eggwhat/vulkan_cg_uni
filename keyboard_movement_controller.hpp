@@ -24,7 +24,7 @@ namespace vcu {
 			int nightModeChange = GLFW_KEY_N;
 		};
 
-		void moveInPlaneXZ(GLFWwindow* window, float dt, VcuGameObject &gameObject, int cameraMode, glm::vec3 movingObjectTranslation, glm::vec3 movingObjectRotation);
+		void moveInPlaneXZ(GLFWwindow* window, float dt, VcuGameObject &gameObject, int& cameraMode, glm::vec3 movingObjectTranslation, glm::vec3 movingObjectRotation);
 
 		KeyMappings keys{};
 		float moveSpeed{ 5.f };

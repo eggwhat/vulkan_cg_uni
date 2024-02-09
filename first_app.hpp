@@ -10,19 +10,19 @@
 #include <memory>
 #include <vector>
 
-#define CAMERA_MODES 4
+#define CAMERA_MODES 5
 #define SHADERS 3
 
 namespace vcu {
 	class FirstApp {
 	public:
-		static constexpr int WIDTH = 800;
-		static constexpr int HEIGHT = 600;
+		static constexpr int WIDTH = 1200;
+		static constexpr int HEIGHT = 900;
 		int cameraMode{ 0 };
 		int shaderMode{ 0 };
 		bool fogEnabled{ false };
 		bool nightMode{ true };
-		const std::vector<const char*> cameraModeNames{ "Free", "Static", "Following", "3rd person" };
+		const std::vector<const char*> cameraModeNames{ "Free", "Static", "Following", "3rd person", ""};
 		const std::vector<const char*> shadingModeNames{ "Blinn-Phong", "Flat", "Gouraud" };
 		const std::vector<const char*> fogModeNames{ "Fog off", "Fog on" };
 		const std::vector<const char*> nightModeNames{ "Day", "Night" };

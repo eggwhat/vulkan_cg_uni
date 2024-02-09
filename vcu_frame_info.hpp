@@ -24,6 +24,7 @@ namespace vcu {
 		int numLights;
 		bool fogEnabled;
 		glm::vec2 movingLightIndices;
+		glm::vec3 movingLightDirection;
 	};
 
 	struct FrameInfo {

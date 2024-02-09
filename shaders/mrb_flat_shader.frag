@@ -21,6 +21,7 @@ layout(set = 0, binding = 0) uniform GlobalUbo{
 	int numLights;
 	bool fogEnabled;
 	vec2 movingLightIndices;
+	vec3 movingLightDirection;
 } ubo;
 
 layout(set = 0, binding = 4) uniform sampler2D image;
@@ -52,22 +53,30 @@ void main(){
 	for (int i = 0; i < ubo.numLights; i++) {
 		PointLight light = ubo.pointLights[i];
 		vec3 directionToLight = light.position.xyz - fragPosWorld;
-		if((i == ubo.movingLightIndices [1] || i == ubo.movingLightIndices[0]) && directionToLight.y > 0.0) {
-			continue;
-		}
+
 		float attenuation = 1.0 / dot(directionToLight, directionToLight); // distance squared
 		directionToLight = normalize(directionToLight);
 		float cosAngIncidence = max(dot(surfaceNormal, directionToLight), 0);
 		vec3 intensity = light.color.xyz * light.color.w * attenuation;
 
-		diffuseLight += intensity * cosAngIncidence;
+		float spotlightEffect = 1.0;
+		if ((i == ubo.movingLightIndices[1] || i == ubo.movingLightIndices[0])) {
+			// Calculate spotlight effect
+			vec3 movingDirection = ubo.movingLightDirection;
+			if(i == ubo.movingLightDirection[1]) movingDirection.x *= -1;
+			vec3 spotlightDirection = normalize(movingDirection);
+			float cosSpotlightAngle = dot(-directionToLight, spotlightDirection);
+			spotlightEffect = smoothstep(0.9, 1.0, cosSpotlightAngle); 
+		}
+
+		diffuseLight += intensity * cosAngIncidence * spotlightEffect;
 
 		// specular lighting Phong-Blinn
 		vec3 halfAngle = normalize(directionToLight + viewDirection);
 		float blinnTerm = dot(surfaceNormal, halfAngle);
 		blinnTerm = clamp(blinnTerm, 0, 1);
 		blinnTerm = pow(blinnTerm, 1024.0); // higher values -> sharper highlights
-		specularLight += intensity * blinnTerm;
+		specularLight += intensity * blinnTerm * spotlightEffect;
 	}
 
 	vec3 imageColor = texture(image, fragUV).xyz;

@@ -24,6 +24,7 @@ layout(set = 0, binding = 0) uniform GlobalUbo{
 	int numLights;
 	bool fogEnabled;
 	vec2 movingLightIndices;
+	vec3 movingLightDirection;
 } ubo;
 
 layout(push_constant) uniform Push{

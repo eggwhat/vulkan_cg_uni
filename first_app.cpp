@@ -205,6 +205,7 @@ namespace vcu {
 				ubo.fogEnabled = fogEnabled;
 				ubo.ambientLightColor = nightMode ? ambientLight[1] : ambientLight[0];
 				ubo.movingLightIndices = glm::vec2{0,1};
+				ubo.movingLightDirection = glm::vec3{0.5, 1.0, 0.0};
 				movingRenderSystems[shaderMode]->update(frameInfo, ubo, movingObjectTranslation, movingObjectRotation);
 				pointLightSystem.update(frameInfo, ubo, movingObjectTranslation);
 				uboBuffers[frameIndex]->writeToBuffer(&ubo);
@@ -237,7 +238,7 @@ namespace vcu {
 		gameObjects.emplace(flatVase.getId(), std::move(flatVase));
 
 
-		/*std::shared_ptr<VcuModel> vcuModel = VcuModel::createModelFromFile(vcuDevice, "models/Chess.obj");
+		/*vcuModel = VcuModel::createModelFromFile(vcuDevice, "models/Chess.obj");
 		auto floor = VcuGameObject::createGameObject();
 		floor.model = vcuModel;
 		floor.transform.translation = { 0.f, .5f, 0.f };
@@ -261,19 +262,19 @@ namespace vcu {
 		helicopter.transform.scale = glm::vec3{ 0.04f, 0.04f, 0.04f };
 		gameObjects.emplace(helicopter.getId(), std::move(helicopter));
 
-		auto pointLightLeft = VcuGameObject::makePointLight(2.2f, 0.05f, { 0.5f, 1.f, 1.f }, 1);
+		auto pointLightLeft = VcuGameObject::makePointLight(5.2f, 0.05f, { 0.5f, 1.f, 1.f }, 1);
 		pointLightLeft.transform.translation = { -0.4f, -11.0f, -2.8f };
 		gameObjects.emplace(pointLightLeft.getId(), std::move(pointLightLeft));
 
-		auto pointLightRight = VcuGameObject::makePointLight(2.2f, 0.05f, { 0.5f, 1.f, 1.f }, 1);
+		auto pointLightRight = VcuGameObject::makePointLight(5.2f, 0.05f, {0.5f, 1.f, 1.f}, 1);
 		pointLightRight.transform.translation = { 0.4f, -11.0f, -2.8f };
 		gameObjects.emplace(pointLightRight.getId(), std::move(pointLightRight));
 
-		{
+		/*{
 			auto pointLight = VcuGameObject::makePointLight(2.9f, 0.5f, glm::vec3{0.2f, 0.2f ,1.f}, 2);
 			pointLight.transform.translation = { 10.5f, -1.5f, 0.f };
 			gameObjects.emplace(pointLight.getId(), std::move(pointLight));
-		}
+		}*/
 
 		vcuModel = VcuModel::createModelBezier(vcuDevice);
 		auto bezierModel = VcuGameObject::createGameObject();
@@ -293,7 +294,7 @@ namespace vcu {
 		 {1.f, 1.f, 1.f}  //
 		};
 
-		for (int i = 0; i < lightColors.size(); i++) {
+		/*for (int i = 0; i < lightColors.size(); i++) {
 			auto pointLight = VcuGameObject::makePointLight(0.4f, 0.2f);
 			pointLight.color = lightColors[i];
 			auto rotateLight = glm::rotate(glm::mat4(1.f), (i * glm::two_pi<float>() / lightColors.size()),
@@ -301,6 +302,6 @@ namespace vcu {
 
 			pointLight.transform.translation = glm::vec3(rotateLight * glm::vec4(-2.0f, -3.5f, -2.0f, 1.f));
 			gameObjects.emplace(pointLight.getId(), std::move(pointLight));
-		}
+		}*/
 	}
 }

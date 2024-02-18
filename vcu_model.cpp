@@ -1,5 +1,5 @@
 #include "vcu_model.hpp"
-
+#include "bezier.hpp"
 #include "vcu_utils.hpp"
 
 // libs
@@ -37,6 +37,12 @@ namespace vcu {
 	std::unique_ptr<VcuModel> VcuModel::createModelFromFile(VcuDevice& device, const std::string& filepath) {
 		Builder builder{};
 		builder.loadModel(filepath);
+		return std::make_unique<VcuModel>(device, builder);
+	}
+
+	std::unique_ptr<VcuModel> VcuModel::createModelBezier(VcuDevice& device) {
+		Builder builder{};
+		builder.loadBezier();
 		return std::make_unique<VcuModel>(device, builder);
 	}
 
@@ -173,5 +179,20 @@ namespace vcu {
 				indices.push_back(uniqueVertices[vertex]);
 			}
 		}
+	}
+
+	void VcuModel::Builder::loadBezier() {
+		vertices.clear();
+		indices.clear();
+		Bezier bezier{};
+
+		bezier.parseInputFile("bezier/input3.txt");
+
+		bezier.createControlPoints();
+		bezier.initBezierSampleVertices();
+		bezier.generateBezierFaces();
+		
+		bezier.initVertices(vertices, indices);
+		
 	}
 }

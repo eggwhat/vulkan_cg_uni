@@ -79,7 +79,7 @@ namespace vcu {
 
 		for (auto& kv : frameInfo.gameObjects) {
 			auto& obj = kv.second;
-			if (obj.model == nullptr) continue;
+			if (obj.model == nullptr || obj.type != 0) continue;
 			SimplePushConstantData push{};
 			push.modelMatrix = obj.transform.mat4();
 			push.normalMatrix = obj.transform.normalMatrix();

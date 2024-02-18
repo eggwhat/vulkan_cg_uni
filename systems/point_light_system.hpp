@@ -18,7 +18,7 @@ namespace vcu {
 		PointLightSystem(const PointLightSystem&) = delete;
 		PointLightSystem& operator=(const PointLightSystem&) = delete;
 
-		void update(FrameInfo &frameInfo, GlobalUbo &ubo);
+		void update(FrameInfo &frameInfo, GlobalUbo &ubo, glm::vec3 translation);
 		void render(FrameInfo &frameInfo);
 
 	private:

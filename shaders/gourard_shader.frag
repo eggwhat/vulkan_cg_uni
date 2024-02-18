@@ -19,6 +19,8 @@ layout(set = 0, binding = 0) uniform GlobalUbo{
 	PointLight pointLights[10];
 	int numLights;
 	bool fogEnabled;
+	vec2 movingLightIndices;
+	vec3 movingLightDirection;
 } ubo;
 
 layout(set = 0, binding = 1) uniform sampler2D image;

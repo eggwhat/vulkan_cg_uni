@@ -141,11 +141,16 @@
     </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="bezier.hpp" />
     <ClCompile Include="first_app.cpp" />
     <ClCompile Include="keyboard_movement_controller.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="systems\marble_render_system.cpp" />
+    <ClCompile Include="systems\moving_render_system.cpp" />
+    <ClCompile Include="systems\no_txt_render_system.cpp" />
     <ClCompile Include="systems\point_light_system.cpp" />
     <ClCompile Include="systems\simple_render_system.cpp" />
+    <ClCompile Include="systems\wood_render_system.cpp" />
     <ClCompile Include="vcu_buffer.cpp" />
     <ClCompile Include="vcu_camera.cpp" />
     <ClCompile Include="vcu_descriptors.cpp" />
@@ -161,8 +166,12 @@
   <ItemGroup>
     <ClInclude Include="first_app.hpp" />
     <ClInclude Include="keyboard_movement_controller.hpp" />
+    <ClInclude Include="systems\marble_render_system.hpp" />
+    <ClInclude Include="systems\moving_render_system.hpp" />
+    <ClInclude Include="systems\no_txt_render_system.hpp" />
     <ClInclude Include="systems\point_light_system.hpp" />
     <ClInclude Include="systems\simple_render_system.hpp" />
+    <ClInclude Include="systems\wood_render_system.hpp" />
     <ClInclude Include="vcu_buffer.hpp" />
     <ClInclude Include="vcu_camera.hpp" />
     <ClInclude Include="vcu_descriptors.hpp" />
@@ -186,12 +195,40 @@
     <None Include="shaders\flat_shader.vert" />
     <None Include="shaders\gourard_shader.frag" />
     <None Include="shaders\gourard_shader.vert" />
+    <None Include="shaders\mrb_flat_shader.frag" />
+    <None Include="shaders\mrb_flat_shader.vert" />
+    <None Include="shaders\mrb_gourard_shader.frag" />
+    <None Include="shaders\mrb_gourard_shader.vert" />
+    <None Include="shaders\mrb_phong_shader.frag" />
+    <None Include="shaders\mrb_phong_shader.vert" />
+    <None Include="shaders\mv_flat_shader.frag" />
+    <None Include="shaders\mv_flat_shader.vert" />
+    <None Include="shaders\mv_gourard_shader.frag" />
+    <None Include="shaders\mv_gourard_shader.vert" />
+    <None Include="shaders\mv_simple_shader.frag" />
+    <None Include="shaders\mv_simple_shader.vert" />
+    <None Include="shaders\no_txt_flat_shader.frag" />
+    <None Include="shaders\no_txt_flat_shader.vert" />
+    <None Include="shaders\no_txt_gourard_shader.frag" />
+    <None Include="shaders\no_txt_gourard_shader.vert" />
+    <None Include="shaders\no_txt_phong_shader.frag" />
+    <None Include="shaders\no_txt_phong_shader.vert" />
     <None Include="shaders\point_light.frag" />
     <None Include="shaders\point_light.vert" />
     <None Include="shaders\simple_shader.frag" />
     <None Include="shaders\simple_shader.vert" />
+    <None Include="shaders\wd_flat_shader.frag" />
+    <None Include="shaders\wd_flat_shader.vert" />
+    <None Include="shaders\wd_gourard_shader.frag" />
+    <None Include="shaders\wd_gourard_shader.vert" />
+    <None Include="shaders\wd_simple_shader.frag" />
+    <None Include="shaders\wd_simple_shader.vert" />
   </ItemGroup>
   <ItemGroup>
+    <Object Include="models\chess.obj">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </Object>
     <Object Include="models\chess_board.obj">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>

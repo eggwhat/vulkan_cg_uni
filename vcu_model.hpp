@@ -34,12 +34,14 @@ namespace vcu {
 			std::vector<uint32_t> indices{};
 
 			void loadModel(const std::string& filename);
+			void loadBezier();
 		};
 
 		VcuModel(VcuDevice& device, const VcuModel::Builder &builder);
 		~VcuModel();
 
 		static std::unique_ptr<VcuModel> createModelFromFile(VcuDevice& device, const std::string& filepath);
+		static std::unique_ptr<VcuModel> createModelBezier(VcuDevice& device);
 
 		VcuModel(const VcuModel&) = delete;
 		VcuModel& operator=(const VcuModel&) = delete;

@@ -10,18 +10,23 @@
 #include <memory>
 #include <vector>
 
-#define CAMERA_MODES 3
+#define CAMERA_MODES 5
 #define SHADERS 3
 
 namespace vcu {
 	class FirstApp {
 	public:
-		static constexpr int WIDTH = 800;
-		static constexpr int HEIGHT = 600;
+		static constexpr int WIDTH = 1200;
+		static constexpr int HEIGHT = 900;
 		int cameraMode{ 0 };
 		int shaderMode{ 0 };
 		bool fogEnabled{ false };
 		bool nightMode{ true };
+		glm::vec3 spotlightDirection{ 0.0, 1.0, 0.0 };
+		const std::vector<const char*> cameraModeNames{ "Free", "Static", "Following", "3rd person", ""};
+		const std::vector<const char*> shadingModeNames{ "Phong", "Flat", "Gouraud" };
+		const std::vector<const char*> fogModeNames{ "Fog off", "Fog on" };
+		const std::vector<const char*> nightModeNames{ "Day", "Night" };
 
 		FirstApp();
 		~FirstApp();
@@ -32,7 +37,7 @@ namespace vcu {
 	private:
 		void loadGameObjects();
 
-		VcuWindow vcuWindow{ WIDTH, HEIGHT, "Vulkan" };
+		VcuWindow vcuWindow{ WIDTH, HEIGHT, "Little engine" };
 		VcuDevice vcuDevice{ vcuWindow };
 		VcuRenderer vcuRenderer{ vcuWindow, vcuDevice };
 

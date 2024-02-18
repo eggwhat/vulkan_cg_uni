@@ -1,7 +1,7 @@
 #version 450
 
-layout(location = 0) in vec3 fragColor;
-layout(location = 1) in vec3 fragNormalWorld;
+flat layout(location = 0) in vec3 fragColor;
+flat layout(location = 1) in vec3 fragNormalWorld;
 layout(location = 2) in vec3 fragPosWorld;
 layout(location = 3) in vec2 fragUV;
 
@@ -20,6 +20,8 @@ layout(set = 0, binding = 0) uniform GlobalUbo{
 	PointLight pointLights[10];
 	int numLights;
 	bool fogEnabled;
+	vec2 movingLightIndices;
+	vec3 movingLightDirection;
 } ubo;
 
 layout(set = 0, binding = 1) uniform sampler2D image;
@@ -41,24 +43,50 @@ float CalcFog(float fogInt, vec3 cameraPos, vec3 fragPos){
 }
 
 void main(){
-	vec3 finalColor = vec3(0.0);
-	vec3 imageColor = texture(image, fragUV).xyz;
-	finalColor += fragColor * ubo.ambientLightColor.xyz * ubo.ambientLightColor.w;
+	vec3 diffuseLight = ubo.ambientLightColor.xyz * ubo.ambientLightColor.w;
+	vec3 specularLight = vec3(0.0);
+	vec3 surfaceNormal = normalize(fragNormalWorld);
 
-    for (int i = 0; i < ubo.numLights; ++i) {
+	vec3 cameraPosWorld = ubo.invView[3].xyz;
+	vec3 viewDirection = normalize(cameraPosWorld - fragPosWorld);
+
+	for (int i = 0; i < ubo.numLights; i++) {
 		PointLight light = ubo.pointLights[i];
-        vec3 lightDirection = normalize(light.position.xyz - fragPosWorld);
-        float intensity = max(dot(normalize(fragNormalWorld), lightDirection), 0.0);
-        finalColor += intensity * light.color.xyz * light.color.w * fragColor;
-    }
-	finalColor *= imageColor;
+		vec3 directionToLight = light.position.xyz - fragPosWorld;
 
-	if(ubo.fogEnabled) {
-		vec3 cameraPosWorld = ubo.invView[3].xyz;
-		float fogFactor = CalcFog(fogIntensity, cameraPosWorld, fragPosWorld);
-		finalColor = mix(fogColor, finalColor, fogFactor);
+		float attenuation = 1.0 / dot(directionToLight, directionToLight); // distance squared
+		directionToLight = normalize(directionToLight);
+		float cosAngIncidence = max(dot(surfaceNormal, directionToLight), 0);
+		vec3 intensity = light.color.xyz * light.color.w * attenuation;
+
+		float spotlightEffect = 1.0;
+		if ((i == ubo.movingLightIndices[1] || i == ubo.movingLightIndices[0])) {
+			// Calculate spotlight effect
+			vec3 movingDirection = ubo.movingLightDirection;
+			if(i == ubo.movingLightDirection[1]) movingDirection.x *= -1;
+			vec3 spotlightDirection = normalize(movingDirection);
+			float cosSpotlightAngle = dot(-directionToLight, spotlightDirection);
+			spotlightEffect = smoothstep(0.9, 1.0, cosSpotlightAngle); 
+		}
+
+		diffuseLight += intensity * cosAngIncidence * spotlightEffect;
+
+		// specular lighting Phong-Blinn
+		vec3 halfAngle = normalize(directionToLight + viewDirection);
+		float blinnTerm = dot(surfaceNormal, halfAngle);
+		blinnTerm = clamp(blinnTerm, 0, 1);
+		blinnTerm = pow(blinnTerm, 1024.0); // higher values -> sharper highlights
+		specularLight += intensity * blinnTerm * spotlightEffect;
 	}
 
-    outColor = vec4(finalColor, 1.0);
+	vec3 imageColor = texture(image, fragUV).xyz;
+	vec4 finalColor = vec4((diffuseLight * fragColor + specularLight * fragColor) * imageColor, 1.0);
+
+	if(ubo.fogEnabled) {
+		float fogFactor = CalcFog(fogIntensity, cameraPosWorld, fragPosWorld);
+		finalColor = vec4(mix(fogColor, finalColor.xyz, fogFactor), 1.0);
+	}
+
+	outColor = finalColor;
 	
 }

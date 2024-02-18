@@ -22,9 +22,11 @@ namespace vcu {
 			int shaderModeChange = GLFW_KEY_SPACE;
 			int fogChange = GLFW_KEY_F;
 			int nightModeChange = GLFW_KEY_N;
+			int spotLightMoveOut = GLFW_KEY_LEFT_BRACKET;
+			int spotLightMoveIn = GLFW_KEY_RIGHT_BRACKET;
 		};
 
-		void moveInPlaneXZ(GLFWwindow* window, float dt, VcuGameObject &gameObject, int cameraMode);
+		void moveInPlaneXZ(GLFWwindow* window, float dt, VcuGameObject &gameObject, int& cameraMode, glm::vec3 movingObjectTranslation, glm::vec3 movingObjectRotation);
 
 		KeyMappings keys{};
 		float moveSpeed{ 5.f };

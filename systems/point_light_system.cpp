@@ -68,8 +68,9 @@ namespace vcu {
 		);
 	}
 
-	void PointLightSystem::update(FrameInfo& frameInfo, GlobalUbo &ubo) {
+	void PointLightSystem::update(FrameInfo& frameInfo, GlobalUbo &ubo, glm::vec3 translation) {
 		auto rotateLight = glm::rotate(glm::mat4(1.f), frameInfo.frameTime, { 0.f, -1.f, 0.f });
+		auto rotateObjectLight = glm::rotate(glm::mat4(1.f), frameInfo.frameTime, { 0.5f, -1.f, 0.5f });
 		int lightIndex = 0;
 		for (auto& kv : frameInfo.gameObjects) {
 			auto& obj = kv.second;
@@ -78,7 +79,14 @@ namespace vcu {
 			assert(lightIndex < MAX_LIGHTS && "Point lights exceed number specified");
 
 			// update light position
-			obj.transform.translation = glm::vec3(rotateLight * glm::vec4(obj.transform.translation, 1.f));
+			if (obj.type == 0) {
+				obj.transform.translation = glm::vec3(rotateLight * glm::vec4(obj.transform.translation, 1.f));
+			}
+			else if (obj.type == 1)
+			{
+				auto exp = glm::pow(-1, lightIndex);
+				obj.transform.translation = translation + glm::vec3{ exp * .4f, -0.5f, -2.8f };	
+			}
 
 			// copy light to ubo
 			ubo.pointLights[lightIndex].position = glm::vec4(obj.transform.translation, 1.f);

@@ -328,6 +328,12 @@ if %errorlevel% neq 0 goto :VCEnd</Command>
     <ClCompile Include="C:\Users\piotr\source\repos\vulkan_engine\src\first_app.cpp" />
     <ClCompile Include="C:\Users\piotr\source\repos\vulkan_engine\src\keyboard_movement_controller.cpp" />
     <ClCompile Include="C:\Users\piotr\source\repos\vulkan_engine\src\main.cpp" />
+    <ClCompile Include="C:\Users\piotr\source\repos\vulkan_engine\src\systems\marble_render_system.cpp" />
+    <ClCompile Include="C:\Users\piotr\source\repos\vulkan_engine\src\systems\moving_render_system.cpp" />
+    <ClCompile Include="C:\Users\piotr\source\repos\vulkan_engine\src\systems\no_txt_render_system.cpp" />
+    <ClCompile Include="C:\Users\piotr\source\repos\vulkan_engine\src\systems\point_light_system.cpp" />
+    <ClCompile Include="C:\Users\piotr\source\repos\vulkan_engine\src\systems\simple_render_system.cpp" />
+    <ClCompile Include="C:\Users\piotr\source\repos\vulkan_engine\src\systems\wood_render_system.cpp" />
     <ClCompile Include="C:\Users\piotr\source\repos\vulkan_engine\src\vcu_buffer.cpp" />
     <ClCompile Include="C:\Users\piotr\source\repos\vulkan_engine\src\vcu_camera.cpp" />
     <ClCompile Include="C:\Users\piotr\source\repos\vulkan_engine\src\vcu_descriptors.cpp" />

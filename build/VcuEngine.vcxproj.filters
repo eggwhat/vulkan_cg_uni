@@ -10,6 +10,24 @@
     <ClCompile Include="C:\Users\piotr\source\repos\vulkan_engine\src\main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="C:\Users\piotr\source\repos\vulkan_engine\src\systems\marble_render_system.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\piotr\source\repos\vulkan_engine\src\systems\moving_render_system.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\piotr\source\repos\vulkan_engine\src\systems\no_txt_render_system.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\piotr\source\repos\vulkan_engine\src\systems\point_light_system.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\piotr\source\repos\vulkan_engine\src\systems\simple_render_system.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\piotr\source\repos\vulkan_engine\src\systems\wood_render_system.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="C:\Users\piotr\source\repos\vulkan_engine\src\vcu_buffer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>

@@ -4,12 +4,12 @@
 #include "vcu_buffer.hpp"
 #include "vcu_camera.hpp"
 #include "vcu_texture.hpp"
-#include "../systems/simple_render_system.hpp"
-#include "../systems/point_light_system.hpp"
-#include "../systems/moving_render_system.hpp"
-#include "../systems/wood_render_system.hpp"
-#include "../systems/no_txt_render_system.hpp"
-#include "../systems/marble_render_system.hpp"
+#include "systems/simple_render_system.hpp"
+#include "systems/point_light_system.hpp"
+#include "systems/moving_render_system.hpp"
+#include "systems/wood_render_system.hpp"
+#include "systems/no_txt_render_system.hpp"
+#include "systems/marble_render_system.hpp"
 
 //#define MAX_FRAME_TIME 0.5f
 
@@ -44,7 +44,6 @@ namespace vcu {
 	FirstApp::~FirstApp() {}
 
 	void FirstApp::run() {
-		
 		std::vector<std::unique_ptr<VcuBuffer>> uboBuffers(VcuSwapChain::MAX_FRAMES_IN_FLIGHT);
 		for (int i = 0; i < uboBuffers.size(); i++) {
 			uboBuffers[i] = std::make_unique<VcuBuffer>(
@@ -64,28 +63,28 @@ namespace vcu {
 			.addBinding(4, VK_DESCRIPTOR_TYPE_COMBINED_IMAGE_SAMPLER, VK_SHADER_STAGE_FRAGMENT_BIT)
 			.build();
 
-		Texture texture = Texture(vcuDevice, "textures/road.png");
+		Texture texture = Texture(vcuDevice, "../textures/road.png");
 
 		VkDescriptorImageInfo imageInfo = {};
 		imageInfo.sampler = texture.getSampler();
 		imageInfo.imageView = texture.getImageView();
 		imageInfo.imageLayout = texture.getImageLayout();
 
-		Texture road = Texture(vcuDevice, "textures/metal_plate4.jpg");
+		Texture road = Texture(vcuDevice, "../textures/metal_plate4.jpg");
 
 		VkDescriptorImageInfo roadImageInfo = {};
 		roadImageInfo.sampler = road.getSampler();
 		roadImageInfo.imageView = road.getImageView();
 		roadImageInfo.imageLayout = road.getImageLayout();
 
-		Texture table = Texture(vcuDevice, "textures/table.jpg");
+		Texture table = Texture(vcuDevice, "../textures/table.jpg");
 
 		VkDescriptorImageInfo tableImageInfo = {};
 		tableImageInfo.sampler = table.getSampler();
 		tableImageInfo.imageView = table.getImageView();
 		tableImageInfo.imageLayout = table.getImageLayout();
 		
-		Texture marble = Texture(vcuDevice, "textures/marble2.jpg");
+		Texture marble = Texture(vcuDevice, "../textures/marble2.jpg");
 
 		VkDescriptorImageInfo marbleImageInfo = {};
 		marbleImageInfo.sampler = marble.getSampler();

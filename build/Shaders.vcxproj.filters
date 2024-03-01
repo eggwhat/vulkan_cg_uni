@@ -1,0 +1,113 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="17.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <CustomBuild Include="C:\Users\piotr\source\repos\vulkan_engine\build\CMakeFiles\6ee242920614ee1a89acf4d30d7709bd\flat_shader.frag.spv.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+    <CustomBuild Include="C:\Users\piotr\source\repos\vulkan_engine\build\CMakeFiles\6ee242920614ee1a89acf4d30d7709bd\flat_shader.vert.spv.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+    <CustomBuild Include="C:\Users\piotr\source\repos\vulkan_engine\build\CMakeFiles\6ee242920614ee1a89acf4d30d7709bd\gourard_shader.frag.spv.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+    <CustomBuild Include="C:\Users\piotr\source\repos\vulkan_engine\build\CMakeFiles\6ee242920614ee1a89acf4d30d7709bd\gourard_shader.vert.spv.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+    <CustomBuild Include="C:\Users\piotr\source\repos\vulkan_engine\build\CMakeFiles\6ee242920614ee1a89acf4d30d7709bd\mrb_flat_shader.frag.spv.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+    <CustomBuild Include="C:\Users\piotr\source\repos\vulkan_engine\build\CMakeFiles\6ee242920614ee1a89acf4d30d7709bd\mrb_flat_shader.vert.spv.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+    <CustomBuild Include="C:\Users\piotr\source\repos\vulkan_engine\build\CMakeFiles\6ee242920614ee1a89acf4d30d7709bd\mrb_gourard_shader.frag.spv.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+    <CustomBuild Include="C:\Users\piotr\source\repos\vulkan_engine\build\CMakeFiles\6ee242920614ee1a89acf4d30d7709bd\mrb_gourard_shader.vert.spv.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+    <CustomBuild Include="C:\Users\piotr\source\repos\vulkan_engine\build\CMakeFiles\6ee242920614ee1a89acf4d30d7709bd\mrb_phong_shader.frag.spv.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+    <CustomBuild Include="C:\Users\piotr\source\repos\vulkan_engine\build\CMakeFiles\6ee242920614ee1a89acf4d30d7709bd\mrb_phong_shader.vert.spv.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+    <CustomBuild Include="C:\Users\piotr\source\repos\vulkan_engine\build\CMakeFiles\6ee242920614ee1a89acf4d30d7709bd\mv_flat_shader.frag.spv.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+    <CustomBuild Include="C:\Users\piotr\source\repos\vulkan_engine\build\CMakeFiles\6ee242920614ee1a89acf4d30d7709bd\mv_flat_shader.vert.spv.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+    <CustomBuild Include="C:\Users\piotr\source\repos\vulkan_engine\build\CMakeFiles\6ee242920614ee1a89acf4d30d7709bd\mv_gourard_shader.frag.spv.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+    <CustomBuild Include="C:\Users\piotr\source\repos\vulkan_engine\build\CMakeFiles\6ee242920614ee1a89acf4d30d7709bd\mv_gourard_shader.vert.spv.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+    <CustomBuild Include="C:\Users\piotr\source\repos\vulkan_engine\build\CMakeFiles\6ee242920614ee1a89acf4d30d7709bd\mv_simple_shader.frag.spv.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+    <CustomBuild Include="C:\Users\piotr\source\repos\vulkan_engine\build\CMakeFiles\6ee242920614ee1a89acf4d30d7709bd\mv_simple_shader.vert.spv.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+    <CustomBuild Include="C:\Users\piotr\source\repos\vulkan_engine\build\CMakeFiles\6ee242920614ee1a89acf4d30d7709bd\no_txt_flat_shader.frag.spv.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+    <CustomBuild Include="C:\Users\piotr\source\repos\vulkan_engine\build\CMakeFiles\6ee242920614ee1a89acf4d30d7709bd\no_txt_flat_shader.vert.spv.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+    <CustomBuild Include="C:\Users\piotr\source\repos\vulkan_engine\build\CMakeFiles\6ee242920614ee1a89acf4d30d7709bd\no_txt_gourard_shader.frag.spv.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+    <CustomBuild Include="C:\Users\piotr\source\repos\vulkan_engine\build\CMakeFiles\6ee242920614ee1a89acf4d30d7709bd\no_txt_gourard_shader.vert.spv.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+    <CustomBuild Include="C:\Users\piotr\source\repos\vulkan_engine\build\CMakeFiles\6ee242920614ee1a89acf4d30d7709bd\no_txt_phong_shader.frag.spv.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+    <CustomBuild Include="C:\Users\piotr\source\repos\vulkan_engine\build\CMakeFiles\6ee242920614ee1a89acf4d30d7709bd\no_txt_phong_shader.vert.spv.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+    <CustomBuild Include="C:\Users\piotr\source\repos\vulkan_engine\build\CMakeFiles\6ee242920614ee1a89acf4d30d7709bd\point_light.frag.spv.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+    <CustomBuild Include="C:\Users\piotr\source\repos\vulkan_engine\build\CMakeFiles\6ee242920614ee1a89acf4d30d7709bd\point_light.vert.spv.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+    <CustomBuild Include="C:\Users\piotr\source\repos\vulkan_engine\build\CMakeFiles\6ee242920614ee1a89acf4d30d7709bd\simple_shader.frag.spv.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+    <CustomBuild Include="C:\Users\piotr\source\repos\vulkan_engine\build\CMakeFiles\6ee242920614ee1a89acf4d30d7709bd\simple_shader.vert.spv.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+    <CustomBuild Include="C:\Users\piotr\source\repos\vulkan_engine\build\CMakeFiles\6ee242920614ee1a89acf4d30d7709bd\wd_flat_shader.frag.spv.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+    <CustomBuild Include="C:\Users\piotr\source\repos\vulkan_engine\build\CMakeFiles\6ee242920614ee1a89acf4d30d7709bd\wd_flat_shader.vert.spv.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+    <CustomBuild Include="C:\Users\piotr\source\repos\vulkan_engine\build\CMakeFiles\6ee242920614ee1a89acf4d30d7709bd\wd_gourard_shader.frag.spv.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+    <CustomBuild Include="C:\Users\piotr\source\repos\vulkan_engine\build\CMakeFiles\6ee242920614ee1a89acf4d30d7709bd\wd_gourard_shader.vert.spv.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+    <CustomBuild Include="C:\Users\piotr\source\repos\vulkan_engine\build\CMakeFiles\6ee242920614ee1a89acf4d30d7709bd\wd_simple_shader.frag.spv.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+    <CustomBuild Include="C:\Users\piotr\source\repos\vulkan_engine\build\CMakeFiles\6ee242920614ee1a89acf4d30d7709bd\wd_simple_shader.vert.spv.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+    <CustomBuild Include="C:\Users\piotr\source\repos\vulkan_engine\build\CMakeFiles\c825217e18694fc0db126a66de612bf8\Shaders.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+    <CustomBuild Include="C:\Users\piotr\source\repos\vulkan_engine\CMakeLists.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="C:\Users\piotr\source\repos\vulkan_engine\build\CMakeFiles\Shaders" />
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="CMake Rules">
+      <UniqueIdentifier>{C51C43EE-B6B4-381D-B6D6-E00EBF56AFFC}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>

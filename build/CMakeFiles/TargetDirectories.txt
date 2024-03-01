@@ -1,0 +1,4 @@
+C:/Users/piotr/source/repos/vulkan_engine/build/CMakeFiles/VcuEngine.dir
+C:/Users/piotr/source/repos/vulkan_engine/build/CMakeFiles/Shaders.dir
+C:/Users/piotr/source/repos/vulkan_engine/build/CMakeFiles/ALL_BUILD.dir
+C:/Users/piotr/source/repos/vulkan_engine/build/CMakeFiles/ZERO_CHECK.dir

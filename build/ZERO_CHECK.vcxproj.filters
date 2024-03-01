@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="17.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <CustomBuild Include="C:\Users\piotr\source\repos\vulkan_engine\build\CMakeFiles\c825217e18694fc0db126a66de612bf8\generate.stamp.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="CMake Rules">
+      <UniqueIdentifier>{C51C43EE-B6B4-381D-B6D6-E00EBF56AFFC}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>

@@ -4,12 +4,12 @@
 #include "vcu_buffer.hpp"
 #include "vcu_camera.hpp"
 #include "vcu_texture.hpp"
-#include "systems/simple_render_system.hpp"
-#include "systems/point_light_system.hpp"
-#include "systems/moving_render_system.hpp"
-#include "systems/wood_render_system.hpp"
-#include "systems/no_txt_render_system.hpp"
-#include "systems/marble_render_system.hpp"
+#include "../systems/simple_render_system.hpp"
+#include "../systems/point_light_system.hpp"
+#include "../systems/moving_render_system.hpp"
+#include "../systems/wood_render_system.hpp"
+#include "../systems/no_txt_render_system.hpp"
+#include "../systems/marble_render_system.hpp"
 
 //#define MAX_FRAME_TIME 0.5f
 

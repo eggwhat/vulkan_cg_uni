@@ -13,6 +13,10 @@
 #include <cstring>
 #include <unordered_map>
 
+#ifndef ENGINE_DIR
+#define ENGINE_DIR "../"
+#endif
+
 namespace std {
 	template<> 
 	struct hash<vcu::VcuModel::Vertex> {
@@ -36,7 +40,7 @@ namespace vcu {
 
 	std::unique_ptr<VcuModel> VcuModel::createModelFromFile(VcuDevice& device, const std::string& filepath) {
 		Builder builder{};
-		builder.loadModel(filepath);
+		builder.loadModel(ENGINE_DIR + filepath);
 		return std::make_unique<VcuModel>(device, builder);
 	}
 

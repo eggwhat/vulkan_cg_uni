@@ -8,6 +8,10 @@
 #include <iostream>
 #include <cassert> 
 
+#ifndef ENGINE_DIR
+#define ENGINE_DIR "../"
+#endif
+
 namespace vcu {
 
 	VcuPipeline::VcuPipeline(
@@ -27,8 +31,8 @@ namespace vcu {
 
 
 	std::vector<char> VcuPipeline::readFile(const std::string& filepath) {
-
-		std::ifstream file{ filepath, std::ios::ate | std::ios::binary };
+		std::string fullpath = ENGINE_DIR + filepath;
+		std::ifstream file{ fullpath, std::ios::ate | std::ios::binary };
 
 		if (!file.is_open()){
 			throw std::runtime_error{ "failed to open file!" + filepath};

@@ -22,6 +22,7 @@ Project is created with:
 	
 ## Setup
 To run this project:
+* Change paths in .env.cmake file to match your directories 
 * Open solution located in build folder
 * Build shaders project
 * Set VcuEngine project as the startup project
